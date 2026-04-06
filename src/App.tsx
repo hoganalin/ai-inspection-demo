@@ -200,13 +200,7 @@ const App: React.FC = () => {
             {activeTab === "inspect" && (
               <>
                 {/* Mini stats */}
-                 <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4,1fr)",
-                    gap: 10,
-                  }}
-                >
+                 <div className="kpi-grid">
                   <StatCard
                     label="今日檢測"
                     value={String(todayCount)}

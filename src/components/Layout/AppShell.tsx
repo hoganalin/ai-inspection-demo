@@ -17,9 +17,8 @@ export const AppShell: React.FC<Props> = ({ children, apiKeySet }) => {
 };
 
 const Header: React.FC<{ apiKeySet: boolean }> = ({ apiKeySet }) => (
-  <header className="glass-panel" style={{
+  <header className="glass-panel app-header" style={{
     height: 64,
-    padding: '0 24px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -50,9 +49,9 @@ const Header: React.FC<{ apiKeySet: boolean }> = ({ apiKeySet }) => (
     </div>
 
     {/* Right Actions */}
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-      {/* System Status — hidden on tablet/mobile via CSS */}
-      <div className="header-system-status" style={{ display: 'flex', gap: 14 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      {/* System Status — hidden on mobile via CSS */}
+      <div className="header-system-status" style={{ gap: 14 }}>
         <SystemStatus label="Gemini 3.1" active={apiKeySet} />
         <SystemStatus label="Vision AI" active={apiKeySet} />
       </div>
@@ -74,7 +73,7 @@ const Header: React.FC<{ apiKeySet: boolean }> = ({ apiKeySet }) => (
         }}
       >
         <span style={{ fontSize: 14 }}>{apiKeySet ? '🟢' : '🔴'}</span>
-        <span className="header-subtitle">{apiKeySet ? 'API 已連線' : 'API 未設定'}</span>
+        <span className="api-status-text">{apiKeySet ? 'API 已連線' : 'API 未設定'}</span>
       </div>
     </div>
   </header>

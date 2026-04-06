@@ -493,3 +493,40 @@ html, body, #root {
 }
 
 /* ─── Misc additions ─────────────────────────────────── */
+.app-header {
+  padding: 0 24px;
+  transition: padding 0.2s;
+}
+
+.header-system-status {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    padding: 0 12px;
+  }
+  
+  .header-system-status,
+  .header-divider,
+  .api-status-text {
+    display: none !important;
+  }
+  
+  .header-subtitle {
+    display: none;
+  }
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

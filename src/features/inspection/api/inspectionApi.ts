@@ -107,7 +107,11 @@ export async function compareImages(
 
   const text = result.response.text().trim();
   try {
-    return JSON.parse(text) as ComparisonResult;
+    const json = JSON.parse(text);
+    return {
+      ...json,
+      analyzedAt: new Date().toISOString(),
+    } as ComparisonResult;
   } catch {
     return {
       imageA: { status: 'warning', confidence: 0, summary: '解析失敗', defects: [], recommendation: '', analyzedAt: new Date().toISOString() },
@@ -115,6 +119,7 @@ export async function compareImages(
       similarity: 0,
       differences: [],
       verdict: '比對失敗，請重試。',
+      analyzedAt: new Date().toISOString(),
     };
   }
 }

@@ -116,8 +116,16 @@ export const StatsDashboard: React.FC<Props> = ({ history }) => {
       {/* Grid Analytics */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 10 }}>
         {[
-          { label: '平均判定耗時',  value: '1.24', unit: 'SEC', trend: 'stable' },
-          { label: '今日異動',      value: '+14', unit: 'ITEMS', trend: 'up' },
+          {
+            label: '總瑕疵數',
+            value: String(filteredHistory.reduce((s, h) => s + h.result.defects.length, 0)),
+            unit: 'DEFECTS',
+          },
+          {
+            label: '今日檢測',
+            value: String(filteredHistory.filter(h => new Date(h.result.analyzedAt).toDateString() === new Date().toDateString()).length),
+            unit: 'ITEMS',
+          },
         ].map(item => (
           <div key={item.label} className="chart-surface" style={{ padding: '16px' }}>
             <div style={{ fontSize: 9, fontWeight: 800, color: 'var(--neutral-600)', marginBottom: 8, textTransform: 'uppercase' }}>{item.label}</div>
@@ -129,14 +137,54 @@ export const StatsDashboard: React.FC<Props> = ({ history }) => {
         ))}
       </div>
 
-      {/* 30D Trend Simulation */}
+      {/* Status Breakdown */}
+      <div className="chart-surface" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#fff' }}>狀態分佈</div>
+        {[
+          { label: '合格', val: pass, color: 'var(--success)' },
+          { label: '不合格', val: fail, color: 'var(--danger)' },
+          { label: '警告', val: warning, color: 'var(--warning)' },
+        ].map(({ label, val, color }) => (
+          <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, color, width: 44, flexShrink: 0 }}>{label}</span>
+            <div style={{ flex: 1, height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+              <div style={{
+                height: '100%', borderRadius: 3,
+                width: `${total > 1 ? (val / total) * 100 : 0}%`,
+                background: color,
+                transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+              }} />
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 800, color: '#fff', width: 24, textAlign: 'right', flexShrink: 0 }}>{val}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* 30D Trend (real data bucketed by day) */}
       <div className="chart-surface" style={{ padding: '20px' }}>
-         <div style={{ fontSize: 11, fontWeight: 700, color: '#fff', marginBottom: 12 }}>30日趨勢模擬</div>
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 60 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: '#fff', marginBottom: 12 }}>近30日每日檢測量</div>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 60 }}>
           {Array.from({ length: 30 }).map((_, i) => {
-            const h = 20 + Math.sin(i * 0.5) * 15;
-            return <div key={i} className="viz-bar" style={{ flex: 1, height: h, opacity: 0.7 + (i / 30) * 0.3 }} />;
+            const day = new Date();
+            day.setDate(day.getDate() - (29 - i));
+            const dayStr = day.toDateString();
+            const count = history.filter(h => new Date(h.result.analyzedAt).toDateString() === dayStr).length;
+            const maxCount = Math.max(...Array.from({ length: 30 }).map((_, j) => {
+              const d = new Date(); d.setDate(d.getDate() - (29 - j));
+              return history.filter(h => new Date(h.result.analyzedAt).toDateString() === d.toDateString()).length;
+            }), 1);
+            return (
+              <div
+                key={i}
+                className="viz-bar"
+                style={{ flex: 1, height: Math.max((count / maxCount) * 56, count > 0 ? 6 : 2), opacity: count > 0 ? 1 : 0.15 }}
+                title={`${day.toLocaleDateString('zh-TW')}: ${count} 件`}
+              />
+            );
           })}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9, color: 'var(--neutral-600)', fontWeight: 700, marginTop: 6 }}>
+          <span>30天前</span><span>今日</span>
         </div>
       </div>
 

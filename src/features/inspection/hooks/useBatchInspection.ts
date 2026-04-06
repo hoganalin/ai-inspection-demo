@@ -60,7 +60,16 @@ export function useBatchInspection(
     return processItem(item, apiKey, criteria, threshold ?? 0);
   }, [items, processItem]);
 
-  const clearItems = useCallback(() => setItems([]), []);
+  const reset = useCallback(() => setItems([]), []);
 
-  return { items, isRunning, startBatch, retryItem, clearItems };
+  const removeItem = useCallback((id: string) => {
+    setItems(prev => prev.filter(it => it.id !== id));
+  }, []);
+
+  const progress = {
+    done: items.filter(it => it.status === 'done' || it.status === 'error').length,
+    total: items.length,
+  };
+
+  return { items, isRunning, progress, startBatch, retryItem, removeItem, reset };
 }

@@ -59,13 +59,6 @@ export const ImageUploader: React.FC<Props> = ({ imagePreview, status, onFileSel
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             zIndex: 10,
           }}>
-            <div style={{
-              position: 'absolute', left: 0, right: 0, height: 2,
-              background: 'linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent)',
-              boxShadow: '0 0 15px var(--primary)',
-              animation: 'scanLine 2s ease-in-out infinite',
-              top: '50%',
-            }} />
             <div className="status-badge" style={{ background: 'rgba(0,0,0,0.8)', border: '1px solid var(--primary)', color: 'var(--primary)', gap: 8, padding: '10px 20px', fontSize: 14 }}>
                <span className="spin" style={{ width: 14, height: 14, border: '2px solid var(--primary)', borderTopColor: 'transparent', borderRadius: '50%' }} />
                智慧掃描分析中...
@@ -145,7 +138,7 @@ export const ImageUploader: React.FC<Props> = ({ imagePreview, status, onFileSel
         </div>
       </div>
       <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }}
-        onChange={e => { const f = e.target.files?.[0]; if (f) onFileSelect(f); }} />
+        onChange={handleChange} />
     </>
   );
 };

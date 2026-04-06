@@ -35,6 +35,59 @@ const STATUS_CFG = {
   warning: { color: 'var(--warning)', icon: '!', label: '警告' }
 };
 
+interface CardProps {
+  item: HistoryItem;
+  expandedId: string | null;
+  onToggle: (id: string) => void;
+}
+
+const HistoryItemCard: React.FC<CardProps> = ({ item, expandedId, onToggle }) => {
+  const cfg = STATUS_CFG[item.result.status as keyof typeof STATUS_CFG] ?? { color: 'var(--subtext)', icon: '?', label: item.result.status };
+  const isExpanded = expandedId === item.id;
+  return (
+    <div
+      onClick={() => onToggle(item.id)}
+      style={{
+        padding: '12px 14px',
+        background: isExpanded ? 'rgba(79,124,255,0.06)' : 'rgba(255,255,255,0.02)',
+        border: `1px solid ${isExpanded ? 'rgba(79,124,255,0.3)' : 'var(--border)'}`,
+        borderRadius: 'var(--radius)',
+        cursor: 'pointer',
+        transition: 'all 0.2s',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {item.thumbnail && (
+          <img src={item.thumbnail} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }} />
+        )}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {item.fileName}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--neutral-400)', marginTop: 2 }}>
+            {new Date(item.result.analyzedAt).toLocaleString('zh-TW')}
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+          <span style={{
+            fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 6,
+            background: `${cfg.color}20`, color: cfg.color,
+          }}>
+            {cfg.icon} {cfg.label}
+          </span>
+          <span style={{ fontSize: 11, color: 'var(--neutral-400)' }}>{item.result.confidence}%</span>
+        </div>
+        <span style={{ color: 'var(--neutral-400)', fontSize: 12 }}>{isExpanded ? '▾' : '▸'}</span>
+      </div>
+      {isExpanded && (
+        <div style={{ marginTop: 12 }} onClick={e => e.stopPropagation()}>
+          <InspectionResultPanel result={item.result} />
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const HistoryPanel: React.FC<Props> = ({ history, onClear, onSelectItem }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState('');
@@ -124,14 +177,14 @@ export const HistoryPanel: React.FC<Props> = ({ history, onClear, onSelectItem }
           >{label}</button>
         ))}
       </div>
-      {filteredHistory.length === 0 ? (
+      {filtered.length === 0 ? (
         <div style={{ padding: '40px 0', textAlign: 'center' }}>
           <p style={{ fontSize: 12, color: 'var(--subtext)' }}>尚無符合條件的記錄</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {filteredHistory.map(item => (
-            <HistoryItemCard key={item.id} item={item} onSelect={onSelectItem} />
+          {filtered.map(item => (
+            <HistoryItemCard key={item.id} item={item} expandedId={expandedId} onToggle={handleToggle} />
           ))}
         </div>
       )}

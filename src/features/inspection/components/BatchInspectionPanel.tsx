@@ -39,7 +39,7 @@ const STATUS_MAP = {
 
 export const BatchInspectionPanel: React.FC<Props> = ({ apiKey, customCriteria, threshold, onRecordAdded }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { items, isRunning, progress, startBatch, retryItem, removeItem, reset } = useBatchInspection(onRecordAdded);
+  const { items, isRunning, progress, startBatch, reset } = useBatchInspection(onRecordAdded);
   const [filter, setFilter] = useState<string>('all');
   const [sampling, setSampling] = useState<string>('100%');
 
@@ -61,6 +61,14 @@ export const BatchInspectionPanel: React.FC<Props> = ({ apiKey, customCriteria, 
 
   return (
     <div className="batch-main-layout anim-in">
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        style={{ display: 'none' }}
+        onChange={e => handleFiles(e.target.files)}
+      />
       
       {/* 1. Overall Progress & Actions */}
       {items.length > 0 && (
@@ -124,7 +132,7 @@ export const BatchInspectionPanel: React.FC<Props> = ({ apiKey, customCriteria, 
       </div>
 
       {/* 3. Main Split View */}
-      <div style={{ display: 'grid', gridTemplateColumns: items.length > 0 ? '220px 1fr' : '1fr', gap: 16 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         
         {/* Left: Upload Zone */}
         <div 

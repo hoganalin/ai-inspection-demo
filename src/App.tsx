@@ -109,7 +109,7 @@ const App: React.FC = () => {
       {/* Main Layout */}
       <div className="app-layout">
         {/* Left — Inspection */}
-        <div className={`panel-left${activeTab === 'batch' || activeTab === 'compare' ? ' panel-left--wide' : ''}${mobilePanel !== 'inspect' ? ' panel-hidden' : ''}`}>
+        <div className={`panel-left${mobilePanel !== 'inspect' ? ' panel-hidden' : ''}`}>
           {/* Panel header */}
           <div
             style={{

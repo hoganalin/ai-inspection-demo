@@ -12,6 +12,7 @@ import {
 } from "./features/inspection";
 import { createThumbnail } from "./features/inspection/utils/thumbnail";
 import { ChatPanel } from "./features/chat";
+import { ApiKeyModal } from "./components/Layout/ApiKeyModal";
 
 type Tab = "inspect" | "batch" | "compare" | "history" | "stats";
 
@@ -24,7 +25,15 @@ const TABS: { key: Tab; label: string }[] = [
 ];
 
 const App: React.FC = () => {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
+  const [apiKey, setApiKey] = useState(
+    () => localStorage.getItem('gemini_api_key') || (import.meta.env.VITE_GEMINI_API_KEY as string) || ''
+  );
+
+  useEffect(() => {
+    if (apiKey) {
+      localStorage.setItem('gemini_api_key', apiKey);
+    }
+  }, [apiKey]);
   const [activeTab, setActiveTab] = useState<Tab>("inspect");
   const [mobilePanel, setMobilePanel] = useState<'inspect' | 'chat'>('inspect');
   const [customPrompt, setCustomPrompt] = useState(
@@ -104,7 +113,9 @@ const App: React.FC = () => {
     history.length > 0 ? Math.round((totalPass / history.length) * 100) : null;
 
   return (
-    <AppShell apiKeySet={!!apiKey}>
+    <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
+      {!apiKey && <ApiKeyModal onSave={setApiKey} />}
+      <AppShell apiKey={apiKey} onApiKeyChange={setApiKey}>
 
       {/* Main Layout */}
       <div className="app-layout">
@@ -129,7 +140,7 @@ const App: React.FC = () => {
               </div>
               <div className="ai-status" style={{ fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span className="spin" style={{ width: 8, height: 8, borderRadius: '50%', border: '1.5px solid currentColor', borderTopColor: 'transparent' }}></span>
-                GEMINI 3.1 FLASH ACTIVE
+                GEMINI 2.5 FLASH ACTIVE
               </div>
             </div>
             {status !== "idle" && <StatusBadge status={status} />}
@@ -406,7 +417,8 @@ const App: React.FC = () => {
           對話
         </button>
       </nav>
-    </AppShell>
+      </AppShell>
+    </div>
   );
 };
 

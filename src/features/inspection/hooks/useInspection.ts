@@ -32,12 +32,27 @@ export function useInspection(): UseInspectionReturn {
       return finalData;
     } catch (err) {
       console.error('Inspection failed:', err);
+      const errMsg = String(err);
+      let summary = '分析失敗，請確認 API Key 是否正確。';
+      let recommendation = '請重試或檢查網路連線。';
+
+      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('rate')) {
+        summary = '請求太頻繁，API 速率限制中。';
+        recommendation = '免費版每分鐘限 15 次請求，請等待約 1 分鐘後再試。';
+      } else if (errMsg.includes('403') || errMsg.toLowerCase().includes('permission') || errMsg.toLowerCase().includes('api key')) {
+        summary = 'API Key 無效或已被停用。';
+        recommendation = '請至 Google AI Studio 確認金鑰狀態，或重新申請一把新的 API Key。';
+      } else if (errMsg.includes('404') || errMsg.toLowerCase().includes('not found')) {
+        summary = '模型不存在或不支援。';
+        recommendation = '請確認您的 API Key 是否有權限使用 Gemini 2.0 Flash 模型。';
+      }
+
       const errResult: InspectionResult = {
         status: 'fail',
         confidence: 0,
-        summary: '分析失敗，請確認 API Key 是否正確。',
+        summary,
         defects: [],
-        recommendation: '請重試或檢查網路連線。',
+        recommendation,
         analyzedAt: new Date().toISOString(),
       };
       setResult(errResult);

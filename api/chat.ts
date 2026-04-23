@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Anthropic from '@anthropic-ai/sdk';
-import { MODEL, errorMessage, getClient, httpStatusFor } from './_lib';
+import { MODEL, errorMessage, getClient, httpStatusFor } from './_lib.js';
 
 const SYSTEM_BASE = `你是一個工廠產線 AI 助理，專門回答關於品質管控、設備維護、製程優化的問題。
 規則：

@@ -7,7 +7,7 @@ import {
   httpStatusFor,
   normalizeMediaType,
   stripJsonFences,
-} from './_lib';
+} from './_lib.js';
 
 const SYSTEM = `你是一個工廠產線品質檢測 AI。分析使用者上傳的圖片，判斷產品是否有瑕疵。
 

@@ -7,7 +7,7 @@ import {
   httpStatusFor,
   normalizeMediaType,
   stripJsonFences,
-} from './_lib';
+} from './_lib.js';
 
 const SYSTEM = `你是工廠品質對比分析 AI。請比較兩張圖片（圖片A 和 圖片B），分析它們在品質瑕疵上的差異。
 

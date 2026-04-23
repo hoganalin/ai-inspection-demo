@@ -3,7 +3,6 @@ import { useBatchInspection } from '../hooks/useBatchInspection';
 import type { InspectionResult } from '../types';
 
 interface Props {
-  apiKey: string;
   customCriteria?: string;
   threshold?: number;
   onRecordAdded: (result: InspectionResult, thumbnail: string, fileName: string) => void;
@@ -37,7 +36,7 @@ const STATUS_MAP = {
   error: { label: '失敗', color: 'var(--danger)' }
 };
 
-export const BatchInspectionPanel: React.FC<Props> = ({ apiKey, customCriteria, threshold, onRecordAdded }) => {
+export const BatchInspectionPanel: React.FC<Props> = ({ customCriteria, threshold, onRecordAdded }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { items, isRunning, progress, startBatch, reset } = useBatchInspection(onRecordAdded);
   const [filter, setFilter] = useState<string>('all');
@@ -46,15 +45,15 @@ export const BatchInspectionPanel: React.FC<Props> = ({ apiKey, customCriteria, 
   const isDone = !isRunning && progress.done === progress.total && progress.total > 0;
 
   const handleFiles = useCallback(async (files: FileList | null) => {
-    if (!files || !apiKey) return;
+    if (!files) return;
     const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
     let processed = arr;
     if (sampling !== '100%') {
       const ratio = parseInt(sampling) / 100;
       processed = arr.sort(() => 0.5 - Math.random()).slice(0, Math.ceil(arr.length * ratio));
     }
-    await startBatch(processed, apiKey, customCriteria, threshold);
-  }, [apiKey, customCriteria, threshold, startBatch, sampling]);
+    await startBatch(processed, customCriteria, threshold);
+  }, [customCriteria, threshold, startBatch, sampling]);
 
   const filteredItems = items.filter(it => filter === 'all' || it.status === filter);
   const percent = progress.total > 0 ? Math.round((progress.done / progress.total) * 100) : 0;

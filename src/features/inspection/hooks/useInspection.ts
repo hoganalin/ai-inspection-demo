@@ -7,9 +7,34 @@ interface UseInspectionReturn {
   status: InspectionStatus;
   result: InspectionResult | null;
   imagePreview: string | null;
-  analyze: (file: File, apiKey: string, customCriteria?: string, threshold?: number) => Promise<InspectionResult | null>;
-  reanalyze: ((apiKey: string, customCriteria?: string, threshold?: number) => Promise<InspectionResult | null>) | null;
+  analyze: (file: File, customCriteria?: string, threshold?: number) => Promise<InspectionResult | null>;
+  reanalyze: ((customCriteria?: string, threshold?: number) => Promise<InspectionResult | null>) | null;
   reset: () => void;
+}
+
+function buildErrorResult(err: unknown): InspectionResult {
+  const msg = err instanceof Error ? err.message : String(err);
+  let summary = '分析失敗，請稍後再試。';
+  let recommendation = '請檢查網路連線或稍後重試。';
+
+  if (/429|rate|quota|overload/i.test(msg)) {
+    summary = '請求太頻繁或服務暫時忙線中。';
+    recommendation = '請稍候片刻後再試。';
+  } else if (/401|403|api[_ ]?key|authentication|permission/i.test(msg)) {
+    summary = '伺服器端 API Key 未設定或無效。';
+    recommendation = '請至 Vercel 專案的 Environment Variables 確認 ANTHROPIC_API_KEY 已正確設定。';
+  } else if (/4\d\d|5\d\d/.test(msg)) {
+    summary = `伺服器回傳錯誤：${msg}`;
+  }
+
+  return {
+    status: 'fail',
+    confidence: 0,
+    summary,
+    defects: [],
+    recommendation,
+    analyzedAt: new Date().toISOString(),
+  };
 }
 
 export function useInspection(): UseInspectionReturn {
@@ -18,12 +43,12 @@ export function useInspection(): UseInspectionReturn {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileRef = useRef<File | null>(null);
 
-  const runAnalysis = useCallback(async (file: File, apiKey: string, customCriteria?: string, threshold = 0): Promise<InspectionResult | null> => {
+  const runAnalysis = useCallback(async (file: File, customCriteria?: string, threshold = 0): Promise<InspectionResult | null> => {
     setStatus('analyzing');
     setResult(null);
     try {
       const base64 = await fileToBase64(file);
-      const data = await analyzeImage(apiKey, base64, file.type, customCriteria);
+      const data = await analyzeImage(base64, file.type, customCriteria);
       const finalData = threshold > 0 && data.confidence < threshold && data.status !== 'fail'
         ? { ...data, status: 'fail' as const }
         : data;
@@ -32,45 +57,23 @@ export function useInspection(): UseInspectionReturn {
       return finalData;
     } catch (err) {
       console.error('Inspection failed:', err);
-      const errMsg = String(err);
-      let summary = '分析失敗，請確認 API Key 是否正確。';
-      let recommendation = '請重試或檢查網路連線。';
-
-      if (errMsg.includes('429') || errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('rate')) {
-        summary = '請求太頻繁，API 速率限制中。';
-        recommendation = '免費版每分鐘限 15 次請求，請等待約 1 分鐘後再試。';
-      } else if (errMsg.includes('403') || errMsg.toLowerCase().includes('permission') || errMsg.toLowerCase().includes('api key')) {
-        summary = 'API Key 無效或已被停用。';
-        recommendation = '請至 Google AI Studio 確認金鑰狀態，或重新申請一把新的 API Key。';
-      } else if (errMsg.includes('404') || errMsg.toLowerCase().includes('not found')) {
-        summary = '模型不存在或不支援。';
-        recommendation = '請確認您的 API Key 是否有權限使用 Gemini 2.0 Flash 模型。';
-      }
-
-      const errResult: InspectionResult = {
-        status: 'fail',
-        confidence: 0,
-        summary,
-        defects: [],
-        recommendation,
-        analyzedAt: new Date().toISOString(),
-      };
+      const errResult = buildErrorResult(err);
       setResult(errResult);
       setStatus('fail');
       return errResult;
     }
   }, []);
 
-  const analyze = useCallback(async (file: File, apiKey: string, customCriteria?: string, threshold?: number): Promise<InspectionResult | null> => {
+  const analyze = useCallback(async (file: File, customCriteria?: string, threshold?: number): Promise<InspectionResult | null> => {
     fileRef.current = file;
     const previewUrl = URL.createObjectURL(file);
     setImagePreview(previewUrl);
-    return runAnalysis(file, apiKey, customCriteria, threshold);
+    return runAnalysis(file, customCriteria, threshold);
   }, [runAnalysis]);
 
-  const reanalyze = useCallback(async (apiKey: string, customCriteria?: string, threshold?: number): Promise<InspectionResult | null> => {
+  const reanalyze = useCallback(async (customCriteria?: string, threshold?: number): Promise<InspectionResult | null> => {
     if (!fileRef.current) return null;
-    return runAnalysis(fileRef.current, apiKey, customCriteria, threshold);
+    return runAnalysis(fileRef.current, customCriteria, threshold);
   }, [runAnalysis]);
 
   const reset = useCallback(() => {

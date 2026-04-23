@@ -45,7 +45,7 @@ export const ChatMessageBubble: React.FC<Props> = ({ message }) => {
 
         {message.isImageLoading && (
           <div className="mt-3 p-4 bg-white/5 rounded-lg text-xs text-blue-400 animate-pulse">
-            ✨ 正在用 Gemini 3.1 Flash (Banana 2) 生成模擬圖...
+            ✨ 正在使用 Claude 生成模擬圖...
           </div>
         )}
 

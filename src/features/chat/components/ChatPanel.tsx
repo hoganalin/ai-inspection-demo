@@ -3,12 +3,11 @@ import { useChat } from '../hooks/useChat';
 import type { ChatContext, ChatMessage } from '../types';
 
 interface Props {
-  apiKey: string;
   context?: ChatContext;
 }
 
 
-export const ChatPanel: React.FC<Props> = ({ apiKey, context }) => {
+export const ChatPanel: React.FC<Props> = ({ context }) => {
   const { messages, isStreaming, sendMessage, clearMessages } = useChat();
   const [input, setInput] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -18,10 +17,10 @@ export const ChatPanel: React.FC<Props> = ({ apiKey, context }) => {
   }, [messages]);
 
   const send = useCallback(async (text: string) => {
-    if (!text.trim() || isStreaming || !apiKey) return;
+    if (!text.trim() || isStreaming) return;
     setInput('');
-    await sendMessage(text.trim(), apiKey, context);
-  }, [isStreaming, apiKey, context, sendMessage]);
+    await sendMessage(text.trim(), context);
+  }, [isStreaming, context, sendMessage]);
 
   const onKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); }
@@ -58,7 +57,7 @@ export const ChatPanel: React.FC<Props> = ({ apiKey, context }) => {
       {/* Messages */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: 16 }}>
         {messages.length === 0 ? (
-          <EmptyState context={context} onQuick={q => send(q)} disabled={!apiKey || isStreaming} />
+          <EmptyState context={context} onQuick={q => send(q)} disabled={isStreaming} />
         ) : (
           messages.map(m => <Bubble key={m.id} message={m} />)
         )}
@@ -67,14 +66,6 @@ export const ChatPanel: React.FC<Props> = ({ apiKey, context }) => {
 
       {/* Input */}
       <div style={{ padding: '16px 20px', borderTop: '1px solid var(--border)', background: 'rgba(11, 15, 26, 0.4)' }}>
-        {!apiKey && (
-          <div style={{
-            fontSize: 11, color: 'var(--warning)', textAlign: 'center',
-            marginBottom: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-          }}>
-            <span>⚠</span><span>請先設定 API Key 以啟用 AI 助理</span>
-          </div>
-        )}
         <div className="input-bar" style={{
           display: 'flex', gap: 12, alignItems: 'center',
           padding: '0 10px 0 18px',
@@ -83,8 +74,8 @@ export const ChatPanel: React.FC<Props> = ({ apiKey, context }) => {
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={onKeyDown}
-            disabled={!apiKey || isStreaming}
-            placeholder={apiKey ? '詢問關於此項目的分析建議...' : '請先設定 API Key'}
+            disabled={isStreaming}
+            placeholder="詢問關於此項目的分析建議..."
             rows={1}
             style={{
               flex: 1, background: 'transparent', border: 'none', outline: 'none',
@@ -99,14 +90,14 @@ export const ChatPanel: React.FC<Props> = ({ apiKey, context }) => {
           />
           <button
             onClick={() => send(input)}
-            disabled={!input.trim() || !apiKey || isStreaming}
+            disabled={!input.trim() || isStreaming}
             style={{
               width: 36, height: 36, borderRadius: 10, border: 'none', flexShrink: 0,
-              background: input.trim() && apiKey && !isStreaming ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-              color: '#fff', cursor: input.trim() && apiKey && !isStreaming ? 'pointer' : 'not-allowed',
+              background: input.trim() && !isStreaming ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+              color: '#fff', cursor: input.trim() && !isStreaming ? 'pointer' : 'not-allowed',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               transition: 'all 0.2s',
-              boxShadow: input.trim() && apiKey && !isStreaming ? '0 4px 12px rgba(79,124,255,0.3)' : 'none',
+              boxShadow: input.trim() && !isStreaming ? '0 4px 12px rgba(79,124,255,0.3)' : 'none',
             }}
           >
             {isStreaming ? (
@@ -139,7 +130,7 @@ const EmptyState: React.FC<{ context?: ChatContext; onQuick: (q: string) => void
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 280 }}>
         {[
           { icon: '📸', title: '1. 上傳樣本', desc: '拖放或點擊左側區域上傳' },
-          { icon: '🧠', title: '2. AI 自動分析', desc: 'Gemini 3.1 深度視覺掃描' },
+          { icon: '🧠', title: '2. AI 自動分析', desc: 'Claude Vision 深度視覺掃描' },
           { icon: '📊', title: '3. 獲取洞察', desc: '查看瑕疵分佈與修復建議' }
         ].map((step, idx) => (
           <div key={idx} className="guide-step">

@@ -10,7 +10,7 @@ interface UseComparisonReturn {
   result: ComparisonResult | null;
   previewA: string | null;
   previewB: string | null;
-  compare: (fileA: File, fileB: File, apiKey: string, customCriteria?: string) => Promise<void>;
+  compare: (fileA: File, fileB: File, customCriteria?: string) => Promise<void>;
   reset: () => void;
 }
 
@@ -21,7 +21,7 @@ export function useComparison(): UseComparisonReturn {
   const [previewB, setPreviewB] = useState<string | null>(null);
 
   const compare = useCallback(async (
-    fileA: File, fileB: File, apiKey: string, customCriteria?: string
+    fileA: File, fileB: File, customCriteria?: string
   ) => {
     setStatus('analyzing');
     setResult(null);
@@ -33,7 +33,7 @@ export function useComparison(): UseComparisonReturn {
         fileToBase64(fileA),
         fileToBase64(fileB),
       ]);
-      const data = await compareImages(apiKey, base64A, base64B, fileA.type, fileB.type, customCriteria);
+      const data = await compareImages(base64A, base64B, fileA.type, fileB.type, customCriteria);
       setResult(data);
       setStatus('done');
     } catch (err) {

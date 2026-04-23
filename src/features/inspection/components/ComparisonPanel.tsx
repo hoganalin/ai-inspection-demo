@@ -3,7 +3,6 @@ import { useComparison } from '../hooks/useComparison';
 import type { InspectionResult, ComparisonDefect } from '../types';
 
 interface Props {
-  apiKey: string;
   customCriteria?: string;
 }
 
@@ -133,7 +132,7 @@ const DiffRow: React.FC<{ diff: ComparisonDefect; index: number }> = ({ diff, in
 };
 
 /* ── Main Component ── */
-export const ComparisonPanel: React.FC<Props> = ({ apiKey, customCriteria }) => {
+export const ComparisonPanel: React.FC<Props> = ({ customCriteria }) => {
   const { status, result, previewA: hookPreviewA, previewB: hookPreviewB, compare, reset } = useComparison();
   const [fileA, setFileA] = React.useState<File | null>(null);
   const [fileB, setFileB] = React.useState<File | null>(null);
@@ -145,10 +144,10 @@ export const ComparisonPanel: React.FC<Props> = ({ apiKey, customCriteria }) => 
   const previewA = hookPreviewA ?? localPreviewA;
   const previewB = hookPreviewB ?? localPreviewB;
 
-  const canCompare = !!fileA && !!fileB && !!apiKey && status !== 'analyzing';
+  const canCompare = !!fileA && !!fileB && status !== 'analyzing';
 
   const handleCompare = () => {
-    if (fileA && fileB && apiKey) compare(fileA, fileB, apiKey, customCriteria);
+    if (fileA && fileB) compare(fileA, fileB, customCriteria);
   };
 
   const handleReset = () => {
@@ -511,7 +510,7 @@ export const ComparisonPanel: React.FC<Props> = ({ apiKey, customCriteria }) => 
           {status === 'analyzing' ? (
             <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
               <span className="spin" style={{ width: 14, height: 14, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', display: 'inline-block' }} />
-              Gemini 比對中…
+              Claude 比對中…
             </span>
           ) : '🔍 開始 A/B 比對'}
         </button>
@@ -521,10 +520,6 @@ export const ComparisonPanel: React.FC<Props> = ({ apiKey, customCriteria }) => 
           </button>
         )}
       </div>
-
-      {!apiKey && (
-        <p style={{ fontSize: 12, color: 'var(--warning)', textAlign: 'center' }}>⚠ 請先設定 API Key</p>
-      )}
 
       {/* Results */}
       {result && (
@@ -603,7 +598,7 @@ export const ComparisonPanel: React.FC<Props> = ({ apiKey, customCriteria }) => 
 
       {status === 'error' && (
         <div className="card" style={{ padding: '20px', textAlign: 'center', borderColor: 'rgba(239,68,68,0.3)' }}>
-          <p style={{ fontSize: 13, color: 'var(--danger)' }}>比對失敗，請確認 API Key 或重試。</p>
+          <p style={{ fontSize: 13, color: 'var(--danger)' }}>比對失敗，請稍後再試或檢查伺服器設定。</p>
         </div>
       )}
 

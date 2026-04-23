@@ -18,24 +18,24 @@ export function useBatchInspection(
   const [items, setItems] = useState<BatchItem[]>([]);
   const [isRunning, setIsRunning] = useState(false);
 
-  const processItem = useCallback(async (item: BatchItem, apiKey: string, criteria?: string, threshold = 0) => {
+  const processItem = useCallback(async (item: BatchItem, criteria?: string, threshold = 0) => {
     setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'analyzing' } : it));
     try {
       const base64 = await fileToBase64(item.file);
-      const res = await analyzeImage(apiKey, base64, item.file.type, criteria);
+      const res = await analyzeImage(base64, item.file.type, criteria);
       const finalRes = threshold > 0 && res.confidence < threshold && res.status !== 'fail'
         ? { ...res, status: 'fail' as const }
         : res;
       setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'done', result: finalRes } : it));
       onItemComplete?.(finalRes, item.thumbnail, item.fileName);
       return finalRes;
-    } catch (e) {
+    } catch {
       setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'error' } : it));
       return null;
     }
   }, [onItemComplete]);
 
-  const startBatch = useCallback(async (files: File[], apiKey: string, criteria?: string, threshold?: number) => {
+  const startBatch = useCallback(async (files: File[], criteria?: string, threshold?: number) => {
     if (isRunning) return;
     const initial: BatchItem[] = await Promise.all(
       files.map(async file => ({
@@ -49,15 +49,15 @@ export function useBatchInspection(
     setItems(initial);
     setIsRunning(true);
     for (const item of initial) {
-      await processItem(item, apiKey, criteria, threshold);
+      await processItem(item, criteria, threshold);
     }
     setIsRunning(false);
   }, [isRunning, processItem]);
 
-  const retryItem = useCallback(async (id: string, apiKey: string, criteria?: string, threshold?: number) => {
+  const retryItem = useCallback(async (id: string, criteria?: string, threshold?: number) => {
     const item = items.find(it => it.id === id);
     if (!item || item.status === 'analyzing') return null;
-    return processItem(item, apiKey, criteria, threshold ?? 0);
+    return processItem(item, criteria, threshold ?? 0);
   }, [items, processItem]);
 
   const reset = useCallback(() => setItems([]), []);

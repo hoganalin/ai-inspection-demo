@@ -12,7 +12,6 @@ import {
 } from "./features/inspection";
 import { createThumbnail } from "./features/inspection/utils/thumbnail";
 import { ChatPanel } from "./features/chat";
-import { ApiKeyModal } from "./components/Layout/ApiKeyModal";
 
 type Tab = "inspect" | "batch" | "compare" | "history" | "stats";
 
@@ -25,15 +24,6 @@ const TABS: { key: Tab; label: string }[] = [
 ];
 
 const App: React.FC = () => {
-  const [apiKey, setApiKey] = useState(
-    () => localStorage.getItem('gemini_api_key') || (import.meta.env.VITE_GEMINI_API_KEY as string) || ''
-  );
-
-  useEffect(() => {
-    if (apiKey) {
-      localStorage.setItem('gemini_api_key', apiKey);
-    }
-  }, [apiKey]);
   const [activeTab, setActiveTab] = useState<Tab>("inspect");
   const [mobilePanel, setMobilePanel] = useState<'inspect' | 'chat'>('inspect');
   const [customPrompt, setCustomPrompt] = useState(
@@ -70,21 +60,21 @@ const App: React.FC = () => {
     async (file: File) => {
       const [thumbnail, analysisResult] = await Promise.all([
         createThumbnail(file),
-        analyze(file, apiKey, customCriteria, confidenceThreshold),
+        analyze(file, customCriteria, confidenceThreshold),
       ]);
       if (analysisResult) addRecord(analysisResult, thumbnail, file.name);
     },
-    [apiKey, analyze, addRecord, customCriteria],
+    [analyze, addRecord, customCriteria, confidenceThreshold],
   );
 
   const handleReanalyze = useCallback(async () => {
     if (!reanalyze || !imagePreview) return;
-    const analysisResult = await reanalyze(apiKey, customCriteria, confidenceThreshold);
+    const analysisResult = await reanalyze(customCriteria, confidenceThreshold);
     if (analysisResult) {
       const thumbnail = imagePreview;
       addRecord(analysisResult, thumbnail, "reanalyzed");
     }
-  }, [reanalyze, apiKey, customCriteria, imagePreview, addRecord]);
+  }, [reanalyze, customCriteria, confidenceThreshold, imagePreview, addRecord]);
 
   const chatContext = useMemo(() => {
     // 優先使用選中的歷史紀錄上下文
@@ -114,8 +104,7 @@ const App: React.FC = () => {
 
   return (
     <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
-      {!apiKey && <ApiKeyModal onSave={setApiKey} />}
-      <AppShell apiKey={apiKey} onApiKeyChange={setApiKey}>
+      <AppShell>
 
       {/* Main Layout */}
       <div className="app-layout">
@@ -140,7 +129,7 @@ const App: React.FC = () => {
               </div>
               <div className="ai-status" style={{ fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span className="spin" style={{ width: 8, height: 8, borderRadius: '50%', border: '1.5px solid currentColor', borderTopColor: 'transparent' }}></span>
-                GEMINI 2.5 FLASH ACTIVE
+                CLAUDE SONNET 4.6 ACTIVE
               </div>
             </div>
             {status !== "idle" && <StatusBadge status={status} />}
@@ -366,7 +355,6 @@ const App: React.FC = () => {
             {/* ── 批次 tab ── */}
             {activeTab === "batch" && (
               <BatchInspectionPanel
-                apiKey={apiKey}
                 customCriteria={customCriteria}
                 threshold={confidenceThreshold}
                 onRecordAdded={(result, thumbnail, fileName) =>
@@ -377,7 +365,7 @@ const App: React.FC = () => {
 
             {/* ── A/B 比對 tab ── */}
             {activeTab === "compare" && (
-              <ComparisonPanel apiKey={apiKey} customCriteria={customCriteria} />
+              <ComparisonPanel customCriteria={customCriteria} />
             )}
 
             {/* ── 歷史 tab ── */}
@@ -396,7 +384,7 @@ const App: React.FC = () => {
 
         {/* Right — Chat */}
         <div className={`panel-right${mobilePanel !== 'chat' ? ' panel-hidden' : ''}`}>
-          <ChatPanel apiKey={apiKey} context={chatContext} />
+          <ChatPanel context={chatContext} />
         </div>
       </div>
 

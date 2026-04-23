@@ -5,7 +5,7 @@ import type { ChatMessage, ChatContext } from '../types';
 interface UseChatReturn {
   messages: ChatMessage[];
   isStreaming: boolean;
-  sendMessage: (text: string, apiKey: string, context?: ChatContext) => Promise<void>;
+  sendMessage: (text: string, context?: ChatContext) => Promise<void>;
   clearMessages: () => void;
 }
 
@@ -13,12 +13,10 @@ export function useChat(): UseChatReturn {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
 
-  // Use refs to avoid stale closures and prevent duplicate sends
   const isStreamingRef = useRef(false);
   const messagesRef = useRef<ChatMessage[]>([]);
   const abortRef = useRef(false);
 
-  // Keep messagesRef in sync with state
   const updateMessages = useCallback((updater: (prev: ChatMessage[]) => ChatMessage[]) => {
     setMessages((prev) => {
       const next = updater(prev);
@@ -28,14 +26,12 @@ export function useChat(): UseChatReturn {
   }, []);
 
   const sendMessage = useCallback(
-    async (text: string, apiKey: string, context?: ChatContext) => {
-      // Use ref to prevent duplicate sends (avoids stale closure issue)
+    async (text: string, context?: ChatContext) => {
       if (isStreamingRef.current) return;
       isStreamingRef.current = true;
       setIsStreaming(true);
       abortRef.current = false;
 
-      // Snapshot current messages before adding new ones (for API history)
       const previousMessages = messagesRef.current.filter((m) => !m.streaming);
 
       const userMsg: ChatMessage = {
@@ -58,7 +54,6 @@ export function useChat(): UseChatReturn {
 
       try {
         await streamChatMessage(
-          apiKey,
           previousMessages,
           text,
           context,

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { analyzeImage } from '../api/inspectionApi';
-import { createThumbnail, fileToBase64 } from '../utils/thumbnail';
+import { createThumbnail, prepareImageForUpload } from '../utils/thumbnail';
 import type { InspectionResult } from '../types';
 
 export interface BatchItem {
@@ -21,8 +21,8 @@ export function useBatchInspection(
   const processItem = useCallback(async (item: BatchItem, criteria?: string, threshold = 0) => {
     setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'analyzing' } : it));
     try {
-      const base64 = await fileToBase64(item.file);
-      const res = await analyzeImage(base64, item.file.type, criteria);
+      const { base64, mimeType } = await prepareImageForUpload(item.file);
+      const res = await analyzeImage(base64, mimeType, criteria);
       const finalRes = threshold > 0 && res.confidence < threshold && res.status !== 'fail'
         ? { ...res, status: 'fail' as const }
         : res;

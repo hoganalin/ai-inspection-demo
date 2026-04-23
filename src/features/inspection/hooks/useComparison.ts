@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { compareImages } from '../api/inspectionApi';
-import { fileToBase64 } from '../utils/thumbnail';
+import { prepareImageForUpload } from '../utils/thumbnail';
 import type { ComparisonResult } from '../types';
 
 type CompareStatus = 'idle' | 'analyzing' | 'done' | 'error';
@@ -29,11 +29,11 @@ export function useComparison(): UseComparisonReturn {
     setPreviewB(URL.createObjectURL(fileB));
 
     try {
-      const [base64A, base64B] = await Promise.all([
-        fileToBase64(fileA),
-        fileToBase64(fileB),
+      const [a, b] = await Promise.all([
+        prepareImageForUpload(fileA),
+        prepareImageForUpload(fileB),
       ]);
-      const data = await compareImages(base64A, base64B, fileA.type, fileB.type, customCriteria);
+      const data = await compareImages(a.base64, b.base64, a.mimeType, b.mimeType, customCriteria);
       setResult(data);
       setStatus('done');
     } catch (err) {

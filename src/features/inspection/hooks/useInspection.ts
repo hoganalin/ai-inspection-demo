@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { analyzeImage } from '../api/inspectionApi';
-import { fileToBase64 } from '../utils/thumbnail';
+import { prepareImageForUpload } from '../utils/thumbnail';
 import type { InspectionResult, InspectionStatus } from '../types';
 
 interface UseInspectionReturn {
@@ -47,8 +47,8 @@ export function useInspection(): UseInspectionReturn {
     setStatus('analyzing');
     setResult(null);
     try {
-      const base64 = await fileToBase64(file);
-      const data = await analyzeImage(base64, file.type, customCriteria);
+      const { base64, mimeType } = await prepareImageForUpload(file);
+      const data = await analyzeImage(base64, mimeType, customCriteria);
       const finalData = threshold > 0 && data.confidence < threshold && data.status !== 'fail'
         ? { ...data, status: 'fail' as const }
         : data;

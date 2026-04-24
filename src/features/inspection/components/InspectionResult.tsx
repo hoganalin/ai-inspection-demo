@@ -1,98 +1,178 @@
 import React, { useState } from "react";
 import type { InspectionResult as IResult, DefectItem } from "../types";
+import { Icon, STATUS_MAP, SEV_MAP } from "../../../components/muji/Icon";
 
 interface Props {
   result: IResult;
 }
 
-const STATUS = {
-  pass: {
-    label: "PASSED",
-    color: "var(--green)",
-    dim: "var(--green-dim)",
-    border: "var(--green-border)",
-    icon: "✓",
-  },
-  fail: {
-    label: "FAILED",
-    color: "var(--red)",
-    dim: "var(--red-dim)",
-    border: "var(--red-border)",
-    icon: "✕",
-  },
-  warning: {
-    label: "WARNING",
-    color: "var(--amber)",
-    dim: "var(--amber-dim)",
-    border: "var(--amber-border)",
-    icon: "!",
-  },
-};
+type Severity = "low" | "medium" | "high";
+const ALL_SEV: Severity[] = ["low", "medium", "high"];
 
-const SEV_COLOR: Record<string, string> = {
-  low: "var(--amber)",
-  medium: "#f97316",
-  high: "var(--red)",
-};
-
-/* ── Donut Chart ─────────────────────────────────────── */
-const DonutChart: React.FC<{ value: number; color: string }> = ({
-  value,
-  color,
+/* ─── 狀態印章區塊 ─── */
+const StatusBlock: React.FC<{ status: IResult['status']; confidence: number; summary: string; time: string }> = ({
+  status, confidence, summary, time,
 }) => {
-  const R = 40;
-  const circ = 2 * Math.PI * R;
-  const dash = (value / 100) * circ;
-
+  const cfg = STATUS_MAP[status];
   return (
-    <svg width={100} height={100} viewBox="0 0 100 100">
-      <circle cx={50} cy={50} r={R} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth={10} />
-      <circle
-        cx={50} cy={50} r={R} fill="none" stroke={color} strokeWidth={10}
-        strokeDasharray={`${dash} ${circ}`} strokeLinecap="round" transform="rotate(-90 50 50)"
-        style={{ transition: "stroke-dasharray 1s cubic-bezier(0.4,0,0.2,1)" }}
-      />
-      <text x={50} y={50} textAnchor="middle" dominantBaseline="central" fill="#fff" fontSize={18} fontWeight={800} style={{ textShadow: '0 0 10px rgba(0,0,0,0.5)' }}>
-        {value}%
-      </text>
-    </svg>
+    <div className="anim-in" style={{
+      padding: '24px 28px',
+      background: cfg.bg,
+      border: `1px solid ${cfg.color}33`,
+      borderRadius: 'var(--r-md)',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>
+        {/* 狀態印章 — 傾斜 2° 模擬手押章 */}
+        <div style={{
+          width: 64, height: 64,
+          border: `1.5px solid ${cfg.color}`,
+          borderRadius: 2,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: 'var(--font-serif)',
+          fontSize: 32,
+          color: cfg.color,
+          background: 'var(--paper-soft)',
+          transform: 'rotate(-2deg)',
+          flexShrink: 0,
+        }}>
+          {cfg.mark}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="label-en" style={{ marginBottom: 4 }}>檢測結果 · RESULT</div>
+          <div style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 24,
+            fontWeight: 500,
+            letterSpacing: '0.15em',
+            color: cfg.color,
+            marginBottom: 10,
+          }}>
+            {cfg.cn}
+          </div>
+          <p style={{ fontSize: 14, color: 'var(--ink)', lineHeight: 1.8 }}>
+            {summary}
+          </p>
+          <div style={{ display: 'flex', gap: 32, marginTop: 16, paddingTop: 16, borderTop: `1px solid ${cfg.color}22` }}>
+            <div>
+              <div className="label-en" style={{ fontSize: 9 }}>信心度</div>
+              <div className="num-mono" style={{ fontSize: 20, color: cfg.color, fontWeight: 500, marginTop: 2 }}>
+                {confidence}<span style={{ fontSize: 11, color: 'var(--ink-mute)', marginLeft: 2 }}>%</span>
+              </div>
+            </div>
+            <div>
+              <div className="label-en" style={{ fontSize: 9 }}>時刻</div>
+              <div className="num-mono" style={{ fontSize: 14, color: 'var(--ink)', marginTop: 4 }}>
+                {time}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-/* ── Defect Row ──────────────────────────────────────── */
-const DefectRow: React.FC<{ defect: DefectItem; index: number }> = ({
-  defect,
-  index,
-}) => (
-  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-    <td style={{ padding: "12px 16px", color: "var(--subtext)", fontSize: 13, width: 40 }}>
-      {String(index + 1).padStart(2, "0")}
-    </td>
-    <td style={{ padding: "12px 16px", color: "#fff", fontSize: 13, fontWeight: 500 }}>
-      {defect.location}
-    </td>
-    <td style={{ padding: "12px 16px" }}>
-      <span style={{
-          padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700,
-          textTransform: "uppercase", letterSpacing: "0.04em",
-          color: SEV_COLOR[defect.severity], background: `${SEV_COLOR[defect.severity]}15`
-      }}>
-        {defect.severity}
-      </span>
-    </td>
-    <td style={{ padding: "12px 16px", color: "var(--subtext)", fontSize: 13, lineHeight: 1.4 }}>
-      {defect.description}
-    </td>
-  </tr>
+/* ─── 瑕疵明細 ─── */
+const DefectList: React.FC<{ defects: DefectItem[]; filterSet: Set<Severity>; toggleSev: (s: Severity) => void }> = ({ defects, filterSet, toggleSev }) => {
+  const filtered = defects.filter((d) => filterSet.has(d.severity as Severity));
+
+  return (
+    <div style={{ background: 'var(--paper-soft)', border: '1px solid var(--line)', borderRadius: 'var(--r-md)', padding: 0 }}>
+      <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <div className="label-en">瑕疵明細 · DEFECT LIST</div>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {ALL_SEV.map((s) => {
+            const active = filterSet.has(s);
+            const cfg = SEV_MAP[s];
+            return (
+              <button
+                key={s}
+                onClick={() => toggleSev(s)}
+                style={{
+                  padding: '3px 10px',
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: 11,
+                  letterSpacing: '0.1em',
+                  border: `1px solid ${active ? cfg.color : 'var(--line)'}`,
+                  background: active ? `${cfg.color}15` : 'transparent',
+                  color: active ? cfg.color : 'var(--ink-mute)',
+                  borderRadius: 2,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {cfg.cn}
+              </button>
+            );
+          })}
+        </div>
+        <div className="num-mono" style={{ fontSize: 11, color: 'var(--ink-mute)' }}>
+          {String(filtered.length).padStart(2, '0')} 件
+        </div>
+      </div>
+      {filtered.map((d, i) => {
+        const sev = SEV_MAP[d.severity as Severity];
+        return (
+          <div key={i} style={{
+            display: 'grid',
+            gridTemplateColumns: '40px 1fr 80px',
+            gap: 16,
+            padding: '14px 20px',
+            borderBottom: i < filtered.length - 1 ? '1px solid var(--line-soft)' : 'none',
+            alignItems: 'start',
+          }}>
+            <div className="num-mono" style={{ fontSize: 12, color: 'var(--ink-mute)', paddingTop: 2 }}>
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            <div>
+              <div style={{ fontFamily: 'var(--font-serif)', fontSize: 14, fontWeight: 500, color: 'var(--ink)', marginBottom: 3 }}>
+                {d.location}
+              </div>
+              <div style={{ fontSize: 13, color: 'var(--ink-soft)', lineHeight: 1.7 }}>
+                {d.description}
+              </div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <span style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: 12,
+                color: sev.color,
+                padding: '3px 10px',
+                border: `1px solid ${sev.color}66`,
+                borderRadius: 2,
+                letterSpacing: '0.1em',
+                background: 'var(--paper-soft)',
+              }}>
+                {sev.cn}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+/* ─── 改善建議 ─── */
+const Recommendation: React.FC<{ text: string }> = ({ text }) => (
+  <div style={{
+    padding: '18px 22px',
+    background: 'var(--clay-bg)',
+    border: '1px solid rgba(184, 144, 122, 0.3)',
+    borderRadius: 'var(--r-md)',
+    position: 'relative',
+  }}>
+    <div className="label-en" style={{ color: 'var(--clay-deep)', marginBottom: 8 }}>
+      改善建議 · RECOMMENDATION
+    </div>
+    <p style={{ fontFamily: 'var(--font-serif)', fontSize: 14, color: 'var(--ink)', lineHeight: 1.9 }}>
+      {text}
+    </p>
+  </div>
 );
 
-type Severity = "low" | "medium" | "high";
-const ALL_SEV: Severity[] = ["low", "medium", "high"];
-const SEV_LABEL: Record<Severity, string> = { low: "低", medium: "中", high: "高" };
-
-/* ── Main Component ──────────────────────────────────── */
+/* ─── Main ─── */
 export const InspectionResultPanel: React.FC<Props> = ({ result }) => {
-  const cfg = STATUS[result.status];
   const [sevFilter, setSevFilter] = useState<Set<Severity>>(new Set(ALL_SEV));
   const [copied, setCopied] = useState(false);
 
@@ -103,20 +183,20 @@ export const InspectionResultPanel: React.FC<Props> = ({ result }) => {
   const toggleSev = (s: Severity) => {
     setSevFilter((prev) => {
       const next = new Set(prev);
-      next.has(s) ? next.delete(s) : next.add(s);
+      if (next.has(s)) next.delete(s); else next.add(s);
       return next.size === 0 ? new Set(ALL_SEV) : next;
     });
   };
 
-  const filteredDefects = result.defects.filter((d) => sevFilter.has(d.severity as Severity));
-
   const handleCopy = () => {
     const lines = [
       "品質檢測報告",
-      `狀態：${result.status.toUpperCase()} | 信心度：${result.confidence}%`,
+      `狀態：${STATUS_MAP[result.status].cn} | 信心度：${result.confidence}%`,
       result.summary,
-      ...(result.defects.length > 0 ? ["", "瑕疵項目：", ...result.defects.map(d => `・[${d.severity}] ${d.location} — ${d.description}`)] : []),
-      "", `建議：${result.recommendation}`,
+      ...(result.defects.length > 0
+        ? ["", "瑕疵項目：", ...result.defects.map(d => `・[${SEV_MAP[d.severity as Severity].cn}] ${d.location} — ${d.description}`)]
+        : []),
+      ...(result.recommendation ? ["", `建議：${result.recommendation}`] : []),
     ];
     navigator.clipboard.writeText(lines.join("\n"));
     setCopied(true);
@@ -125,87 +205,25 @@ export const InspectionResultPanel: React.FC<Props> = ({ result }) => {
 
   return (
     <div className="anim-in" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      {/* ── Status Card ── */}
-      <div className="kpi-card" style={{
-        background: `linear-gradient(135deg, ${cfg.color}15, rgba(255,255,255,0.02))`,
-        border: `1px solid ${cfg.color}30`,
-        padding: '24px',
-        display: 'flex', alignItems: 'center', gap: 24,
-      }}>
-        <div style={{ flexShrink: 0 }}>
-          <DonutChart value={result.confidence} color={cfg.color} />
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <div className="status-badge" style={{ background: cfg.color, color: '#fff', boxShadow: `0 0 20px ${cfg.color}40`, width: 24, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {cfg.icon}
-            </div>
-            <span style={{ fontSize: 22, fontWeight: 800, color: cfg.color, letterSpacing: '-0.02em', textShadow: `0 0 12px ${cfg.color}30` }}>
-              {cfg.label}
-            </span>
-          </div>
-          <p style={{ fontSize: 14, color: '#fff', fontWeight: 500, lineHeight: 1.5, marginBottom: 12 }}>{result.summary}</p>
-          <div style={{ display: 'flex', gap: 24 }}>
-            <Stat label="信心度" value={`${result.confidence}%`} color={cfg.color} />
-            <Stat label="瑕疵數" value={`${result.defects.length}`} color={result.defects.length > 0 ? 'var(--danger)' : 'var(--success)'} />
-            <Stat label="分析時間" value={time} />
-          </div>
-        </div>
-      </div>
+      <StatusBlock
+        status={result.status}
+        confidence={result.confidence}
+        summary={result.summary}
+        time={time}
+      />
 
-      {/* ── Defects Table ── */}
       {result.defects.length > 0 && (
-        <div className="card" style={{ overflow: "hidden", background: "rgba(255,255,255,0.02)" }}>
-          <div style={{ padding: "16px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: 12 }}>
-            <span className="section-label">瑕疵明細清單</span>
-            <span className="status-badge" style={{ fontSize: 10, padding: "2px 8px" }}>
-              {filteredDefects.length} {filteredDefects.length !== result.defects.length ? ` / ${result.defects.length}` : ""}
-            </span>
-            <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-              {ALL_SEV.map((s) => (
-                <button key={s} onClick={() => toggleSev(s)} style={{
-                  padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: "pointer", transition: "all 0.2s",
-                  color: sevFilter.has(s) ? SEV_COLOR[s] : "var(--subtext)",
-                  background: sevFilter.has(s) ? `${SEV_COLOR[s]}15` : "rgba(255,255,255,0.05)",
-                  border: `1px solid ${sevFilter.has(s) ? `${SEV_COLOR[s]}40` : "transparent"}`
-                }}>
-                  {SEV_LABEL[s]}
-                </button>
-              ))}
-            </div>
-          </div>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ background: "rgba(255,255,255,0.03)" }}>
-                {["#", "位置", "嚴重度", "描述"].map((h) => (
-                  <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: 11, fontWeight: 700, color: 'var(--subtext)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredDefects.map((d, i) => <DefectRow key={i} defect={d} index={i} />)}
-            </tbody>
-          </table>
-        </div>
+        <DefectList defects={result.defects} filterSet={sevFilter} toggleSev={toggleSev} />
       )}
 
-      {/* ── Recommendation ── */}
-      <div style={{ padding: '16px 20px', borderRadius: 'var(--radius-lg)', background: 'rgba(79,124,255,0.08)', border: '1px solid rgba(79,124,255,0.2)' }}>
-        <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>建議措施</div>
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)', lineHeight: 1.6 }}>{result.recommendation}</p>
-      </div>
+      {result.recommendation && <Recommendation text={result.recommendation} />}
 
-      {/* ── Copy Button ── */}
-      <button onClick={handleCopy} className="btn-ghost" style={{ fontSize: 12, padding: '6px 14px', alignSelf: 'flex-end', display: 'flex', alignItems: 'center', gap: 6 }}>
-        {copied ? '✓ 已複製' : '📋 複製報告'}
-      </button>
+      <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+        <button onClick={handleCopy} className="btn btn-ghost">
+          <Icon.Copy width={14} height={14} style={{ marginRight: 6, verticalAlign: '-3px' }} />
+          {copied ? '已複製' : '複製報告'}
+        </button>
+      </div>
     </div>
   );
 };
-
-const Stat: React.FC<{ label: string; value: string; color?: string }> = ({ label, value, color }) => (
-  <div>
-    <div style={{ fontSize: 10, color: 'var(--subtext)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{label}</div>
-    <div style={{ fontSize: 14, fontWeight: 800, color: color ?? '#fff' }}>{value}</div>
-  </div>
-);

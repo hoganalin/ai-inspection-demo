@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(npm run:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p /tmp/design_extract)",
+      "Bash(cp \"C:/Users/Rogan/.claude/projects/C--Users-Rogan-OneDrive----demo-ai-inspection-demo/c4ea7539-1953-4ae3-806e-8dc94052cbd2/tool-results/webfetch-1777015364786-k3qxkf.bin\" ./design.tar.gz)",
+      "Bash(gunzip -f design.tar.gz)",
+      "Bash(tar -tf design.tar)",
+      "Bash(tar -xf design.tar)"
     ]
   }
 }

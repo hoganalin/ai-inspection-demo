@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { HistoryItem } from '../types';
 import { InspectionResultPanel } from './InspectionResult';
+import { Icon, STATUS_MAP } from '../../../components/muji/Icon';
 
 function exportHistoryCSV(items: HistoryItem[]) {
   const header = '時間,檔名,狀態,信心度(%),瑕疵數';
@@ -11,7 +12,7 @@ function exportHistoryCSV(items: HistoryItem[]) {
     h.result.confidence,
     h.result.defects.length,
   ].join(','));
-  const csv = '\uFEFF' + [header, ...rows].join('\n');
+  const csv = '﻿' + [header, ...rows].join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -29,10 +30,11 @@ interface Props {
   onSelectItem?: (id: string | null) => void;
 }
 
-const STATUS_CFG = {
-  pass: { color: 'var(--success)', icon: '✓', label: '合格' },
-  fail: { color: 'var(--danger)', icon: '✕', label: '不合格' },
-  warning: { color: 'var(--warning)', icon: '!', label: '警告' }
+const FILTER_LABEL: Record<'' | 'pass' | 'warning' | 'fail', string> = {
+  '': '全部',
+  pass: '合格',
+  warning: '留意',
+  fail: '需檢修',
 };
 
 interface CardProps {
@@ -42,45 +44,53 @@ interface CardProps {
 }
 
 const HistoryItemCard: React.FC<CardProps> = ({ item, expandedId, onToggle }) => {
-  const cfg = STATUS_CFG[item.result.status as keyof typeof STATUS_CFG] ?? { color: 'var(--subtext)', icon: '?', label: item.result.status };
+  const cfg = STATUS_MAP[item.result.status as keyof typeof STATUS_MAP]
+    ?? { color: 'var(--ink-soft)', cn: item.result.status, mark: '?' };
   const isExpanded = expandedId === item.id;
   return (
     <div
       onClick={() => onToggle(item.id)}
       style={{
-        padding: '12px 14px',
-        background: isExpanded ? 'rgba(79,124,255,0.06)' : 'rgba(255,255,255,0.02)',
-        border: `1px solid ${isExpanded ? 'rgba(79,124,255,0.3)' : 'var(--border)'}`,
-        borderRadius: 'var(--radius)',
+        padding: '14px 18px',
+        background: isExpanded ? 'var(--clay-bg)' : 'var(--paper-soft)',
+        border: `1px solid ${isExpanded ? 'var(--clay)' : 'var(--line)'}`,
+        borderRadius: 'var(--r-sm)',
         cursor: 'pointer',
         transition: 'all 0.2s',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        {item.thumbnail && (
-          <img src={item.thumbnail} alt="" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }} />
+      <div style={{ display: 'grid', gridTemplateColumns: '48px 1fr auto auto', alignItems: 'center', gap: 14 }}>
+        {item.thumbnail ? (
+          <img src={item.thumbnail} alt="" style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 2, border: '1px solid var(--line)' }} />
+        ) : (
+          <div style={{
+            width: 44, height: 44, borderRadius: 2,
+            background: 'repeating-linear-gradient(45deg, var(--paper-dim), var(--paper-dim) 4px, var(--paper-deep) 4px, var(--paper-deep) 8px)',
+            border: '1px solid var(--line)',
+          }} />
         )}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--ink)', marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {item.fileName}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--neutral-400)', marginTop: 2 }}>
-            {new Date(item.result.analyzedAt).toLocaleString('zh-TW')}
+          <div style={{ fontSize: 12, color: 'var(--ink-soft)', lineHeight: 1.5, maxWidth: 360, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {item.result.summary}
+          </div>
+          <div className="label-en" style={{ fontSize: 9, marginTop: 4 }}>
+            {new Date(item.result.analyzedAt).toLocaleString('zh-TW', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
-          <span style={{
-            fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 6,
-            background: `${cfg.color}20`, color: cfg.color,
-          }}>
-            {cfg.icon} {cfg.label}
-          </span>
-          <span style={{ fontSize: 11, color: 'var(--neutral-400)' }}>{item.result.confidence}%</span>
+        <div className="num-mono" style={{ fontSize: 12, color: 'var(--ink-mute)', minWidth: 36, textAlign: 'right' }}>
+          {item.result.confidence}%
         </div>
-        <span style={{ color: 'var(--neutral-400)', fontSize: 12 }}>{isExpanded ? '▾' : '▸'}</span>
+        <div style={{ textAlign: 'right', minWidth: 64 }}>
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: 12, color: cfg.color, letterSpacing: '0.1em' }}>
+            <span style={{ marginRight: 4 }}>{cfg.mark}</span>{cfg.cn}
+          </span>
+        </div>
       </div>
       {isExpanded && (
-        <div style={{ marginTop: 12 }} onClick={e => e.stopPropagation()}>
+        <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--line)' }} onClick={e => e.stopPropagation()}>
           <InspectionResultPanel result={item.result} />
         </div>
       )}
@@ -90,7 +100,7 @@ const HistoryItemCard: React.FC<CardProps> = ({ item, expandedId, onToggle }) =>
 
 export const HistoryPanel: React.FC<Props> = ({ history, onClear, onSelectItem }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'' | 'pass' | 'warning' | 'fail'>('');
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
 
   const filtered = history.filter(item => {
@@ -112,74 +122,94 @@ export const HistoryPanel: React.FC<Props> = ({ history, onClear, onSelectItem }
 
   if (history.length === 0) {
     return (
-      <div style={{ padding: '64px 0', textAlign: 'center' }}>
-        <div style={{ fontSize: 40, marginBottom: 16, opacity: 0.2 }}>📁</div>
-        <p style={{ fontSize: 13, color: 'var(--subtext)', fontWeight: 500 }}>目前尚無檢測紀錄</p>
+      <div style={{ padding: '64px 20px', textAlign: 'center', background: 'var(--paper-soft)', border: '1px dashed var(--line)', borderRadius: 'var(--r-md)' }}>
+        <div className="label-en" style={{ marginBottom: 8 }}>EMPTY</div>
+        <p style={{ fontSize: 13, color: 'var(--ink-soft)' }}>目前尚無檢測紀錄</p>
       </div>
     );
   }
 
   return (
-    <div className="anim-in" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      {/* Header Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 11, color: 'var(--neutral-400)', fontWeight: 700, letterSpacing: '0.05em' }}>
-            TOTAL {history.length} ITEMS
-          </span>
-          {(statusFilter || dateFilter !== 'all') && (
-            <span style={{ fontSize: 10, background: 'var(--primary)', color: '#fff', padding: '1px 6px', borderRadius: 4 }}>
-              FILTERED
-            </span>
+    <div className="anim-in" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div className="divider">歷史紀錄 · HISTORY</div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <div style={{ fontFamily: 'var(--font-serif)', fontSize: 15, color: 'var(--ink)' }}>
+          最近 <span className="num-mono" style={{ color: 'var(--clay)' }}>{history.length}</span> 筆檢測紀錄
+          {(statusFilter || dateFilter !== 'all') && filtered.length !== history.length && (
+            <span className="label-en" style={{ marginLeft: 10, color: 'var(--clay)' }}>篩選後 {filtered.length}</span>
           )}
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <button
-            onClick={() => exportHistoryCSV(history)}
-            className="btn-ghost"
-            style={{ padding: '4px 10px', fontSize: 10, fontWeight: 700, color: 'var(--green)' }}
-          >
-            ↓ CSV
+          <button onClick={() => exportHistoryCSV(history)} className="btn btn-ghost" style={{ fontSize: 12 }}>
+            <Icon.Download width={13} height={13} style={{ marginRight: 4, verticalAlign: '-2px' }} />
+            CSV
           </button>
-          <button onClick={onClear} className="btn-ghost" style={{ padding: '4px 10px', fontSize: 10, fontWeight: 700, color: 'var(--danger)' }}>
-            CLEAR
+          <button onClick={onClear} className="btn btn-ghost" style={{ fontSize: 12 }}>
+            <Icon.Trash width={13} height={13} style={{ marginRight: 4, verticalAlign: '-2px' }} />
+            清除
           </button>
         </div>
       </div>
 
-      {/* Status Filter Bar */}
+      {/* Status filter */}
       <div style={{ display: 'flex', gap: 6 }}>
-        {['', 'pass', 'fail', 'warning'].map(type => (
-          <button
-            key={type}
-            onClick={() => setStatusFilter(type)}
-            style={{
-              flex: 1, padding: '6px 2px', borderRadius: 6, border: '1px solid var(--border)',
-              fontSize: 10, fontWeight: 800, cursor: 'pointer',
-              background: statusFilter === type ? 'var(--neutral-800)' : 'transparent',
-              color: statusFilter === type ? '#fff' : 'var(--neutral-400)',
-              transition: 'all 0.2s'
-            }}
-          >
-            {type === '' ? 'ALL' : type.toUpperCase()}
-          </button>
-        ))}
+        {(['', 'pass', 'warning', 'fail'] as const).map(type => {
+          const active = statusFilter === type;
+          return (
+            <button
+              key={type}
+              onClick={() => setStatusFilter(type)}
+              style={{
+                flex: 1,
+                padding: '8px 6px',
+                fontFamily: 'var(--font-serif)',
+                fontSize: 12,
+                letterSpacing: '0.1em',
+                border: `1px solid ${active ? 'var(--clay)' : 'var(--line)'}`,
+                background: active ? 'var(--clay-bg)' : 'var(--paper-soft)',
+                color: active ? 'var(--clay-deep)' : 'var(--ink-soft)',
+                borderRadius: 'var(--r-sm)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              {FILTER_LABEL[type]}
+            </button>
+          );
+        })}
       </div>
-      {/* Date Filter Bar */}
-      <div style={{ display: 'flex', gap: 6, marginBottom: 4 }}>
-        {([['all', '全部'], ['today', '今天'], ['week', '本週']] as [DateFilter, string][]).map(([val, label]) => (
-          <button key={val} onClick={() => setDateFilter(val)}
-            style={{
-              padding: '4px 10px', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 10, fontWeight: 800,
-              background: dateFilter === val ? 'var(--neutral-800)' : 'transparent',
-              color: dateFilter === val ? '#fff' : 'var(--neutral-400)', transition: 'all 0.2s'
-            }}
-          >{label}</button>
-        ))}
+
+      {/* Date filter */}
+      <div style={{ display: 'flex', gap: 6 }}>
+        {([['all', '全部'], ['today', '今天'], ['week', '本週']] as [DateFilter, string][]).map(([val, label]) => {
+          const active = dateFilter === val;
+          return (
+            <button
+              key={val}
+              onClick={() => setDateFilter(val)}
+              style={{
+                padding: '6px 14px',
+                fontFamily: 'var(--font-serif)',
+                fontSize: 12,
+                letterSpacing: '0.1em',
+                border: `1px solid ${active ? 'var(--ink-soft)' : 'transparent'}`,
+                background: active ? 'var(--paper-dim)' : 'transparent',
+                color: active ? 'var(--ink)' : 'var(--ink-mute)',
+                borderRadius: 'var(--r-sm)',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
+
       {filtered.length === 0 ? (
         <div style={{ padding: '40px 0', textAlign: 'center' }}>
-          <p style={{ fontSize: 12, color: 'var(--subtext)' }}>尚無符合條件的記錄</p>
+          <p style={{ fontSize: 12, color: 'var(--ink-mute)' }}>尚無符合條件的紀錄</p>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { AppShell } from "./components/Layout/AppShell";
+import { Icon } from "./components/muji/Icon";
 import {
   ImageUploader,
   InspectionResultPanel,
@@ -15,12 +16,19 @@ import { ChatPanel } from "./features/chat";
 
 type Tab = "inspect" | "batch" | "compare" | "history" | "stats";
 
-const TABS: { key: Tab; label: string }[] = [
-  { key: "inspect", label: "單張" },
-  { key: "batch",   label: "批次" },
-  { key: "compare", label: "A/B" },
-  { key: "history", label: "歷史" },
-  { key: "stats",   label: "統計" },
+interface TabDef {
+  key: Tab;
+  cn: string;
+  en: string;
+  IconCmp: React.FC<React.SVGProps<SVGSVGElement>>;
+}
+
+const TABS: TabDef[] = [
+  { key: "inspect", cn: "單 張", en: "SINGLE",  IconCmp: Icon.Search },
+  { key: "batch",   cn: "批 次", en: "BATCH",   IconCmp: Icon.Layers },
+  { key: "compare", cn: "比 對", en: "A/B",     IconCmp: Icon.Compare },
+  { key: "history", cn: "歷 史", en: "HISTORY", IconCmp: Icon.History },
+  { key: "stats",   cn: "統 計", en: "STATS",   IconCmp: Icon.Chart },
 ];
 
 const App: React.FC = () => {
@@ -77,13 +85,11 @@ const App: React.FC = () => {
   }, [reanalyze, customCriteria, confidenceThreshold, imagePreview, addRecord]);
 
   const chatContext = useMemo(() => {
-    // 優先使用選中的歷史紀錄上下文
     if (activeTab === 'history' && focusedItem) {
       return {
         inspectionSummary: `這是來自歷史紀錄的資料：\n- 狀態：${focusedItem.result.status}\n- 信心度：${focusedItem.result.confidence}%\n- 統計摘要：${focusedItem.result.summary}`,
       };
     }
-    // 其次使用當前檢測結果
     if (result) {
       return {
         inspectionSummary: `這是目前即時檢測的資料：\n- 狀態：${result.status}\n- 信心度：${result.confidence}%\n- 統計摘要：${result.summary}`,
@@ -92,205 +98,125 @@ const App: React.FC = () => {
     return undefined;
   }, [result, focusedItem, activeTab]);
 
-  // Derived stats for the inspect tab header
   const todayCount = history.filter((h) => {
     const d = new Date(h.result.analyzedAt);
     const now = new Date();
     return d.toDateString() === now.toDateString();
   }).length;
   const totalPass = history.filter((h) => h.result.status === "pass").length;
+  const failCount = history.filter((h) => h.result.status === "fail").length;
   const overallPassRate =
-    history.length > 0 ? Math.round((totalPass / history.length) * 100) : null;
+    history.length > 0 ? Math.round((totalPass / history.length) * 100) : 0;
 
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
-      <AppShell>
-
-      {/* Main Layout */}
+    <AppShell>
       <div className="app-layout">
-        {/* Left — Inspection */}
+        {/* ── Left : Inspection ── */}
         <div className={`panel-left${mobilePanel !== 'inspect' ? ' panel-hidden' : ''}`}>
-          {/* Panel header */}
-          <div
-            style={{
-              padding: "24px 20px",
-              borderBottom: "1px solid var(--border)",
-              display: "flex",
-              alignItems: "center",
-              gap: 14,
-              flexShrink: 0,
-              background: "rgba(255,255,255,0.02)",
-            }}
-          >
-            <div className="feature-icon" style={{ width: 44, height: 44, borderRadius: 12, fontSize: 18 }}>🔍</div>
-            <div style={{ flex: 1 }}>
-              <div className="ai-model" style={{ fontWeight: 700, color: "#fff", letterSpacing: '-0.02em', lineHeight: 1 }}>
-                品質視覺分析
-              </div>
-              <div className="ai-status" style={{ fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span className="spin" style={{ width: 8, height: 8, borderRadius: '50%', border: '1.5px solid currentColor', borderTopColor: 'transparent' }}></span>
-                CLAUDE SONNET 4.6 ACTIVE
-              </div>
-            </div>
-            {status !== "idle" && <StatusBadge status={status} />}
-          </div>
-
-          {/* Tab bar */}
-          <div className="glass-panel"
-            style={{
-              display: "flex",
-              gap: 4,
-              padding: "12px",
-              borderBottom: "1px solid var(--border)",
-              flexShrink: 0,
-            }}
-          >
-            {TABS.map((tab) => {
-              const active = activeTab === tab.key;
+          {/* MUJI tab bar */}
+          <div className="tabbar">
+            {TABS.map((t) => {
+              const active = activeTab === t.key;
+              const count = t.key === 'history' ? history.length : 0;
               return (
                 <button
-                  key={tab.key}
-                  onClick={() => setActiveTab(tab.key)}
-                  style={{
-                    flex: 1,
-                    padding: "8px 12px",
-                    fontSize: 13,
-                    fontWeight: active ? 700 : 500,
-                    borderRadius: "10px",
-                    border: "none",
-                    cursor: "pointer",
-                    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                    background: active ? 'rgba(79,124,255,0.15)' : 'transparent',
-                    color: active ? 'var(--primary)' : 'var(--subtext)',
-                    boxShadow: active ? 'inset 0 0 0 1px rgba(79,124,255,0.2)' : 'none',
-                    position: "relative",
-                  }}
+                  key={t.key}
+                  className={'tab' + (active ? ' active' : '')}
+                  onClick={() => setActiveTab(t.key)}
                 >
-                  {tab.label}
-                  {tab.key === "history" && history.length > 0 && (
-                    <span
-                      style={{
-                        marginLeft: 6,
-                        fontSize: 10,
-                        background: active ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
-                        color: "#fff",
-                        borderRadius: 10,
-                        padding: "0 5px",
-                        verticalAlign: 'text-bottom',
-                      }}
-                    >
-                      {history.length}
-                    </span>
-                  )}
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <t.IconCmp width={14} height={14} />
+                    {t.cn}
+                    {count > 0 && <span className="tab-count num-mono">{count}</span>}
+                  </span>
+                  <span className="tab-en">{t.en}</span>
                 </button>
               );
             })}
           </div>
 
-          {/* Panel body */}
-          <div
-            style={{
-              padding: 20,
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-            }}
-          >
-            {/* ── 單張檢測 tab ── */}
+          <div style={{ padding: 'var(--sp-6)', display: 'flex', flexDirection: 'column', gap: 24, overflowY: 'auto' }}>
+
+            {/* ── 單張檢測 ── */}
             {activeTab === "inspect" && (
               <>
-                {/* Mini stats */}
-                 <div className="kpi-grid">
-                  <StatCard
-                    label="今日檢測"
-                    value={String(todayCount)}
-                    unit={<span style={{ color: 'var(--neutral-400)' }}>ITEMS</span>}
-                  />
-                  <StatCard
-                    label="通過率"
-                    value={overallPassRate !== null ? `${overallPassRate}` : "0"}
-                    unit={<span style={{ color: 'var(--success)' }}>↗ 2.4%</span>}
-                  />
-                  <StatCard
-                    label="不良件數"
-                    value={String(history.filter(h => h.result.status === 'fail').length)}
-                    unit={<span style={{ color: 'var(--danger)' }}>件</span>}
-                    sparkData={[10, 50, 20, 80, 40]}
-                  />
-                  <StatCard 
-                    label="系統狀態" 
-                    value="ACTIVE" 
-                    unit={
-                      <div className="spin" style={{ width: 10, height: 10, borderRadius: '50%', border: '2px solid var(--success)', borderTopColor: 'transparent' }} />
-                    } 
-                  />
+                {/* KPI */}
+                <div>
+                  <div className="divider" style={{ marginBottom: 10 }}>本日 · TODAY</div>
+                  <div className="kpi-row">
+                    <KPI label="檢測數"  value={String(todayCount).padStart(2, '0')} unit="件" />
+                    <KPI label="合格率"  value={String(overallPassRate)} unit="%" color="var(--matcha)" />
+                    <KPI label="不良件數" value={String(failCount).padStart(2, '0')} unit="件" color={failCount ? 'var(--terracotta)' : 'var(--ink)'} />
+                    <KPIStatus label="狀態" />
+                  </div>
                 </div>
 
-                {/* Custom criteria toggle */}
+                {/* 設定 */}
                 <div>
-                  <button
-                    onClick={() => setShowCustomPrompt((p) => !p)}
-                    className="btn-ghost"
-                    style={{
-                      fontSize: 11,
-                      padding: "4px 10px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
-                    }}
-                  >
-                    <span style={{ fontSize: 13 }}>
-                      {showCustomPrompt ? "▾" : "▸"}
-                    </span>
-                    自訂檢測標準
-                    {customCriteria && (
-                      <span style={{ color: "var(--blue)", marginLeft: 4 }}>
-                        ●
-                      </span>
-                    )}
-                  </button>
-                  {showCustomPrompt && (
-                    <textarea
-                      value={customPrompt}
-                      onChange={(e) => setCustomPrompt(e.target.value)}
-                      placeholder="例：重點檢查焊點品質、錫球大小是否均勻..."
-                      rows={3}
+                  <div className="divider" style={{ marginBottom: 10 }}>檢測設定 · SETTINGS</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <button
+                      onClick={() => setShowCustomPrompt((p) => !p)}
                       style={{
-                        width: "100%",
-                        marginTop: 8,
-                        padding: "8px 10px",
-                        background: "var(--bg-elevated)",
-                        border: "1px solid var(--border)",
-                        borderRadius: "var(--radius)",
-                        color: "var(--text)",
-                        fontSize: 12,
-                        resize: "vertical",
-                        outline: "none",
-                        boxSizing: "border-box",
+                        display: 'flex', alignItems: 'center', gap: 8,
+                        padding: '10px 14px',
+                        background: 'var(--paper-soft)',
+                        border: '1px solid var(--line)',
+                        borderRadius: 'var(--r-sm)',
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: 13, color: 'var(--ink)',
+                        cursor: 'pointer',
+                        textAlign: 'left',
                       }}
-                    />
-                  )}
+                    >
+                      <span style={{ color: 'var(--clay)', fontSize: 13 }}>{showCustomPrompt ? '−' : '＋'}</span>
+                      <span>自訂檢測標準</span>
+                      {customCriteria && <span style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--clay)' }}>● 已設定</span>}
+                    </button>
+                    {showCustomPrompt && (
+                      <textarea
+                        value={customPrompt}
+                        onChange={(e) => setCustomPrompt(e.target.value)}
+                        placeholder="例：重點檢查焊點品質、錫球大小是否均勻..."
+                        rows={3}
+                        style={{
+                          width: '100%',
+                          padding: '12px 14px',
+                          background: 'var(--paper-soft)',
+                          border: '1px solid var(--line)',
+                          borderRadius: 'var(--r-sm)',
+                          fontFamily: 'var(--font-serif)',
+                          fontSize: 13, color: 'var(--ink)', lineHeight: 1.7,
+                          resize: 'vertical', outline: 'none',
+                        }}
+                      />
+                    )}
+
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '120px 1fr 70px',
+                      alignItems: 'center', gap: 12,
+                      padding: '12px 14px',
+                      background: 'var(--paper-soft)',
+                      border: '1px solid var(--line)',
+                      borderRadius: 'var(--r-sm)',
+                    }}>
+                      <div className="label-ch">信心度閾值</div>
+                      <input
+                        type="range" min={0} max={95} step={5}
+                        value={confidenceThreshold}
+                        onChange={(e) => setConfidenceThreshold(Number(e.target.value))}
+                      />
+                      <div className="num-mono" style={{ fontSize: 12, textAlign: 'right', color: confidenceThreshold ? 'var(--clay)' : 'var(--ink-mute)' }}>
+                        {confidenceThreshold ? `＜ ${confidenceThreshold}%` : '未設'}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Confidence Threshold */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span className="section-label" style={{ flexShrink: 0 }}>信心度閾值</span>
-                  <input
-                    type="range" min={0} max={95} step={5}
-                    value={confidenceThreshold}
-                    onChange={e => setConfidenceThreshold(Number(e.target.value))}
-                    style={{ flex: 1, accentColor: 'var(--blue)' }}
-                  />
-                  <span style={{ fontSize: 12, fontWeight: 600, color: confidenceThreshold > 0 ? 'var(--amber)' : 'var(--text-muted)', minWidth: 40, textAlign: 'right' }}>
-                    {confidenceThreshold > 0 ? `< ${confidenceThreshold}%` : '關閉'}
-                  </span>
-                </div>
-
-                {/* Uploader */}
+                {/* 樣本 */}
                 <div>
-                  <p className="section-label" style={{ marginBottom: 8 }}>
-                    上傳待測圖片
-                  </p>
+                  <div className="divider" style={{ marginBottom: 10 }}>樣本 · SAMPLE</div>
                   <ImageUploader
                     imagePreview={imagePreview}
                     status={status}
@@ -299,155 +225,114 @@ const App: React.FC = () => {
                   />
                 </div>
 
-                {/* Reanalyze button */}
-                {result && reanalyze && (
-                  <button
-                    onClick={handleReanalyze}
-                    disabled={status === "analyzing"}
-                    className="btn-ghost"
-                    style={{
-                      fontSize: 12,
-                      padding: "6px 12px",
-                      alignSelf: "flex-start",
-                    }}
-                  >
-                    🔄 重新分析
-                  </button>
-                )}
-
-                {/* Result */}
+                {/* 結果 */}
                 {result && (
-                  <div>
-                    <p className="section-label" style={{ marginBottom: 8 }}>
-                      檢測報告
-                    </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                    <div className="divider">檢測報告 · REPORT</div>
                     <InspectionResultPanel result={result} />
+
+                    {reanalyze && (
+                      <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+                        <button
+                          onClick={handleReanalyze}
+                          disabled={status === 'analyzing'}
+                          className="btn btn-ghost"
+                        >
+                          <Icon.Refresh width={14} height={14} style={{ marginRight: 6, verticalAlign: '-3px' }} />
+                          再分析
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 
-                {/* Placeholder when idle */}
                 {status === "idle" && !result && (
-                  <div
-                    style={{
-                      padding: "20px",
-                      borderRadius: "var(--radius-lg)",
-                      border: "1px solid var(--border-dim)",
-                      background: "var(--bg-elevated)",
-                      textAlign: "center",
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: "var(--text-muted)",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      上傳圖片後，AI 將自動分析並生成
-                      <br />
-                      詳細的品質檢測報告
-                    </p>
+                  <div style={{
+                    padding: '32px 20px',
+                    textAlign: 'center',
+                    color: 'var(--ink-soft)',
+                    fontSize: 13,
+                    lineHeight: 1.9,
+                    background: 'var(--paper-soft)',
+                    border: '1px dashed var(--line)',
+                    borderRadius: 'var(--r-md)',
+                  }}>
+                    上傳圖片後，AI 將自動分析並生成<br />
+                    詳細的品質檢測報告
                   </div>
                 )}
               </>
             )}
 
-            {/* ── 批次 tab ── */}
             {activeTab === "batch" && (
               <BatchInspectionPanel
                 customCriteria={customCriteria}
                 threshold={confidenceThreshold}
-                onRecordAdded={(result, thumbnail, fileName) =>
-                  addRecord(result, thumbnail, fileName)
-                }
+                onRecordAdded={(r, thumb, fn) => addRecord(r, thumb, fn)}
               />
             )}
 
-            {/* ── A/B 比對 tab ── */}
             {activeTab === "compare" && (
               <ComparisonPanel customCriteria={customCriteria} />
             )}
 
-            {/* ── 歷史 tab ── */}
             {activeTab === "history" && (
-              <HistoryPanel 
-                history={history} 
-                onClear={clearHistory} 
+              <HistoryPanel
+                history={history}
+                onClear={clearHistory}
                 onSelectItem={(id) => setFocusedHistoryId(id)}
               />
             )}
 
-            {/* ── 統計 tab ── */}
             {activeTab === "stats" && <StatsDashboard history={history} />}
           </div>
         </div>
 
-        {/* Right — Chat */}
+        {/* ── Right : Chat ── */}
         <div className={`panel-right${mobilePanel !== 'chat' ? ' panel-hidden' : ''}`}>
           <ChatPanel context={chatContext} />
         </div>
       </div>
 
-      {/* Mobile bottom nav */}
       <nav className="mobile-nav">
         <button
           className={`mobile-nav-btn${mobilePanel === 'inspect' ? ' active' : ''}`}
           onClick={() => setMobilePanel('inspect')}
         >
-          <span className="nav-icon">🔍</span>
+          <Icon.Search width={16} height={16} />
           檢測
         </button>
         <button
           className={`mobile-nav-btn${mobilePanel === 'chat' ? ' active' : ''}`}
           onClick={() => setMobilePanel('chat')}
         >
-          <span className="nav-icon">💬</span>
+          <Icon.Chat width={16} height={16} />
           對話
         </button>
       </nav>
-      </AppShell>
-    </div>
+    </AppShell>
   );
 };
 
-/* ── Stat Card ───────────────────────────────────────── */
-interface StatCardProps {
-  label: string;
-  value: string;
-  unit: React.ReactNode;
-  sparkData?: number[];
-}
-
-const StatCard: React.FC<StatCardProps> = ({ label, value, unit, sparkData }) => (
-  <div className="kpi-card" style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-    <div className="section-label">{label}</div>
-    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-      <span style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: 'monospace' }}>{value}</span>
-      <span style={{ fontSize: 11 }}>{unit}</span>
+/* ── KPI cells ───────────────────────── */
+const KPI: React.FC<{ label: string; value: string; unit?: string; color?: string }> = ({ label, value, unit, color }) => (
+  <div className="kpi">
+    <div className="kpi-label">{label}</div>
+    <div>
+      <span className="kpi-value num-mono" style={color ? { color } : undefined}>{value}</span>
+      {unit && <span className="kpi-unit">{unit}</span>}
     </div>
-    {sparkData && (
-      <div className="sparkline-container">
-        {sparkData.map((v, i) => (
-          <div key={i} className="spark-bar" style={{ height: `${(v / Math.max(...sparkData)) * 100}%` }} />
-        ))}
-      </div>
-    )}
   </div>
 );
 
-/* ── Status Badge ────────────────────────────────────── */
-const STATUS_COLOR: Record<string, string> = {
-  pass: 'var(--success)', fail: 'var(--danger)', warning: 'var(--warning)', analyzing: 'var(--blue)', idle: 'var(--subtext)',
-};
-const StatusBadge: React.FC<{ status: string }> = ({ status }) => (
-  <span style={{
-    fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 6,
-    background: `${STATUS_COLOR[status] ?? 'var(--subtext)'}20`,
-    color: STATUS_COLOR[status] ?? 'var(--subtext)',
-    textTransform: 'uppercase', letterSpacing: '0.05em',
-  }}>
-    {status}
-  </span>
+const KPIStatus: React.FC<{ label: string }> = ({ label }) => (
+  <div className="kpi">
+    <div className="kpi-label">{label}</div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 4 }}>
+      <span className="breathe" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--matcha)' }} />
+      <span style={{ fontFamily: 'var(--font-serif)', fontSize: 14, color: 'var(--ink)', letterSpacing: '0.1em' }}>運作中</span>
+    </div>
+  </div>
 );
 
 export default App;

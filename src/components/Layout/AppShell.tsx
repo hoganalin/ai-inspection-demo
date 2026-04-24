@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Props {
   children: React.ReactNode;
@@ -6,7 +6,7 @@ interface Props {
 
 export const AppShell: React.FC<Props> = ({ children }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--paper)' }}>
       <Header />
       <div style={{ flex: 1, overflow: 'hidden' }}>
         {children}
@@ -15,78 +15,74 @@ export const AppShell: React.FC<Props> = ({ children }) => {
   );
 };
 
+const useClock = () => {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(new Date()), 30_000);
+    return () => window.clearInterval(id);
+  }, []);
+  return now;
+};
+
 const Header: React.FC = () => {
+  const now = useClock();
+  const dateStr = now.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', hour12: false });
+
   return (
-    <header className="glass-panel app-header" style={{
-      height: 64,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      zIndex: 100,
-      flexShrink: 0,
-      borderTop: 'none',
-      borderLeft: 'none',
-      borderRight: 'none',
-      padding: '0 20px',
-    }}>
-      {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+    <header className="app-header">
+      {/* 書法印章「檢」字 */}
+      <div className="seal" title="品質檢查">檢</div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <div style={{
-          width: 36, height: 36, borderRadius: 10,
-          background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 18, color: '#fff', fontWeight: 800,
-          boxShadow: '0 4px 12px rgba(79,124,255,0.3)',
-          flexShrink: 0,
-        }}>Q</div>
-        <div className="header-logo-text">
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-            QualityAI
-          </div>
-          <div className="header-subtitle" style={{ fontSize: 10, color: 'var(--subtext)', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            Vision Platform
-          </div>
+          fontFamily: 'var(--font-serif)',
+          fontSize: 18,
+          fontWeight: 500,
+          letterSpacing: '0.18em',
+          color: 'var(--ink)',
+          lineHeight: 1.2,
+        }}>
+          品質視覺檢查
+        </div>
+        <div className="label-en header-subtitle" style={{ letterSpacing: '0.3em' }}>
+          VISUAL QUALITY INSPECTION · Vol.04
         </div>
       </div>
 
-      {/* Right Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div className="status-badge" style={{
-          padding: '6px 12px',
-          borderRadius: 999,
-          background: 'rgba(34,197,94,0.15)',
-          color: '#22C55E',
-          fontSize: 12,
-          fontWeight: 600,
-          display: 'flex', alignItems: 'center', gap: 6,
-          whiteSpace: 'nowrap',
-        }}>
-          <span style={{ fontSize: 14 }}>🟢</span>
-          <span className="api-status-text">伺服器 API 已連線</span>
+      <div style={{ flex: 1 }} />
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+        {/* 日期 + 時間 */}
+        <div style={{ textAlign: 'right' }} className="header-system-status">
+          <div style={{ fontFamily: 'var(--font-serif)', fontSize: 12, color: 'var(--ink-soft)', letterSpacing: '0.1em' }}>
+            {dateStr}
+          </div>
+          <div className="label-en" style={{ fontSize: 9, marginTop: 2 }}>
+            {timeStr}
+          </div>
         </div>
 
-        <div className="header-divider" style={{ width: 1, height: 24, background: 'rgba(255,255,255,0.1)' }} />
+        <div className="header-divider" style={{ width: 1, height: 28, background: 'var(--line)' }} />
 
-        {/* System Status — hidden on mobile via CSS */}
-        <div className="header-system-status" style={{ gap: 14 }}>
-          <SystemStatus label="Claude Sonnet 4.6" />
+        {/* Claude 運作中 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span className="breathe" style={{
+            width: 6, height: 6, borderRadius: '50%',
+            background: 'var(--matcha)',
+          }} />
+          <div>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: 12, color: 'var(--ink)', letterSpacing: '0.05em' }}>
+              Claude 4.6
+            </div>
+            <div className="label-en api-status-text" style={{ fontSize: 9, marginTop: 1 }}>
+              運作中 · ONLINE
+            </div>
+          </div>
         </div>
       </div>
     </header>
   );
 };
-
-const SystemStatus: React.FC<{ label: string }> = ({ label }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-    <div
-      style={{
-        width: 8, height: 8, borderRadius: '50%',
-        background: 'var(--success)',
-        boxShadow: '0 0 10px rgba(34,197,94,0.5)',
-      }}
-    />
-    <span style={{ fontSize: 12, color: 'var(--subtext)', fontWeight: 500 }}>{label}</span>
-  </div>
-);
 
 export default AppShell;

@@ -8,6 +8,7 @@ export default defineConfig({
   base: process.env.VERCEL ? "/" : "/ai-inspection-demo/",
   plugins: [react()],
   server: {
+    port: process.env.PORT ? Number(process.env.PORT) : undefined,
     allowedHosts: true,
   },
 });

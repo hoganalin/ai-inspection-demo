@@ -87,23 +87,47 @@ src/
 ## 本地開發 | Local Setup
 
 ```bash
-# 1. Clone 專案 + 安裝依賴
 git clone https://github.com/hoganalin/ai-inspection-demo.git
 cd ai-inspection-demo
 npm install
+```
 
-# 2. 設定 API Key
-cp .env.example .env
-# 編輯 .env，填入 ANTHROPIC_API_KEY=sk-ant-...
+### 純 UI 開發
 
-# 3a. 純 UI 開發（不需要 API Key，AI 呼叫會 404）
+```bash
 npm run dev
+```
 
-# 3b. 完整堆疊本地測試（需先安裝 Vercel CLI: npm i -g vercel）
+只起 Vite 前端，瀏覽器開 `http://localhost:5173/ai-inspection-demo/`。**`/api/*` 呼叫會 404，AI 功能不會動**——適合純做版面 / 樣式調整。
+
+### 完整堆疊本地測試（含 AI 功能）
+
+要測 chat / inspect / compare 必須用 `vercel dev`，它會同時起 Vite + 把 `api/*.ts` 編譯成本地 serverless functions。
+
+```bash
+# 一次性準備
+npm i -g vercel        # Vercel CLI
+npm i -g yarn          # 目前 Vercel project 設定指定 yarn，本機需要它
+vercel link            # 第一次連到雲端 project（互動式）
+
+# 把 ANTHROPIC_API_KEY 加到 Vercel Development 環境
+vercel env add ANTHROPIC_API_KEY development
+# 然後拉下來成 .env.local
+vercel env pull .env.local
+
+# 啟動
 vercel dev
 ```
 
-常用指令：
+開瀏覽器到 **`http://localhost:3000`**（不是 5173）。
+
+> **若仍出現 `ANTHROPIC_API_KEY environment variable is not set`**：`vercel dev` 有時不會把 `.env.local` 注入到 function runtime。最直接的解法是在 shell 先設好再啟動：
+> ```bash
+> export ANTHROPIC_API_KEY="sk-ant-..."   # macOS/Linux/Git Bash
+> vercel dev
+> ```
+
+### 常用指令
 
 ```bash
 npm run build    # 型別檢查 + 正式版打包（tsc -b && vite build）
@@ -122,6 +146,8 @@ npm run preview  # 本地預覽正式版前端
 | `429` / `rate_limit_error` | 超過速率限制 | 等待後重試，或升級 Anthropic 帳號額度 |
 | `400` / `invalid_request_error` | 圖片格式不支援 | 僅支援 jpeg / png / gif / webp |
 | `Response has no body` | 開發環境不支援 streaming | 改用 `vercel dev` 或部署到 Vercel 測試 |
+| `'yarn' 不是內部或外部命令` 啟動 vercel dev 時 | Vercel project 設定指定 yarn，但本機未安裝 | `npm i -g yarn`（暫時 workaround） |
+| `Failed to detect a server running on port XXXXX` | Vite 沒綁到 vercel dev 預期的 port | 確認 `vite.config.ts` 內 `server.port` 有讀 `process.env.PORT`（本 repo 已加） |
 
 ---
 

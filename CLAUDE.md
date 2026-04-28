@@ -14,6 +14,15 @@ npm run preview   # Preview production build locally
 
 No test framework is configured.
 
+### `vercel dev` local quirks
+
+`vercel dev` is the only way to test `/api/*` locally, but it has known friction in this repo:
+
+- The Vercel project is configured to use **yarn** for install/build, even though the repo has `package-lock.json` (no `yarn.lock`). Until that setting is changed, `vercel dev` requires yarn on PATH (`npm i -g yarn`).
+- Vite must honor `process.env.PORT` so `vercel dev` can detect it — handled in `vite.config.ts` (`server.port: process.env.PORT ? Number(process.env.PORT) : undefined`). Don't remove this line.
+- `vercel dev` sometimes fails to inject `ANTHROPIC_API_KEY` from `.env.local` into the function runtime (yields `ANTHROPIC_API_KEY environment variable is not set`). Workaround: `export ANTHROPIC_API_KEY=...` in the shell before `vercel dev`. Long-term fix: ensure `vercel env add ANTHROPIC_API_KEY development` has been run.
+- Local URL is `http://localhost:3000` (not Vite's 5173).
+
 ## Architecture
 
 React 19 + TypeScript SPA on **Vite**, with Anthropic-powered AI features served via **Vercel Serverless Functions**. The Anthropic API key lives **only** in `process.env.ANTHROPIC_API_KEY` on the server (Vercel Env Vars) — it is never exposed to the browser.

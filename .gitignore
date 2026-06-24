@@ -29,3 +29,7 @@ dist-ssr
 
 .vercel
 .env*.local
+
+# Local environment backups and generated debug artifacts
+.env*.bak
+build_error.txt

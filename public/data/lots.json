@@ -1,0 +1,336 @@
+{
+  "specVersion": "v1",
+  "scenario": "自第 15 批起切割刀磨耗，CHP 崩角比例逐批上升（模擬）",
+  "simulated": true,
+  "judgementErrorRates": {
+    "miss": 0.3704,
+    "falseCall": 0.0303
+  },
+  "lots": [
+    {
+      "lotId": "L01",
+      "n": 50,
+      "pass": 43,
+      "warning": 1,
+      "fail": 6,
+      "defectCounts": {
+        "CHP": 5,
+        "CRK": 0,
+        "SCR": 0,
+        "CON": 2
+      }
+    },
+    {
+      "lotId": "L02",
+      "n": 50,
+      "pass": 47,
+      "warning": 1,
+      "fail": 2,
+      "defectCounts": {
+        "CHP": 1,
+        "CRK": 0,
+        "SCR": 2,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L03",
+      "n": 50,
+      "pass": 47,
+      "warning": 0,
+      "fail": 3,
+      "defectCounts": {
+        "CHP": 1,
+        "CRK": 0,
+        "SCR": 0,
+        "CON": 2
+      }
+    },
+    {
+      "lotId": "L04",
+      "n": 50,
+      "pass": 47,
+      "warning": 1,
+      "fail": 2,
+      "defectCounts": {
+        "CHP": 0,
+        "CRK": 0,
+        "SCR": 1,
+        "CON": 2
+      }
+    },
+    {
+      "lotId": "L05",
+      "n": 50,
+      "pass": 45,
+      "warning": 2,
+      "fail": 3,
+      "defectCounts": {
+        "CHP": 3,
+        "CRK": 0,
+        "SCR": 2,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L06",
+      "n": 50,
+      "pass": 45,
+      "warning": 1,
+      "fail": 4,
+      "defectCounts": {
+        "CHP": 2,
+        "CRK": 0,
+        "SCR": 1,
+        "CON": 2
+      }
+    },
+    {
+      "lotId": "L07",
+      "n": 50,
+      "pass": 50,
+      "warning": 0,
+      "fail": 0,
+      "defectCounts": {
+        "CHP": 0,
+        "CRK": 0,
+        "SCR": 0,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L08",
+      "n": 50,
+      "pass": 46,
+      "warning": 0,
+      "fail": 4,
+      "defectCounts": {
+        "CHP": 0,
+        "CRK": 0,
+        "SCR": 1,
+        "CON": 3
+      }
+    },
+    {
+      "lotId": "L09",
+      "n": 50,
+      "pass": 48,
+      "warning": 0,
+      "fail": 2,
+      "defectCounts": {
+        "CHP": 2,
+        "CRK": 0,
+        "SCR": 0,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L10",
+      "n": 50,
+      "pass": 40,
+      "warning": 0,
+      "fail": 10,
+      "defectCounts": {
+        "CHP": 2,
+        "CRK": 0,
+        "SCR": 3,
+        "CON": 5
+      }
+    },
+    {
+      "lotId": "L11",
+      "n": 50,
+      "pass": 45,
+      "warning": 1,
+      "fail": 4,
+      "defectCounts": {
+        "CHP": 2,
+        "CRK": 1,
+        "SCR": 2,
+        "CON": 1
+      }
+    },
+    {
+      "lotId": "L12",
+      "n": 50,
+      "pass": 46,
+      "warning": 0,
+      "fail": 4,
+      "defectCounts": {
+        "CHP": 1,
+        "CRK": 0,
+        "SCR": 0,
+        "CON": 3
+      }
+    },
+    {
+      "lotId": "L13",
+      "n": 50,
+      "pass": 49,
+      "warning": 1,
+      "fail": 0,
+      "defectCounts": {
+        "CHP": 1,
+        "CRK": 0,
+        "SCR": 0,
+        "CON": 1
+      }
+    },
+    {
+      "lotId": "L14",
+      "n": 50,
+      "pass": 49,
+      "warning": 0,
+      "fail": 1,
+      "defectCounts": {
+        "CHP": 0,
+        "CRK": 0,
+        "SCR": 1,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L15",
+      "n": 50,
+      "pass": 45,
+      "warning": 0,
+      "fail": 5,
+      "defectCounts": {
+        "CHP": 1,
+        "CRK": 0,
+        "SCR": 4,
+        "CON": 1
+      }
+    },
+    {
+      "lotId": "L16",
+      "n": 50,
+      "pass": 48,
+      "warning": 1,
+      "fail": 1,
+      "defectCounts": {
+        "CHP": 1,
+        "CRK": 0,
+        "SCR": 1,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L17",
+      "n": 50,
+      "pass": 44,
+      "warning": 1,
+      "fail": 5,
+      "defectCounts": {
+        "CHP": 4,
+        "CRK": 1,
+        "SCR": 0,
+        "CON": 2
+      }
+    },
+    {
+      "lotId": "L18",
+      "n": 50,
+      "pass": 46,
+      "warning": 2,
+      "fail": 2,
+      "defectCounts": {
+        "CHP": 3,
+        "CRK": 0,
+        "SCR": 2,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L19",
+      "n": 50,
+      "pass": 47,
+      "warning": 1,
+      "fail": 2,
+      "defectCounts": {
+        "CHP": 2,
+        "CRK": 1,
+        "SCR": 0,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L20",
+      "n": 50,
+      "pass": 43,
+      "warning": 0,
+      "fail": 7,
+      "defectCounts": {
+        "CHP": 4,
+        "CRK": 1,
+        "SCR": 2,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L21",
+      "n": 50,
+      "pass": 42,
+      "warning": 3,
+      "fail": 5,
+      "defectCounts": {
+        "CHP": 5,
+        "CRK": 0,
+        "SCR": 2,
+        "CON": 1
+      }
+    },
+    {
+      "lotId": "L22",
+      "n": 50,
+      "pass": 43,
+      "warning": 1,
+      "fail": 6,
+      "defectCounts": {
+        "CHP": 6,
+        "CRK": 0,
+        "SCR": 2,
+        "CON": 0
+      }
+    },
+    {
+      "lotId": "L23",
+      "n": 50,
+      "pass": 42,
+      "warning": 1,
+      "fail": 7,
+      "defectCounts": {
+        "CHP": 6,
+        "CRK": 0,
+        "SCR": 1,
+        "CON": 2
+      }
+    },
+    {
+      "lotId": "L24",
+      "n": 50,
+      "pass": 35,
+      "warning": 2,
+      "fail": 13,
+      "defectCounts": {
+        "CHP": 13,
+        "CRK": 0,
+        "SCR": 1,
+        "CON": 1
+      }
+    },
+    {
+      "lotId": "L25",
+      "n": 50,
+      "pass": 40,
+      "warning": 0,
+      "fail": 10,
+      "defectCounts": {
+        "CHP": 10,
+        "CRK": 0,
+        "SCR": 0,
+        "CON": 1
+      }
+    }
+  ]
+}

@@ -8,68 +8,55 @@ import {
   normalizeMediaType,
   stripJsonFences,
 } from './_lib.js';
+import {
+  judgeDie,
+  parseDefectList,
+  unparseableResult,
+  type InspectionResult,
+} from '../src/features/inspection/spec/inspectionSpecV1.js';
 
-const SYSTEM = `你是一個工廠產線品質檢測 AI。分析使用者上傳的圖片，判斷產品是否有瑕疵。
+/**
+ * 檢驗規範 v1 的 AI 指示。AI 只回報缺陷清單（分類、區域、量測），
+ * 不做判定——判定由 judgeDie() 依允收標準推導（ADR-0001）。
+ */
+const SYSTEM = `你是封裝段「晶粒外觀檢查」的缺陷辨識員，依《檢驗規範 v1》回報缺陷。你只回報看到的缺陷，不做 Pass / Warning / Fail 判定。
 
-請只回覆 JSON 格式（不要加任何 markdown 代碼塊，也不要有任何前後說明文字）。格式如下：
-{
-  "status": "pass" | "fail" | "warning",
-  "confidence": 0-100 的整數,
-  "summary": "一句話總結",
-  "defects": [
-    {
-      "location": "位置描述",
-      "severity": "low" | "medium" | "high",
-      "description": "瑕疵描述"
-    }
-  ],
-  "recommendation": "處理建議"
-}
+【晶粒幾何與量測換算】
+- 晶粒 5 mm × 5 mm，填滿整張影像。以「影像寬度 = 5000 µm」換算（1000 px 影像時為 5 µm/px）。
+- Seal ring：距晶粒邊緣 100–120 µm 的環。
+- 周邊區 (peripheral)：晶粒邊緣至 seal ring 外緣（0–100 µm）。
+- 核心區 (core)：seal ring 內緣以內（> 120 µm），含 pad。
+- Pad：核心區內沿四邊排列的方形銲墊，各 80 × 80 µm，距邊緣 200 µm。
+- 缺陷所在區域以「缺陷最深入晶粒的點」判定。
 
-判斷標準：
-- pass：無明顯瑕疵，品質合格
-- warning：有輕微問題，需注意
-- fail：有明顯瑕疵，建議退件
+【缺陷分類代碼與量測】
+- CHP 崩角：depthUm = 自晶粒邊緣向內的最大深度；touchesSealRing = 是否觸及 seal ring。
+- CRK 裂紋：有就回報（不需量測值）。
+- SCR 刮傷：lengthUm = 長度；crossesPad = 是否經過 pad。
+- CON 污染／異物：diameterUm = 單點直徑；每一點各回報一筆。
 
-如果圖片不是產品圖，請盡可能分析圖片內容並給出合理判斷。`;
+【輸出格式】只輸出一個 JSON 物件，不要 markdown 代碼塊、不要任何說明文字：
+{"defects":[{"code":"CHP"|"CRK"|"SCR"|"CON","zone":"core"|"peripheral","depthUm":number?,"lengthUm":number?,"diameterUm":number?,"crossesPad":boolean?,"touchesSealRing":boolean?}]}
+- 量測值一律為 µm 的數字；不適用的欄位省略。
+- 沒有缺陷就回 {"defects":[]}。
+- 不要回報信心度、嚴重度、判定或自由文字描述。`;
 
 interface RequestBody {
   imageBase64: string;
   mimeType: string;
-  customCriteria?: string;
 }
 
-interface DefectItem {
-  location: string;
-  severity: 'low' | 'medium' | 'high';
-  description: string;
-}
-
-interface InspectionResult {
-  status: 'pass' | 'fail' | 'warning';
-  confidence: number;
-  summary: string;
-  defects: DefectItem[];
-  recommendation: string;
-  analyzedAt: string;
-}
-
-function parseInspectionResult(text: string): InspectionResult {
-  const cleaned = stripJsonFences(text);
+function deriveResult(text: string): InspectionResult {
   const analyzedAt = new Date().toISOString();
+  let raw: unknown;
   try {
-    const json = JSON.parse(cleaned);
-    return { ...json, analyzedAt } as InspectionResult;
+    raw = JSON.parse(stripJsonFences(text));
   } catch {
-    return {
-      status: 'warning',
-      confidence: 60,
-      summary: cleaned.slice(0, 100) || '無法解析模型回覆',
-      defects: [],
-      recommendation: '請人工複核結果。',
-      analyzedAt,
-    };
+    return unparseableResult(analyzedAt);
   }
+  const defects = parseDefectList(raw);
+  if (!defects) return unparseableResult(analyzedAt);
+  return judgeDie(defects, analyzedAt);
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -78,7 +65,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { imageBase64, mimeType, customCriteria } = (req.body ?? {}) as RequestBody;
+    const { imageBase64, mimeType } = (req.body ?? {}) as RequestBody;
     if (!imageBase64 || !mimeType) {
       return res.status(400).json({ error: 'Missing imageBase64 or mimeType' });
     }
@@ -86,27 +73,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const mediaType = normalizeMediaType(mimeType);
     const client = getClient();
 
-    const userText = customCriteria
-      ? `分析這張圖片並回傳 JSON 結果。\n\n【自訂檢測標準】\n${customCriteria}`
-      : '分析這張圖片並回傳 JSON 結果。';
-
     const response = await client.messages.create({
       model: MODEL,
-      max_tokens: 2048,
+      max_tokens: 1024,
       system: SYSTEM,
       messages: [
         {
           role: 'user',
           content: [
             { type: 'image', source: { type: 'base64', media_type: mediaType, data: imageBase64 } },
-            { type: 'text', text: userText },
+            { type: 'text', text: '依《檢驗規範 v1》回報這顆晶粒的缺陷清單 JSON。' },
           ],
         },
       ],
     });
 
-    const text = extractText(response);
-    const result = parseInspectionResult(text);
+    const result = deriveResult(extractText(response));
     return res.status(200).json({ result });
   } catch (err) {
     console.error('[/api/inspect] error:', err);

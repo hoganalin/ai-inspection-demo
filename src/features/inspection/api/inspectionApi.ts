@@ -1,4 +1,4 @@
-import type { InspectionResult, ComparisonResult } from '../types';
+import type { InspectionResult } from '../types';
 
 async function postJson<TResp>(url: string, body: unknown): Promise<TResp> {
   const res = await fetch(url, {
@@ -18,32 +18,8 @@ async function postJson<TResp>(url: string, body: unknown): Promise<TResp> {
   return res.json() as Promise<TResp>;
 }
 
-export async function analyzeImage(
-  imageBase64: string,
-  mimeType: string,
-  customCriteria?: string,
-): Promise<InspectionResult> {
-  const { result } = await postJson<{ result: InspectionResult }>('/api/inspect', {
-    imageBase64,
-    mimeType,
-    customCriteria,
-  });
-  return result;
-}
-
-export async function compareImages(
-  imageABase64: string,
-  imageBBase64: string,
-  mimeTypeA: string,
-  mimeTypeB: string,
-  customCriteria?: string,
-): Promise<ComparisonResult> {
-  const { result } = await postJson<{ result: ComparisonResult }>('/api/compare', {
-    imageABase64,
-    imageBBase64,
-    mimeTypeA,
-    mimeTypeB,
-    customCriteria,
-  });
+/** 上傳晶粒影像；伺服器回傳 AI 缺陷清單＋依規範推導的判定。 */
+export async function inspectDie(imageBase64: string, mimeType: string): Promise<InspectionResult> {
+  const { result } = await postJson<{ result: InspectionResult }>('/api/inspect', { imageBase64, mimeType });
   return result;
 }

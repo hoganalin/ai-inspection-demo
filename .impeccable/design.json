@@ -1,0 +1,506 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-05T08:13:51.921Z",
+  "title": "Design System: 晶粒外觀檢查改善專案",
+  "extensions": {
+    "colorMeta": {
+      "si-800": {
+        "role": "primary",
+        "displayName": "Silicon Indigo",
+        "canonical": "#1B2140",
+        "tonalRamp": [
+          "#10152B",
+          "#161C38",
+          "#1B2140",
+          "#283057",
+          "#384273",
+          "#6C76A8",
+          "#A3ABD3",
+          "#E6E9F7"
+        ]
+      },
+      "si-900": {
+        "role": "primary",
+        "displayName": "Plate Indigo",
+        "canonical": "#161C38",
+        "tonalRamp": [
+          "#10152B",
+          "#161C38",
+          "#1B2140",
+          "#283057",
+          "#384273",
+          "#6C76A8",
+          "#A3ABD3",
+          "#E6E9F7"
+        ]
+      },
+      "si-950": {
+        "role": "primary",
+        "displayName": "Deep Silicon",
+        "canonical": "#10152B",
+        "tonalRamp": [
+          "#10152B",
+          "#161C38",
+          "#1B2140",
+          "#283057",
+          "#384273",
+          "#6C76A8",
+          "#A3ABD3",
+          "#E6E9F7"
+        ]
+      },
+      "si-100": {
+        "role": "primary",
+        "displayName": "Silicon Mist",
+        "canonical": "#E6E9F7",
+        "tonalRamp": [
+          "#10152B",
+          "#161C38",
+          "#1B2140",
+          "#283057",
+          "#384273",
+          "#6C76A8",
+          "#A3ABD3",
+          "#E6E9F7"
+        ]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Royal Selection Blue",
+        "canonical": "oklch(50.2% 0.205 268)",
+        "tonalRamp": [
+          "#040041",
+          "#0B0F6B",
+          "#1D2F98",
+          "#324EC7",
+          "#5073F3",
+          "#779DFF",
+          "#A1C5FF",
+          "#C9EBFF"
+        ]
+      },
+      "pass": {
+        "role": "tertiary",
+        "displayName": "Pass Green",
+        "canonical": "oklch(58.1% 0.120 155)",
+        "tonalRamp": [
+          "#001300",
+          "#002F0F",
+          "#004E27",
+          "#0D7041",
+          "#3C9462",
+          "#6DB889",
+          "#9BDCB2",
+          "#C6FFD9"
+        ]
+      },
+      "warn": {
+        "role": "tertiary",
+        "displayName": "Warning Gold (fill only, never text)",
+        "canonical": "oklch(73.0% 0.148 79)",
+        "tonalRamp": [
+          "#1E0200",
+          "#3E1900",
+          "#613400",
+          "#865100",
+          "#AC7400",
+          "#CE9B3C",
+          "#F0C375",
+          "#FFE8A5"
+        ]
+      },
+      "warn-ink": {
+        "role": "tertiary",
+        "displayName": "Warning Gold Ink",
+        "canonical": "#855700",
+        "tonalRamp": [
+          "#1E0200",
+          "#3E1900",
+          "#613400",
+          "#865100",
+          "#AC7400",
+          "#CE9B3C",
+          "#F0C375",
+          "#FFE8A5"
+        ]
+      },
+      "fail": {
+        "role": "tertiary",
+        "displayName": "Fail Red-Violet",
+        "canonical": "oklch(51.2% 0.182 4)",
+        "tonalRamp": [
+          "#2A0006",
+          "#51001C",
+          "#7A0036",
+          "#A51F52",
+          "#D04874",
+          "#F27799",
+          "#FFA4C0",
+          "#FFCEE5"
+        ]
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "Optical White Ground",
+        "canonical": "oklch(96.9% 0.005 258)",
+        "tonalRamp": [
+          "#0A0B0C",
+          "#232426",
+          "#3E4042",
+          "#5C5E60",
+          "#7F8083",
+          "#A3A5A7",
+          "#C9CACD",
+          "#EDEEF0"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface White",
+        "canonical": "oklch(100.0% 0.000 89)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#242424",
+          "#404040",
+          "#5D5D5D",
+          "#808080",
+          "#A4A4A4",
+          "#CACACA",
+          "#EEEEEE"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "oklch(88.4% 0.015 260)",
+        "tonalRamp": [
+          "#090B0F",
+          "#21242A",
+          "#3C4047",
+          "#595E66",
+          "#7B8089",
+          "#A0A5AD",
+          "#C6CBD2",
+          "#EBEFF5"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(18.8% 0.019 270)",
+        "tonalRamp": [
+          "#090B10",
+          "#21242B",
+          "#3C3F48",
+          "#5A5D68",
+          "#7C808B",
+          "#A0A4AF",
+          "#C7CAD4",
+          "#EBEEF7"
+        ]
+      },
+      "anno": {
+        "role": "neutral",
+        "displayName": "Annotation White (on plate)",
+        "canonical": "rgba(255, 255, 255, 0.94)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#242424",
+          "#404040",
+          "#5D5D5D",
+          "#808080",
+          "#A4A4A4",
+          "#CACACA",
+          "#EEEEEE"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "verdict": {
+        "displayName": "Verdict",
+        "purpose": "The derived verdict word in the 判定 row, set in the verdict colour."
+      },
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page titles only."
+      },
+      "headline-num": {
+        "displayName": "Headline number",
+        "purpose": "MSA before/after figures; first row at 2.2rem."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles."
+      },
+      "readout": {
+        "displayName": "Readout",
+        "purpose": "Values in readout strips."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Block titles and derivation-chain step names."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text at the 15 px root; subtitles cap at 68ch."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Captions, section notes, chips, field labels."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Table headers, plate tags, readout terms, rail counts."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Defect codes, sample and lot IDs, chart ticks, scale-bar numbers."
+      }
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "The system is flat; no elevation shadows. Hairline rings act only as strokes."
+      },
+      {
+        "name": "mismatch-ring",
+        "value": "inset 0 0 0 2px var(--fail)",
+        "purpose": "Stroke-like inset ring on a sample cell whose AI 判定 disagrees with the 標準答案."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Leader draw, scan line, meter fill."
+      },
+      {
+        "name": "hover",
+        "value": "0.15s ease",
+        "purpose": "Background, border and colour transitions on buttons, rail links, dropzone."
+      },
+      {
+        "name": "leader-draw",
+        "value": "0.2s ease-out; derived redraw after 420ms",
+        "purpose": "Reported leaders fade in dashed, then redraw solid in the verdict colour."
+      },
+      {
+        "name": "scan",
+        "value": "1.8s ease-out infinite",
+        "purpose": "Single scan line over the plate while AI 回報缺陷中."
+      },
+      {
+        "name": "meter",
+        "value": "transform 0.3s ease-out",
+        "purpose": "Batch progress meter."
+      },
+      {
+        "name": "blink",
+        "value": "1.2s ease-in-out infinite, 0.15s stagger",
+        "purpose": "Three square loading dots."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.001ms",
+        "purpose": "prefers-reduced-motion collapses all animation; leaders snap to derived; scan line hidden."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "table-stack",
+        "value": "600px"
+      },
+      {
+        "name": "rail-to-topbar",
+        "value": "900px"
+      },
+      {
+        "name": "work-stack",
+        "value": "1000px"
+      },
+      {
+        "name": "split-stack",
+        "value": "1100px"
+      },
+      {
+        "name": "rail-narrow",
+        "value": "1180px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Silicon-indigo square button for the main forward action of a view.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">用標準樣本試判定<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"><path d=\"M4 12h15\"/><path d=\"M14 7l5 5-5 5\"/></svg></button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 16px;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--rule-strong);border-radius:0;cursor:pointer;white-space:nowrap;transition:background .15s ease,border-color .15s ease,color .15s ease}.ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn-primary{background:var(--si-800);border-color:var(--si-800);color:#fff}.ds-btn-primary:hover{background:var(--si-600);border-color:var(--si-600)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White ruled button for secondary actions.",
+      "html": "<button class=\"ds-btn2\">看管制看板</button> <button class=\"ds-btn2\" disabled>判定中</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 16px;font-family:var(--font-ui);font-size:14px;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--rule-strong);border-radius:0;cursor:pointer;transition:background .15s ease,border-color .15s ease}.ds-btn2:hover:not(:disabled){border-color:var(--ink-2);background:var(--ground)}.ds-btn2:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-btn2:disabled{color:var(--ink-3);background:var(--ground-2);border-color:var(--rule);cursor:not-allowed}"
+    },
+    {
+      "name": "Quiet Destructive Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Destructive actions stay neutral: quiet small button, trash icon, confirm dialog.",
+      "html": "<button class=\"ds-btn-quiet\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"><path d=\"M4 7h16\"/><path d=\"M10 11v6M14 11v6\"/><path d=\"M6 7l1 13h10l1-13\"/><path d=\"M9 7V4h6v3\"/></svg>全部清除</button>",
+      "css": ".ds-btn-quiet{display:inline-flex;align-items:center;gap:8px;min-height:30px;padding:0 8px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--ink-2);background:transparent;border:1px solid transparent;border-radius:0;cursor:pointer;transition:background .15s ease,color .15s ease}.ds-btn-quiet:hover{background:var(--ground-2);color:var(--ink)}.ds-btn-quiet:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Square ruled field; the tentative variant marks AI-drafted content until a person edits it.",
+      "html": "<label class=\"ds-label\">暫時對策</label><input class=\"ds-field\" placeholder=\"批號\"><input class=\"ds-field ds-tentative\" value=\"AI 草稿：隔離該批並加抽 50 顆\">",
+      "css": ".ds-label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:6px;font-family:var(--font-ui)}.ds-field{display:block;width:100%;margin-bottom:8px;font-family:var(--font-ui);font-size:14px;line-height:1.6;color:var(--ink);background:var(--surface);border:1px solid var(--rule-strong);border-radius:0;padding:8px 10px}.ds-field::placeholder{color:var(--ink-3)}.ds-field:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}.ds-tentative{border-style:dashed;background:var(--ground)}.ds-tentative:focus{background:var(--surface)}"
+    },
+    {
+      "name": "Rail Navigation",
+      "kind": "nav",
+      "refersTo": "rail",
+      "description": "Silicon-indigo rail with line-icon links, current page in si-100, signal counts.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-rail-link\" aria-current=\"page\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"><path d=\"M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z\"/></svg>專案總覽</a><a class=\"ds-rail-link\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"><path d=\"M5 4h14v16H5z\"/><path d=\"M8 8h8M8 12h8M8 16h5\"/></svg>批紀錄<span class=\"ds-count\">1</span></a><a class=\"ds-rail-link\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"><path d=\"M4 4v16h16\"/><path d=\"M7 15l4-5 3 3 5-7\"/></svg>管制看板<span class=\"ds-count ds-out\">3</span></a></nav>",
+      "css": ".ds-rail{display:flex;flex-direction:column;gap:2px;padding:14px 10px;width:240px;background:var(--si-800);font-family:var(--font-ui)}.ds-rail-link{display:flex;align-items:center;gap:12px;padding:10px 12px;color:var(--si-200);text-decoration:none;font-size:14.5px;transition:background .15s ease,color .15s ease}.ds-rail-link:hover{background:var(--si-700);color:#fff}.ds-rail-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ds-rail-link[aria-current=page]{background:var(--si-100);color:var(--si-900);font-weight:600}.ds-rail-link[aria-current=page] svg{color:var(--accent)}.ds-count{margin-left:auto;font-family:var(--font-mono);font-size:12px;padding:0 6px;min-width:22px;text-align:center;color:var(--si-100);background:var(--si-600)}.ds-out{background:var(--fail);color:#fff}"
+    },
+    {
+      "name": "Verdict and Signal Chips",
+      "kind": "chip",
+      "refersTo": "chip-pass",
+      "description": "Tint chips with SVG marks for die verdicts; solid chips for lot signals 異常 / 預警.",
+      "html": "<span class=\"ds-chip ds-pass\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 20 20\"><circle cx=\"10\" cy=\"10\" r=\"7.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>Pass・放行</span> <span class=\"ds-chip ds-warn\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 20 20\"><path d=\"M10 2.5L18 17H2z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg>Warning</span> <span class=\"ds-chip ds-fail\"><svg width=\"12\" height=\"12\" viewBox=\"0 0 20 20\"><path d=\"M4 4l12 12M16 4L4 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"square\"/></svg>Fail</span> <span class=\"ds-chip ds-out\">異常</span> <span class=\"ds-chip ds-sig\">預警</span> <span class=\"ds-chip ds-line\">規範 v1</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:6px;padding:1px 8px;font-family:var(--font-ui);font-size:13px;font-weight:600;line-height:1.6;white-space:nowrap;border:1px solid transparent}.ds-pass{background:var(--pass-tint);color:var(--pass-ink)}.ds-warn{background:var(--warn-tint);color:var(--warn-ink)}.ds-fail{background:var(--fail-tint);color:var(--fail-ink)}.ds-out{background:var(--fail);color:#fff}.ds-sig{background:var(--warn);color:var(--si-950)}.ds-line{background:transparent;border-color:var(--rule-strong);color:var(--ink-2);font-weight:500}"
+    },
+    {
+      "name": "Ruled Table",
+      "kind": "card",
+      "refersTo": "table-cell",
+      "description": "Dense ruled table in a 1px frame; stacks into label/value rows below 600px.",
+      "html": "<div class=\"ds-frame\"><table class=\"ds-tbl\"><thead><tr><th>批號</th><th class=\"r\">不良率</th><th>訊號</th></tr></thead><tbody><tr><td data-label=\"批號\" class=\"mono\">L-118</td><td data-label=\"不良率\" class=\"r\">4.2%</td><td data-label=\"訊號\">—</td></tr><tr aria-selected=\"true\"><td data-label=\"批號\" class=\"mono\">LIVE-01</td><td data-label=\"不良率\" class=\"r\">11.0%</td><td data-label=\"訊號\"><span class=\"ds-out\">異常</span></td></tr></tbody></table></div>",
+      "css": ".ds-frame{border:1px solid var(--rule);background:var(--surface)}.ds-tbl{width:100%;border-collapse:collapse;font-family:var(--font-ui);font-size:14px;background:var(--surface)}.ds-tbl th{text-align:left;font-size:12px;font-weight:600;color:var(--ink-3);padding:8px 12px;border-bottom:1px solid var(--rule-strong)}.ds-tbl td{padding:10px 12px;border-bottom:1px solid var(--rule);font-variant-numeric:tabular-nums}.ds-tbl tr:last-child td{border-bottom:0}.ds-tbl .r{text-align:right}.ds-tbl .mono{font-family:var(--font-mono)}.ds-tbl tbody tr:hover td{background:var(--ground)}.ds-tbl tr[aria-selected=true] td{background:var(--accent-tint)}.ds-out{background:var(--fail);color:#fff;padding:1px 8px;font-size:13px;font-weight:600}@media (max-width:600px){.ds-tbl thead{display:none}.ds-tbl,.ds-tbl tbody,.ds-tbl tr,.ds-tbl td{display:block;width:100%}.ds-tbl tr{padding:10px 12px;border-bottom:1px solid var(--rule)}.ds-tbl td{border:0;padding:3px 0;display:flex;justify-content:space-between;text-align:left}.ds-tbl td::before{content:attr(data-label);color:var(--ink-3);font-size:12px;font-weight:600}}"
+    },
+    {
+      "name": "Calibrated Plate",
+      "kind": "custom",
+      "refersTo": "plate",
+      "description": "Dark die plate with µm geometry and scale bar; tags are white while reported and take the verdict colour once derived.",
+      "html": "<figure class=\"ds-fig\"><div class=\"ds-plate\"><svg viewBox=\"0 0 5000 5000\" preserveAspectRatio=\"none\"><rect x=\"100\" y=\"100\" width=\"4800\" height=\"4800\" fill=\"none\" stroke=\"rgba(205,210,236,0.75)\" stroke-width=\"1\" vector-effect=\"non-scaling-stroke\" stroke-dasharray=\"6 4\"/><rect x=\"120\" y=\"120\" width=\"4760\" height=\"4760\" fill=\"none\" stroke=\"rgba(255,255,255,0.9)\" stroke-width=\"1\" vector-effect=\"non-scaling-stroke\"/><path d=\"M1500 1850 L1650 2000 L1500 2150 L1350 2000 Z\" fill=\"none\" stroke=\"rgba(255,255,255,0.94)\" stroke-width=\"1.5\" vector-effect=\"non-scaling-stroke\" stroke-dasharray=\"4 3\"/><rect x=\"260\" y=\"4670\" width=\"1000\" height=\"44\" fill=\"rgba(255,255,255,0.94)\"/></svg><span class=\"ds-tag\" style=\"left:34%;top:37%\">標準答案 1・<span class=\"ds-mono\">SCR</span></span><span class=\"ds-tag ds-fail\" style=\"left:34%;top:47%\">標準答案 1・<span class=\"ds-mono\">SCR</span></span><span class=\"ds-tag ds-zone ds-fail\" style=\"right:9%;top:62%\">核心區・&gt;120 µm</span><span class=\"ds-tag ds-zone\" style=\"right:0;top:18%\">周邊區・0–100 µm</span><span class=\"ds-tag ds-bar\">1 mm</span></div><figcaption class=\"ds-cap\"><b>圖 1</b>標準樣本 S25，5 mm × 5 mm，5 µm/px。上：AI 回報（白）；下：規則推導後（判定色）。</figcaption></figure>",
+      "css": ".ds-fig{margin:0;max-width:360px;font-family:var(--font-ui)}.ds-plate{position:relative;aspect-ratio:1/1;background:var(--si-900);overflow:hidden}.ds-plate svg{position:absolute;inset:0;width:100%;height:100%}.ds-tag{position:absolute;font-size:12px;font-weight:600;line-height:1.3;padding:2px 6px;color:var(--si-950);background:var(--anno);white-space:nowrap}.ds-zone{background:rgba(16,21,43,0.82);color:var(--si-100);font-weight:500}.ds-fail{background:var(--fail);color:#fff;font-weight:600}.ds-bar{left:5.2%;bottom:7.6%;background:transparent;color:var(--anno);padding:0}.ds-mono{font-family:var(--font-mono)}.ds-cap{margin-top:10px;font-size:13px;line-height:1.55;color:var(--ink-2)}.ds-cap b{color:var(--ink);font-weight:700;margin-right:.6em}"
+    },
+    {
+      "name": "Tentative AI Ink",
+      "kind": "custom",
+      "refersTo": "field-tentative",
+      "description": "AI-reported text is dashed-underlined ink-2; the draft tag turns solid accent once a person edits.",
+      "html": "<p class=\"ds-p\">AI 回報 <span class=\"ds-ai\">SCR・核心區・450 µm</span> → 規範 v1 §3 → <b class=\"ds-failtext\">Fail</b></p><span class=\"ds-ink\">AI 草稿</span> <span class=\"ds-ink ds-edited\">已修改</span>",
+      "css": ".ds-p{font-family:var(--font-ui);font-size:15px;color:var(--ink);margin:0 0 10px}.ds-ai{font-family:var(--font-mono);color:var(--ink-2);text-decoration:underline dashed var(--ink-3);text-underline-offset:4px}.ds-failtext{color:var(--fail-ink)}.ds-ink{font-family:var(--font-ui);font-size:11px;font-weight:600;padding:0 6px;line-height:1.6;border:1px dashed var(--ink-3);color:var(--ink-2)}.ds-edited{border-style:solid;border-color:var(--accent);color:var(--accent-ink)}"
+    },
+    {
+      "name": "Note Bar",
+      "kind": "card",
+      "refersTo": "note-warning",
+      "description": "Ruled full-width note; the simulation variant carries the persistent disclosure.",
+      "html": "<div class=\"ds-note ds-note-warn\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"><path d=\"M12 3l10 18H2z\"/><path d=\"M12 10v5\"/><path d=\"M12 17.5v1\"/></svg><span>AI 服務未連線：沒有 /api，仍可瀏覽標準答案與模擬數據。</span></div><div class=\"ds-note ds-note-sim\"><span><b>情境與數據皆為模擬。</b>樣本為半合成影像。</span></div>",
+      "css": ".ds-note{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;margin-bottom:8px;font-family:var(--font-ui);font-size:13.5px;line-height:1.6;background:var(--surface);border:1px solid var(--rule);color:var(--ink)}.ds-note svg{flex-shrink:0;margin-top:3px}.ds-note-warn{background:var(--warn-tint);border-color:#EBCB7A}.ds-note-sim{background:var(--si-100);border-color:var(--si-200);color:var(--si-900)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calibrated Plate",
+    "overview": "Every die is shown as a calibrated micrograph plate, the way a lab report or a metallurgy atlas sets a specimen: true scale, zone boundaries drawn in µm, a scale bar computed from 5 µm/px, a figure number (圖 n) and a caption. The plate sits dark on a silicon-indigo ground; everything around it is a cool optical-white working sheet divided by 1 px rules. Leader lines run from each defect on the plate to its numbered row in the 判定明細, so the chain AI 回報 → 規範條文 → 判定 is drawn rather than asserted.\n\nColour is evidence, not decoration. The shell and plates share the silicon-indigo family of the die itself; the three oxide-interference state colours (Pass green, Warning/預警 gold, Fail/異常 red-violet) appear only where a verdict or a lot signal has been derived, and one royal blue marks selection, links and focus. AI output is set in tentative ink (dashed underline or dashed frame) until a rule or a named person commits it. The density is that of an engineering document: tight ruled tables, tabular numerals, mono codes, and no cards, shadows, or rounded panels.\n\nThe system rejects the dark AI-vision dashboard (bounding boxes plus confidence %), the KPI-card SaaS shell, and the literary-magazine look (cream paper, serif display, terracotta).",
+    "keyCharacteristics": [
+      "Silicon-indigo rail and plates on a cool white ground (never cream).",
+      "Square everywhere: 0 px radius, 1 px rules, flat surfaces.",
+      "State colours reserved for derived state; one blue for selection.",
+      "Narrow-width Archivo 800 for headings and the verdict word; hierarchy by scale contrast.",
+      "JetBrains Mono for defect codes, sample IDs, readouts and chart ticks.",
+      "Tentative ink for anything the AI reported; solid ink once committed.",
+      "Real-scale instruments: plate geometry in µm, scale bars, pixel-honest insets, width-aware charts."
+    ],
+    "rules": [
+      {
+        "name": "The Gold Never Speaks Rule",
+        "body": "`--warn` is never a text colour. Gold text, in HTML or SVG, uses warn-ink; warn is only a fill, stroke or background (with si-950 text on it).",
+        "section": "colors"
+      },
+      {
+        "name": "The State-Only Rule",
+        "body": "Pass, Warning/預警 and Fail/異常 colours appear only where a verdict or lot signal exists. Destructive actions (刪除紀錄, 全部清除, 清除清單) stay neutral quiet buttons with a trash icon and a confirm dialog; they never borrow red-violet.",
+        "section": "colors"
+      },
+      {
+        "name": "The Derived Colour Rule",
+        "body": "A plate tag is white (anno) while it is 「AI 回報」 and takes the derived verdict colour once judgeDie has ruled. Zone tags (周邊區, 核心區) follow the same rule on every page: neutral indigo at rest, the most severe derived verdict colour when a defect is reported in that zone.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Blue Rule",
+        "body": "Royal blue means \"selected, focused, or a link\". It is never a state colour and never decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Width-Axis Rule",
+        "body": "Hierarchy is carried by scale and width contrast within one family: 800 weight with wdth 88–94 for headings and numbers, wdth 100 for body. No second display face.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Eyebrow Rule",
+        "body": "No eyebrow or kicker labels above headings. A status belongs on the heading line as a trailing mark (e.g. phase state 完成 / 未達門檻 / 規劃 after the phase name), and section context goes in a trailing section note.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono-Is-Measurement Rule",
+        "body": "Codes, IDs, µm values and chart ticks are mono with tabular numerals; prose is never mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The Chart Text Never Scales Rule",
+        "body": "SVG charts set viewBox to the measured layout width, so ticks stay 12 px and labels 13 px at every size, on a projector and at 390 px. Margins are computed from content (the bottom margin from the longest 45°-rotated lot label), never by shrinking type.",
+        "section": "typography"
+      },
+      {
+        "name": "The Stack-Below-600 Rule",
+        "body": "Data tables carry `tbl-stack` and `data-label` on every cell: below 600 px the header hides and each row becomes a block of label/value pairs. Wide tables that must not stack set a 560 px minimum width inside a scrolling frame.",
+        "section": "layout"
+      },
+      {
+        "name": "The Gutter-Is-For-Leaders Rule",
+        "body": "The gap between plate and detail is not padding to be reclaimed; when the layout is too narrow for leaders to run plate-to-row, leaders are hidden rather than drawn across content.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Plate Rule",
+        "body": "Surfaces never lift. If something needs separation, give it a 1 px rule, a tint, or a tonal step, never a drop shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** set gold text in warn-ink (#855700); use warn (#D89B12) only as fill, stroke or background with si-950 text.",
+      "**Do** keep plate tags white until the rule derives a verdict, then give them (and the zone tag the defect sits in) the verdict colour, on every page that shows a plate.",
+      "**Do** give every die image the full plate treatment: µm geometry, 1 mm scale bar, 圖 n figcaption.",
+      "**Do** put status on the heading line as a trailing mark and context in a trailing section note.",
+      "**Do** mark every data table `tbl-stack` with `data-label` cells so it stacks below 600 px.",
+      "**Do** size SVG charts by viewBox = layout width and grow margins from content, keeping tick text 12 px and labels 13 px.",
+      "**Do** render anything the AI reported in tentative ink (dashed underline or dashed frame) until a rule or a person commits it.",
+      "**Do** pair every verdict colour with its ○ △ ✕ mark so state never depends on colour alone.",
+      "**Do** use mono with tabular numerals for codes, IDs, µm values and readouts."
+    ],
+    "donts": [
+      "**Don't** use `--warn` as text colour, in HTML or SVG.",
+      "**Don't** colour destructive buttons red-violet or any state colour; state colours are reserved for state.",
+      "**Don't** add eyebrow or kicker labels above headings.",
+      "**Don't** round corners, add drop shadows, or wrap content in cards; use 1 px rules and tints.",
+      "**Don't** use cream or warm paper grounds, serif display faces, or terracotta; the ground is cool optical white.",
+      "**Don't** show AI confidence percentages or bounding-box overlays; the plate shows reported defects and derived verdicts only.",
+      "**Don't** call 預警 just \"warning\" in UI copy, and don't style a lot-level 預警 like a die-level Warning chip (solid vs tint).",
+      "**Don't** let chart text scale with the chart or let rotated labels clip; compute the margin.",
+      "**Don't** use royal blue for anything except selection, focus and links."
+    ]
+  }
+}

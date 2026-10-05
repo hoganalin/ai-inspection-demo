@@ -1,75 +1,72 @@
 import { useState, useCallback } from 'react';
-import { analyzeImage } from '../api/inspectionApi';
+import { inspectDie } from '../api/inspectionApi';
 import { createThumbnail, prepareImageForUpload } from '../utils/thumbnail';
-import type { InspectionResult } from '../types';
+import { describeInspectionError } from '../utils/errors';
+import type { InspectionResult, InspectionProgress } from '../types';
 
-export interface BatchItem {
+/** 批次上傳（操作）中的一張影像；判定完成後記到目前的批 (Lot)。 */
+export interface UploadItem {
   id: string;
   file: File;
   fileName: string;
-  status: 'pending' | 'analyzing' | 'done' | 'error';
+  progress: InspectionProgress | 'pending';
   result?: InspectionResult;
+  error?: string;
   thumbnail: string;
 }
 
 export function useBatchInspection(
-  onItemComplete?: (result: InspectionResult, thumbnail: string, fileName: string) => void
+  onItemComplete?: (result: InspectionResult, thumbnail: string, fileName: string) => void,
 ) {
-  const [items, setItems] = useState<BatchItem[]>([]);
+  const [items, setItems] = useState<UploadItem[]>([]);
   const [isRunning, setIsRunning] = useState(false);
 
-  const processItem = useCallback(async (item: BatchItem, criteria?: string, threshold = 0) => {
-    setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'analyzing' } : it));
+  const processItem = useCallback(async (item: UploadItem) => {
+    setItems(prev => prev.map(it => (it.id === item.id ? { ...it, progress: 'analyzing', error: undefined } : it)));
     try {
       const { base64, mimeType } = await prepareImageForUpload(item.file);
-      const res = await analyzeImage(base64, mimeType, criteria);
-      const finalRes = threshold > 0 && res.confidence < threshold && res.status !== 'fail'
-        ? { ...res, status: 'fail' as const }
-        : res;
-      setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'done', result: finalRes } : it));
-      onItemComplete?.(finalRes, item.thumbnail, item.fileName);
-      return finalRes;
-    } catch {
-      setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'error' } : it));
+      const res = await inspectDie(base64, mimeType);
+      setItems(prev => prev.map(it => (it.id === item.id ? { ...it, progress: 'done', result: res } : it)));
+      onItemComplete?.(res, item.thumbnail, item.fileName);
+      return res;
+    } catch (err) {
+      const error = describeInspectionError(err);
+      setItems(prev => prev.map(it => (it.id === item.id ? { ...it, progress: 'error', error } : it)));
       return null;
     }
   }, [onItemComplete]);
 
-  const startBatch = useCallback(async (files: File[], criteria?: string, threshold?: number) => {
-    if (isRunning) return;
-    const initial: BatchItem[] = await Promise.all(
+  const startBatch = useCallback(async (files: File[]) => {
+    if (isRunning || files.length === 0) return;
+    const initial: UploadItem[] = await Promise.all(
       files.map(async file => ({
-        id: Math.random().toString(36).slice(2, 11),
+        id: crypto.randomUUID(),
         file,
         fileName: file.name,
-        status: 'pending' as const,
+        progress: 'pending' as const,
         thumbnail: await createThumbnail(file, 80),
-      }))
+      })),
     );
     setItems(initial);
     setIsRunning(true);
     for (const item of initial) {
-      await processItem(item, criteria, threshold);
+      await processItem(item);
     }
     setIsRunning(false);
   }, [isRunning, processItem]);
 
-  const retryItem = useCallback(async (id: string, criteria?: string, threshold?: number) => {
+  const retryItem = useCallback(async (id: string) => {
     const item = items.find(it => it.id === id);
-    if (!item || item.status === 'analyzing') return null;
-    return processItem(item, criteria, threshold ?? 0);
-  }, [items, processItem]);
+    if (!item || item.progress === 'analyzing' || isRunning) return null;
+    return processItem(item);
+  }, [items, isRunning, processItem]);
 
   const reset = useCallback(() => setItems([]), []);
 
-  const removeItem = useCallback((id: string) => {
-    setItems(prev => prev.filter(it => it.id !== id));
-  }, []);
-
   const progress = {
-    done: items.filter(it => it.status === 'done' || it.status === 'error').length,
+    done: items.filter(it => it.progress === 'done' || it.progress === 'error').length,
     total: items.length,
   };
 
-  return { items, isRunning, progress, startBatch, retryItem, removeItem, reset };
+  return { items, isRunning, progress, startBatch, retryItem, reset };
 }

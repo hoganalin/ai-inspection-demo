@@ -1,10 +1,8 @@
 export { ImageUploader } from './components/ImageUploader';
 export { InspectionResultPanel } from './components/InspectionResult';
-export { HistoryPanel } from './components/HistoryPanel';
-export { StatsDashboard } from './components/StatsDashboard';
-export { BatchInspectionPanel } from './components/BatchInspectionPanel';
-export { ComparisonPanel } from './components/ComparisonPanel';
+export { LotInspectionPanel } from './components/LotInspectionPanel';
+export { InspectPage } from './components/InspectPage';
+export type { InspectMode } from './components/InspectPage';
 export { useInspection } from './hooks/useInspection';
-export { useHistory } from './hooks/useHistory';
 export { useBatchInspection } from './hooks/useBatchInspection';
-export type { InspectionResult, InspectionStatus, DefectItem, HistoryItem, ComparisonResult } from './types';
+export type { InspectionResult, InspectionProgress, Verdict, Defect, DefectJudgement } from './types';

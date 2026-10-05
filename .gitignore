@@ -33,3 +33,21 @@ dist-ssr
 # Local environment backups and generated debug artifacts
 .env*.bak
 build_error.txt
+
+# Other env variants (keep only the example)
+.env.*
+!.env.example
+
+# experiment samples are reproducible from experiment/generate_samples.py
+experiment/samples/*.png
+
+# Impeccable: keep the design record (surfaces/, design.json); local review captures and decision-page logs stay out
+.impeccable/review/
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/build/
+.impeccable/config.local.json
+
+# Python bytecode
+__pycache__/
+*.pyc

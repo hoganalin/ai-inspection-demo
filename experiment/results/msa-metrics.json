@@ -1,0 +1,304 @@
+{
+  "design": {
+    "nImages": 40,
+    "trials": 1,
+    "lines": [
+      "實驗設計（皆為模擬）",
+      "模型：claude-sonnet-4-6，temperature 1.0；每次呼叫獨立（無對話記憶）。",
+      "樣本：40 張半合成晶粒影像（程序化底圖＋注入已知尺寸缺陷），標準答案判定分布 {'Warning': 9, 'Pass': 22, 'Fail': 9}。",
+      "評估者：甲／乙／丙 三位模擬 AI 評估者。",
+      "改善前：三人 system prompt 完全相同，僅口述標準不同（甲 嚴：「有明顯缺角或任何刮痕就退」；乙 模糊：「邊緣破損都要注意，看起來怪怪的就標 warning」；丙 寬鬆：「不影響功能就放行」），AI 直接輸出 pass/warning/fail。",
+      "改善後：三人共用同一份檢驗規範 v1 全文＋幾何與比例尺，只差一行中性角色（日班／夜班／假日班）；AI 只回報缺陷清單，判定由 spec_v1.py 依允收標準推導。",
+      "一致率、漏判率、誤判率、人工複判率、kappa 以第 1～1 次判定計算（每位評估者 × 每條件 × 每張樣本）。",
+      "原訂每組 2 次（預算 US$5 下由 3 次減為 2 次）；執行中 API 帳戶額度耗盡（HTTP 400 credit balance too low），第 2 次只完成改善前的部分判定，改善後 0 筆 → 重複性只能就有兩次判定的配對計算（見「重複性樣本數」），改善後重複性未量測。",
+      "補齊方式：帳戶加值後執行 `run_msa.py run --trials 2 --budget 4.5`（自動從快取續跑，預估再花約 US$1.2），再以 --trials 2 重跑本分析。",
+      "API 總呼叫數（含前導測試）：335；實際花費（依 usage × 牌價）US$2.28。"
+    ]
+  },
+  "metrics": {
+    "before": {
+      "n_images": 40,
+      "trials": 1,
+      "per_appraiser": {
+        "甲": {
+          "repeatability": 0.925,
+          "repeatabilityN": 40,
+          "vsStandardAllTrials": 0.7,
+          "judgments": 40,
+          "accuracy": 0.7,
+          "missRate": 0.1111111111111111,
+          "falseCallRate": 0.0,
+          "warningRate": 0.35,
+          "referenceWarningRate": 0.225
+        },
+        "乙": {
+          "repeatability": 0.8387096774193549,
+          "repeatabilityN": 31,
+          "vsStandardAllTrials": 0.5,
+          "judgments": 40,
+          "accuracy": 0.5,
+          "missRate": 0.0,
+          "falseCallRate": 0.0,
+          "warningRate": 0.575,
+          "referenceWarningRate": 0.225
+        },
+        "丙": {
+          "repeatability": null,
+          "repeatabilityN": 0,
+          "vsStandardAllTrials": 0.6,
+          "judgments": 40,
+          "accuracy": 0.6,
+          "missRate": 0.3333333333333333,
+          "falseCallRate": 0.0,
+          "warningRate": 0.35,
+          "referenceWarningRate": 0.225
+        }
+      },
+      "repeatability": 0.8873239436619719,
+      "repeatabilityN": 71,
+      "reproducibilityAll": 0.575,
+      "betweenAppraisersPerTrial": 0.575,
+      "allVsStandard": 0.425,
+      "judgments": 120,
+      "accuracy": 0.6,
+      "missRate": 0.14814814814814814,
+      "falseCallRate": 0.0,
+      "warningRate": 0.425,
+      "referenceWarningRate": 0.225,
+      "fleissKappa": 0.43127962085308064,
+      "confusion": {
+        "Pass": {
+          "Pass": 54,
+          "Warning": 12,
+          "Fail": 0,
+          "Invalid": 0
+        },
+        "Warning": {
+          "Pass": 10,
+          "Warning": 17,
+          "Fail": 0,
+          "Invalid": 0
+        },
+        "Fail": {
+          "Pass": 4,
+          "Warning": 22,
+          "Fail": 1,
+          "Invalid": 0
+        }
+      },
+      "invalidCount": 0
+    },
+    "after": {
+      "n_images": 40,
+      "trials": 1,
+      "per_appraiser": {
+        "甲": {
+          "repeatability": null,
+          "repeatabilityN": 0,
+          "vsStandardAllTrials": 0.6,
+          "judgments": 40,
+          "accuracy": 0.6,
+          "missRate": 0.2222222222222222,
+          "falseCallRate": 0.0,
+          "warningRate": 0.225,
+          "referenceWarningRate": 0.225
+        },
+        "乙": {
+          "repeatability": null,
+          "repeatabilityN": 0,
+          "vsStandardAllTrials": 0.625,
+          "judgments": 40,
+          "accuracy": 0.625,
+          "missRate": 0.4444444444444444,
+          "falseCallRate": 0.09090909090909091,
+          "warningRate": 0.3,
+          "referenceWarningRate": 0.225
+        },
+        "丙": {
+          "repeatability": null,
+          "repeatabilityN": 0,
+          "vsStandardAllTrials": 0.6,
+          "judgments": 40,
+          "accuracy": 0.6,
+          "missRate": 0.4444444444444444,
+          "falseCallRate": 0.0,
+          "warningRate": 0.175,
+          "referenceWarningRate": 0.225
+        }
+      },
+      "repeatability": null,
+      "repeatabilityN": 0,
+      "reproducibilityAll": 0.6,
+      "betweenAppraisersPerTrial": 0.6,
+      "allVsStandard": 0.475,
+      "judgments": 120,
+      "accuracy": 0.6083333333333333,
+      "missRate": 0.37037037037037035,
+      "falseCallRate": 0.030303030303030304,
+      "warningRate": 0.23333333333333334,
+      "referenceWarningRate": 0.225,
+      "fleissKappa": 0.39039408866995073,
+      "confusion": {
+        "Pass": {
+          "Pass": 60,
+          "Warning": 4,
+          "Fail": 2,
+          "Invalid": 0
+        },
+        "Warning": {
+          "Pass": 14,
+          "Warning": 10,
+          "Fail": 3,
+          "Invalid": 0
+        },
+        "Fail": {
+          "Pass": 10,
+          "Warning": 14,
+          "Fail": 3,
+          "Invalid": 0
+        }
+      },
+      "invalidCount": 0
+    }
+  },
+  "defectRecognition": {
+    "CHP": {
+      "refInstances": 27,
+      "tp": 4,
+      "fn": 23,
+      "fp": 9,
+      "recall": 0.14814814814814814,
+      "recallRelevant": 0.2222222222222222,
+      "recallSubThreshold": 0.0,
+      "precision": 0.3076923076923077,
+      "measMaeUm": 64.25,
+      "measBiasUm": -64.25,
+      "measRelBias": -0.6488095238095238,
+      "zoneAccuracy": 1.0
+    },
+    "CRK": {
+      "refInstances": 6,
+      "tp": 0,
+      "fn": 6,
+      "fp": 0,
+      "recall": 0.0,
+      "recallRelevant": 0.0,
+      "recallSubThreshold": null,
+      "precision": null,
+      "measMaeUm": null,
+      "measBiasUm": null,
+      "measRelBias": null,
+      "zoneAccuracy": null
+    },
+    "SCR": {
+      "refInstances": 24,
+      "tp": 13,
+      "fn": 11,
+      "fp": 3,
+      "recall": 0.5416666666666666,
+      "recallRelevant": 0.8,
+      "recallSubThreshold": 0.1111111111111111,
+      "precision": 0.8125,
+      "measMaeUm": 191.92307692307693,
+      "measBiasUm": 110.38461538461539,
+      "measRelBias": 0.47237484737484736,
+      "zoneAccuracy": 1.0
+    },
+    "CON": {
+      "refInstances": 39,
+      "tp": 23,
+      "fn": 16,
+      "fp": 19,
+      "recall": 0.5897435897435898,
+      "recallRelevant": 0.8333333333333334,
+      "recallSubThreshold": 0.2,
+      "precision": 0.5476190476190477,
+      "measMaeUm": 23.695652173913043,
+      "measBiasUm": -23.695652173913043,
+      "measRelBias": -0.5743788819875776,
+      "zoneAccuracy": 0.9565217391304348
+    },
+    "_clean": {
+      "judgments": 39,
+      "hallucinatedByCode": {
+        "CON": 6
+      }
+    }
+  },
+  "afterConfusion": {
+    "Pass": {
+      "Pass": 60,
+      "Warning": 4,
+      "Fail": 2,
+      "Invalid": 0
+    },
+    "Warning": {
+      "Pass": 14,
+      "Warning": 10,
+      "Fail": 3,
+      "Invalid": 0
+    },
+    "Fail": {
+      "Pass": 10,
+      "Warning": 14,
+      "Fail": 3,
+      "Invalid": 0
+    }
+  },
+  "afterConfusionByClass": {
+    "Warning": {
+      "CHP": {
+        "Pass": 6,
+        "Warning": 3,
+        "Fail": 0,
+        "Invalid": 0
+      },
+      "CRK": {
+        "Pass": 0,
+        "Warning": 0,
+        "Fail": 0,
+        "Invalid": 0
+      },
+      "SCR": {
+        "Pass": 0,
+        "Warning": 6,
+        "Fail": 3,
+        "Invalid": 0
+      },
+      "CON": {
+        "Pass": 8,
+        "Warning": 1,
+        "Fail": 0,
+        "Invalid": 0
+      }
+    },
+    "Fail": {
+      "CHP": {
+        "Pass": 4,
+        "Warning": 4,
+        "Fail": 1,
+        "Invalid": 0
+      },
+      "CRK": {
+        "Pass": 1,
+        "Warning": 5,
+        "Fail": 0,
+        "Invalid": 0
+      },
+      "SCR": {
+        "Pass": 2,
+        "Warning": 2,
+        "Fail": 2,
+        "Invalid": 0
+      },
+      "CON": {
+        "Pass": 3,
+        "Warning": 3,
+        "Fail": 0,
+        "Invalid": 0
+      }
+    }
+  },
+  "spendUsd": 2.2843767,
+  "apiCalls": 335
+}

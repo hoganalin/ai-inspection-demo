@@ -1,0 +1,808 @@
+{
+  "specVersion": "v1",
+  "generator": "experiment/generate_samples.py (procedural base die + injected defects, synthetic)",
+  "geometry": {
+    "diePx": 1000,
+    "umPerPx": 5.0,
+    "sealRingPx": [
+      20,
+      24
+    ],
+    "padSizePx": 16,
+    "padOffsetPx": 40
+  },
+  "samples": [
+    {
+      "id": "S01",
+      "file": "S01.png",
+      "group": "defective",
+      "note": "SCR core 150µm",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "lengthUm": 150.0,
+          "crossesPad": false,
+          "location": {
+            "x": 502,
+            "y": 587
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "SCR@core→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S02",
+      "file": "S02.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S03",
+      "file": "S03.png",
+      "group": "defective",
+      "note": "boundary SCR peripheral 250µm (Pass)",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "lengthUm": 250.0,
+          "crossesPad": false,
+          "location": {
+            "x": 11,
+            "y": 407
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "SCR@peripheral→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S04",
+      "file": "S04.png",
+      "group": "defective",
+      "note": "CON core 3pt 25/30/35µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 25,
+          "location": {
+            "x": 244,
+            "y": 300
+          }
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 30,
+          "location": {
+            "x": 369,
+            "y": 580
+          }
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 35,
+          "location": {
+            "x": 670,
+            "y": 798
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "CON@core→Warning",
+        "CON@core→Warning",
+        "CON@core→Warning",
+        "CON 核心區計 3 點→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S05",
+      "file": "S05.png",
+      "group": "defective",
+      "note": "CON peripheral 60µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "diameterUm": 60,
+          "location": {
+            "x": 9,
+            "y": 241
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "CON@peripheral→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S06",
+      "file": "S06.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S07",
+      "file": "S07.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S08",
+      "file": "S08.png",
+      "group": "defective",
+      "note": "boundary CHP 25µm (Warning)",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 25,
+          "touchesSealRing": false,
+          "location": {
+            "x": 721,
+            "y": 5
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "CHP@peripheral→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S09",
+      "file": "S09.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S10",
+      "file": "S10.png",
+      "group": "good",
+      "note": "sub-threshold CON core 15µm + CHP 6µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 15,
+          "location": {
+            "x": 136,
+            "y": 358
+          }
+        },
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 6,
+          "touchesSealRing": false,
+          "location": {
+            "x": 998,
+            "y": 498
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "CON@core→Pass",
+        "CHP@peripheral→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S11",
+      "file": "S11.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S12",
+      "file": "S12.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S13",
+      "file": "S13.png",
+      "group": "defective",
+      "note": "SCR peripheral 400µm",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "lengthUm": 400.3,
+          "crossesPad": false,
+          "location": {
+            "x": 10,
+            "y": 677
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "SCR@peripheral→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S14",
+      "file": "S14.png",
+      "group": "good",
+      "note": "sub-threshold SCR core 70µm",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "lengthUm": 70.0,
+          "crossesPad": false,
+          "location": {
+            "x": 738,
+            "y": 148
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "SCR@core→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S15",
+      "file": "S15.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S16",
+      "file": "S16.png",
+      "group": "defective",
+      "note": "CRK peripheral 150µm",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "peripheral",
+          "lengthUm": 158.7,
+          "location": {
+            "x": 5,
+            "y": 560
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "CRK@peripheral→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S17",
+      "file": "S17.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S18",
+      "file": "S18.png",
+      "group": "defective",
+      "note": "CHP into core 150µm",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "core",
+          "depthUm": 150,
+          "touchesSealRing": true,
+          "location": {
+            "x": 969,
+            "y": 724
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "CHP@core→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S19",
+      "file": "S19.png",
+      "group": "defective",
+      "note": "CON core 2pt 25/40µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 25,
+          "location": {
+            "x": 577,
+            "y": 463
+          }
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 40,
+          "location": {
+            "x": 327,
+            "y": 581
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "CON@core→Warning",
+        "CON@core→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S20",
+      "file": "S20.png",
+      "group": "defective",
+      "note": "CON core 70µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 70,
+          "location": {
+            "x": 268,
+            "y": 415
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "CON@core→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S21",
+      "file": "S21.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S22",
+      "file": "S22.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S23",
+      "file": "S23.png",
+      "group": "defective",
+      "note": "CHP touches seal ring 105µm",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 105,
+          "touchesSealRing": true,
+          "location": {
+            "x": 978,
+            "y": 800
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "CHP@peripheral→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S24",
+      "file": "S24.png",
+      "group": "defective",
+      "note": "boundary CHP 8µm (Pass)",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 8,
+          "touchesSealRing": false,
+          "location": {
+            "x": 783,
+            "y": 997
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "CHP@peripheral→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S25",
+      "file": "S25.png",
+      "group": "defective",
+      "note": "SCR core 450µm",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "lengthUm": 450.0,
+          "crossesPad": false,
+          "location": {
+            "x": 320,
+            "y": 336
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "SCR@core→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S26",
+      "file": "S26.png",
+      "group": "good",
+      "note": "sub-threshold SCR peripheral 150µm",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "lengthUm": 150.4,
+          "crossesPad": false,
+          "location": {
+            "x": 7,
+            "y": 589
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "SCR@peripheral→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S27",
+      "file": "S27.png",
+      "group": "good",
+      "note": "sub-threshold CHP 5µm",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 5,
+          "touchesSealRing": false,
+          "location": {
+            "x": 1,
+            "y": 567
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "CHP@peripheral→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S28",
+      "file": "S28.png",
+      "group": "defective",
+      "note": "CHP 12µm",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 12,
+          "touchesSealRing": false,
+          "location": {
+            "x": 2,
+            "y": 543
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "CHP@peripheral→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S29",
+      "file": "S29.png",
+      "group": "good",
+      "note": "sub-threshold CON core 12µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 12,
+          "location": {
+            "x": 759,
+            "y": 407
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "CON@core→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S30",
+      "file": "S30.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S31",
+      "file": "S31.png",
+      "group": "good",
+      "note": "sub-threshold CON peripheral 35µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "diameterUm": 35,
+          "location": {
+            "x": 168,
+            "y": 985
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "CON@peripheral→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S32",
+      "file": "S32.png",
+      "group": "good",
+      "note": "sub-threshold CON core 15µm×2",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 15,
+          "location": {
+            "x": 658,
+            "y": 869
+          }
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 15,
+          "location": {
+            "x": 134,
+            "y": 331
+          }
+        }
+      ],
+      "referenceVerdict": "Pass",
+      "reasons": [
+        "CON@core→Pass",
+        "CON@core→Pass"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S33",
+      "file": "S33.png",
+      "group": "defective",
+      "note": "CHP 20µm",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 20,
+          "touchesSealRing": false,
+          "location": {
+            "x": 315,
+            "y": 995
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "CHP@peripheral→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S34",
+      "file": "S34.png",
+      "group": "defective",
+      "note": "CRK core 400µm",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "core",
+          "lengthUm": 400.0,
+          "location": {
+            "x": 800,
+            "y": 786
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "CRK@core→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S35",
+      "file": "S35.png",
+      "group": "defective",
+      "note": "CON core 1pt 30µm",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "diameterUm": 30,
+          "location": {
+            "x": 894,
+            "y": 222
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "CON@core→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S36",
+      "file": "S36.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S37",
+      "file": "S37.png",
+      "group": "defective",
+      "note": "boundary SCR core 280µm",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "lengthUm": 280.0,
+          "crossesPad": false,
+          "location": {
+            "x": 299,
+            "y": 747
+          }
+        }
+      ],
+      "referenceVerdict": "Warning",
+      "reasons": [
+        "SCR@core→Warning"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S38",
+      "file": "S38.png",
+      "group": "defective",
+      "note": "CHP 40µm",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "depthUm": 40,
+          "touchesSealRing": false,
+          "location": {
+            "x": 369,
+            "y": 991
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "CHP@peripheral→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S39",
+      "file": "S39.png",
+      "group": "defective",
+      "note": "SCR core 180µm crosses pad",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "lengthUm": 180.0,
+          "crossesPad": true,
+          "location": {
+            "x": 491,
+            "y": 53
+          }
+        }
+      ],
+      "referenceVerdict": "Fail",
+      "reasons": [
+        "SCR@core→Fail"
+      ],
+      "specVersion": "v1"
+    },
+    {
+      "id": "S40",
+      "file": "S40.png",
+      "group": "good",
+      "note": "clean",
+      "defects": [],
+      "referenceVerdict": "Pass",
+      "reasons": [],
+      "specVersion": "v1"
+    }
+  ]
+}

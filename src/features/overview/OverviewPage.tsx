@@ -7,6 +7,15 @@ import { ScaleBar } from '../inspection/components/ScaleBar';
 import { DEFECT_CLASS_LABEL, VERDICT_LABEL, ZONE_LABEL, acceptanceScale, formatMeasurement } from '../inspection/spec/inspectionSpecV1';
 import { AgreementChip, MSA_SUMMARY, SAMPLE_BY_ID } from '../samples';
 import { PChart } from '../control/components/PChart';
+import { ALLOWANCE, RECHECK_SECONDS, SHIFT_MINUTES, laborReduction, laborScenario } from './laborModel';
+
+/** ECRS 對照：新的檢驗流程相對於人工目檢做了哪些改變。 */
+const ECRS = [
+  { key: 'E', name: '刪除', how: '規則推導為 Pass 的晶粒直接放行，不再送人工複判；只有 Warning 送人。' },
+  { key: 'C', name: '合併', how: '判定與記錄合一：判定結果直接進入批紀錄，可匯出 CSV，不需另行登錄。' },
+  { key: 'R', name: '重排', how: '批不良率在判定當下就更新到 p 管制圖，預警從事後彙總提前到即時。' },
+  { key: 'S', name: '簡化', how: '口述標準收斂成一份有版本號的條文；異常處置單由 AI 先草擬，人負責審閱與確認。' },
+];
 import type { ControlView } from '../control';
 import type { Page } from '../../components/Layout/AppShell';
 
@@ -45,6 +54,8 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
   const b = MSA_SUMMARY.before;
   const a = MSA_SUMMARY.after;
   const rec = MSA_SUMMARY.recognition;
+  const labor = RECHECK_SECONDS.map(s => laborScenario(s, b.warningRate, a.warningRate));
+  const reduction = laborReduction(b.warningRate, a.warningRate);
 
   const pairs = useMemo(() => [{ from: 'ov-row-0', to: 'ov-ref-1', verdict: judged.verdict }], [judged.verdict]);
 
@@ -127,8 +138,8 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
               <span className="chain-step">③ 判定</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                 <VerdictMark verdict={verdict} size={26} strokeWidth={2.4} />
-                <span className="verdict-word" style={{ fontSize: '2.2rem', color: VERDICT_STYLE[verdict].ink }}>{VERDICT_LABEL[verdict].name}</span>
-                <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>→ {VERDICT_LABEL[verdict].action}</span>
+                <span className="verdict-word" style={{ fontSize: '2.1333rem', color: VERDICT_STYLE[verdict].ink }}>{VERDICT_LABEL[verdict].name}</span>
+                <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>→ {VERDICT_LABEL[verdict].action}</span>
               </span>
             </li>
           </ol>
@@ -234,6 +245,70 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 工時與產能：人工複判率換算 ── */}
+      <section className="section" aria-labelledby="labor-title" style={{ marginTop: 56 }}>
+        <div className="section-head">
+          <h2 className="section-title" id="labor-title">工時與產能：複判工時可省 {pct(reduction, 0)}，前提是漏判先降下來</h2>
+          <span className="section-note">單顆複判時間與寬放率為假設值，以三種情境做敏感度分析</span>
+        </div>
+        <p style={{ maxWidth: '76ch', marginBottom: 14 }}>
+          人工複判率從 {pct(b.warningRate)} 降到 {pct(a.warningRate)}，每批 50 顆要送人工複判的晶粒從約 {Math.round(50 * b.warningRate)} 顆降到約 {Math.round(50 * a.warningRate)} 顆。
+          換算方式：標準工時＝單顆複判時間 ×（1＋寬放率 {pct(ALLOWANCE, 0)}）；每千顆複判工時＝1,000 × 人工複判率 × 標準工時；每班以 {SHIFT_MINUTES / 60} 小時計。
+        </p>
+
+        <div className="overview-msa">
+          <div className="tbl-frame" style={{ overflowX: 'auto' }}>
+            <table className="tbl tbl-stack">
+              <thead>
+                <tr>
+                  <th scope="col">單顆複判時間（假設）</th>
+                  <th scope="col" className="r">每千顆複判工時</th>
+                  <th scope="col" className="r">一位複判人員每班可支援</th>
+                </tr>
+              </thead>
+              <tbody>
+                {labor.map(s => (
+                  <tr key={s.seconds}>
+                    <td>
+                      <div style={{ fontWeight: 600 }}><span className="mono">{s.seconds}</span> 秒／顆</div>
+                      <div className="tiny dim">標準工時 <span className="mono">{s.standardSeconds.toFixed(1)}</span> 秒</div>
+                    </td>
+                    <td className="r mono" data-label="每千顆複判工時">
+                      <span><span className="dim">{s.per1000Minutes.before.toFixed(0)} →</span>{' '}
+                      <b>{s.per1000Minutes.after.toFixed(0)}</b> 分鐘</span>
+                    </td>
+                    <td className="r mono" data-label="一位複判人員每班可支援">
+                      <span><span className="dim">{Math.round(s.diesPerShift.before).toLocaleString()} →</span>{' '}
+                      <b>{Math.round(s.diesPerShift.after).toLocaleString()}</b> 顆</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <div className="note note-warn" style={{ marginBottom: 16 }}>
+              <Icon.Alert width={16} height={16} />
+              <span>
+                <b>這個數字還不能當效益。</b>改善前的人工複判率高，是因為應退件的晶粒多被送去複判；
+                改善後複判變少，有一部分是這些晶粒被直接放行（漏判率 {pct(b.missRate)} → {pct(a.missRate)}）。
+                漏判率降到 5% 以下之前，省下的工時有一部分是用漏判換來的。
+              </span>
+            </div>
+            <h3 className="block-title">ECRS：新的檢驗流程改了什麼</h3>
+            <div style={{ borderTop: '1px solid var(--rule-strong)' }}>
+              {ECRS.map(r => (
+                <div key={r.key} style={{ display: 'grid', gridTemplateColumns: '92px minmax(0, 1fr)', gap: 12, padding: '9px 0', borderBottom: '1px solid var(--rule)' }}>
+                  <span style={{ fontWeight: 700 }}><span className="mono">{r.key}</span> {r.name}</span>
+                  <span className="small" style={{ color: 'var(--ink-2)' }}>{r.how}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

@@ -14,6 +14,7 @@ import {
 } from '../src/features/inspection/spec/inspectionSpecV1.ts';
 import { computeControlChart, type LotSummary } from '../src/features/control/spc.ts';
 import { REFERENCE_SAMPLES, MSA_SUMMARY } from '../src/features/samples/referenceData.ts';
+import { laborReduction, laborScenario } from '../src/features/overview/laborModel.ts';
 
 let failed = 0;
 function check(name: string, actual: unknown, expected: unknown) {
@@ -126,6 +127,19 @@ check('120 recorded replies: TS engine agrees with spec_v1.py', [replies.length,
 const refFail = replies.filter(x => x.s.referenceVerdict === 'fail');
 const missed = refFail.filter(x => x.ts === 'pass').length;
 check('after-condition miss rate recomputes from recorded replies', missed / refFail.length, MSA_SUMMARY.after.missRate);
+
+// 工時／產能換算（總覽頁與簡報共用的數字）
+{
+  const before = MSA_SUMMARY.before.warningRate;
+  const after = MSA_SUMMARY.after.warningRate;
+  const s30 = laborScenario(30, before, after);
+  const r1 = (v: number) => Math.round(v * 10) / 10;
+  check('labor: standard time 30 s × 1.15 = 34.5 s', s30.standardSeconds, 34.5);
+  check('labor: per-1000 re-judgment minutes at 30 s (before → after)', [r1(s30.per1000Minutes.before), r1(s30.per1000Minutes.after)], [244.4, 134.2]);
+  check('labor: dies per 8 h shift at 30 s (before → after)', [Math.round(s30.diesPerShift.before), Math.round(s30.diesPerShift.after)], [1964, 3578]);
+  check('labor: reduction is independent of seconds', r1(laborReduction(before, after) * 100), r1((1 - laborScenario(15, before, after).per1000Minutes.after / laborScenario(15, before, after).per1000Minutes.before) * 100));
+  check('labor: per-lot re-judged dies (50 per lot) 21 → 12', [Math.round(50 * before), Math.round(50 * after)], [21, 12]);
+}
 
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');
 if (failed) process.exitCode = 1;

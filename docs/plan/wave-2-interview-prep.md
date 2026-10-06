@@ -39,7 +39,7 @@
 | 2 | ✅ 工時／產能效益：換算數字＋總覽區塊＋ECRS 對照（2026-10-06 完成；`src/features/overview/laborModel.ts`，數字由 `check:spec` 驗證） | Claude | 可與 1 並行 |
 | 3 | ✅ 本人判定第 2 輪（2026-10-06，21 分鐘；與第 1 輪同日，間隔不到一小時，限制已揭露） | 作者 | 1 完成後隔天 |
 | 4 | ✅ 「人 vs AI」回填總覽（2026-10-06；一致率自己判 70.9% → 人眼＋規則 81.0%，實測 34.9 秒／顆接進工時區塊；`experiment/results/msa-summary.md`） | Claude | 3 |
-| 5 | 10 頁簡報（含 MES 資料流、均華 30 天盤點計畫），匯出 PPTX／PDF | Claude 起稿、作者定稿 | 2、4（數字到齊才定稿） |
+| 5 | 🟡 10 頁簡報（含 MES 資料流、均華 30 天盤點計畫），匯出 PPTX／PDF（2026-10-06 初稿完成，Claude Slides：https://claude.ai/artifact/1c8gWgajTpmQjBdeBp17Aj；待作者填姓名、定稿、匯出） | Claude 起稿、作者定稿 | 2、4（數字到齊才定稿） |
 | 6 | 更新兩份使用手冊的截圖與數字，投遞附 PDF | Claude／作者 | 5 |
 
 ## 職缺對照（決策後）

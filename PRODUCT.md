@@ -24,6 +24,8 @@ Success means an evaluator leaves believing all four of these: the author is **m
 
 The AI does not judge. It only reports defect class, zone, and measurements, and the Verdict is derived by versioned rules (ADR-0001). That swaps human inconsistency for a traceable rule, not for AI inconsistency. Every Verdict cites its triggering clause and spec version. The project measures itself with attribute agreement analysis and publishes the result even though it was unflattering. A neighboring "AI defect detection" demo that lets the model output pass/fail plus a confidence score cannot truthfully claim any of this.
 
+**Framing for 均華（decided 2026-10-06）**: 均華 builds semiconductor packaging equipment (Chip Sorter, Die Bonder, laser marking, molding, precision molds); the role improves 均華's *own* manufacturing. Lead with the **transferable improvement method** (pain point → versioned spec → data validation → early warning → action plan → rollout plan), add one mapping to 均華's own factory scenarios (framed as hypotheses to verify on site, not facts), and treat knowledge of the Chip Sorter customer-side process as a bonus, not the main pitch.
+
 ## Operating Context
 
 - Domain: 封裝段晶粒外觀檢查; Die Sorter → AOI 複判; defect classes `CHP` 崩角, `CRK` 裂紋, `SCR` 刮傷, `CON` 污染; zones 核心區／周邊區; 5 µm/px geometry.

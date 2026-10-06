@@ -13,7 +13,7 @@ import {
   type Verdict,
 } from '../src/features/inspection/spec/inspectionSpecV1.ts';
 import { computeControlChart, type LotSummary } from '../src/features/control/spc.ts';
-import { REFERENCE_SAMPLES, MSA_SUMMARY } from '../src/features/samples/referenceData.ts';
+import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, HUMAN_REPLIES } from '../src/features/samples/referenceData.ts';
 import { laborReduction, laborScenario } from '../src/features/overview/laborModel.ts';
 
 let failed = 0;
@@ -127,6 +127,20 @@ check('120 recorded replies: TS engine agrees with spec_v1.py', [replies.length,
 const refFail = replies.filter(x => x.s.referenceVerdict === 'fail');
 const missed = refFail.filter(x => x.ts === 'pass').length;
 check('after-condition miss rate recomputes from recorded replies', missed / refFail.length, MSA_SUMMARY.after.missRate);
+
+// 作者本人兩輪判定：前端規則引擎對人工回報的推導，與 spec_v1.py 一致；總覽引用的數字可重算
+if (HUMAN_SUMMARY) {
+  const engineMismatchHuman = HUMAN_REPLIES
+    .filter(h => judgeDie(h.defects).verdict !== h.pyRuleVerdict)
+    .map(h => `${h.sample}/R${h.round}: ts=${judgeDie(h.defects).verdict} py=${h.pyRuleVerdict}`);
+  check('human replies: TS engine agrees with spec_v1.py', engineMismatchHuman, []);
+  const refOf = Object.fromEntries(REFERENCE_SAMPLES.map(s => [s.id, s.referenceVerdict]));
+  const hit = (v: (h: (typeof HUMAN_REPLIES)[number]) => Verdict) => HUMAN_REPLIES.filter(h => v(h) === refOf[h.sample]).length / HUMAN_REPLIES.length;
+  const r1 = (x: number) => Math.round(x * 1000) / 1000;
+  check('human combined accuracy (own, eye+rules) recomputes', [r1(hit(h => h.ownVerdict)), r1(hit(h => judgeDie(h.defects).verdict))],
+    [r1(HUMAN_SUMMARY.combined.own.accuracy), r1(HUMAN_SUMMARY.combined.rules.accuracy)]);
+  check('human seconds per die = total minutes ÷ judgments', Math.round(HUMAN_SUMMARY.roundMinutes.reduce((a, b) => a + b, 0) * 600 / HUMAN_REPLIES.length) / 10, HUMAN_SUMMARY.secondsPerDie);
+}
 
 // 工時／產能換算（總覽頁與簡報共用的數字）
 {

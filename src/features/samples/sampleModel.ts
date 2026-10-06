@@ -6,7 +6,7 @@ import {
   type InspectionResult,
   type Verdict,
 } from '../inspection/spec/inspectionSpecV1';
-import { REFERENCE_SAMPLES, MSA_SUMMARY } from './referenceData';
+import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY } from './referenceData';
 import type { Agreement, RawRefDefect, RawRecordedReply, ReferenceSample } from './types';
 
 /** 實驗日期（experiment/raw/after.jsonl 的執行日）。 */
@@ -67,7 +67,7 @@ export const SAMPLES: ReferenceSample[] = REFERENCE_SAMPLES.map(s => {
 
 export const SAMPLE_BY_ID: Record<string, ReferenceSample> = Object.fromEntries(SAMPLES.map(s => [s.id, s]));
 
-export { MSA_SUMMARY };
+export { MSA_SUMMARY, HUMAN_SUMMARY };
 
 /** 取得一張標準樣本影像作為 File，交給與上傳相同的判定流程。 */
 export async function fetchSampleFile(sample: ReferenceSample): Promise<File> {

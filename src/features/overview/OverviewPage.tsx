@@ -5,7 +5,7 @@ import { DiePlate } from '../inspection/components/DiePlate';
 import { LeaderLayer } from '../inspection/components/LeaderLayer';
 import { ScaleBar } from '../inspection/components/ScaleBar';
 import { DEFECT_CLASS_LABEL, VERDICT_LABEL, ZONE_LABEL, acceptanceScale, formatMeasurement } from '../inspection/spec/inspectionSpecV1';
-import { AgreementChip, MSA_SUMMARY, SAMPLE_BY_ID } from '../samples';
+import { AgreementChip, HUMAN_SUMMARY, MSA_SUMMARY, SAMPLE_BY_ID } from '../samples';
 import { PChart } from '../control/components/PChart';
 import { ALLOWANCE, RECHECK_SECONDS, SHIFT_MINUTES, laborReduction, laborScenario } from './laborModel';
 
@@ -54,7 +54,11 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
   const b = MSA_SUMMARY.before;
   const a = MSA_SUMMARY.after;
   const rec = MSA_SUMMARY.recognition;
-  const labor = RECHECK_SECONDS.map(s => laborScenario(s, b.warningRate, a.warningRate));
+  // 中間情境改用作者實測的每次判定時間；其餘為假設值
+  const measuredSeconds = HUMAN_SUMMARY?.secondsPerDie ?? null;
+  const scenarioSeconds = measuredSeconds ? [RECHECK_SECONDS[0], measuredSeconds, RECHECK_SECONDS[2]] : [...RECHECK_SECONDS];
+  const labor = scenarioSeconds.map(s => laborScenario(s, b.warningRate, a.warningRate));
+  const human = HUMAN_SUMMARY;
   const reduction = laborReduction(b.warningRate, a.warningRate);
 
   const pairs = useMemo(() => [{ from: 'ov-row-0', to: 'ov-ref-1', verdict: judged.verdict }], [judged.verdict]);
@@ -249,11 +253,79 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
         </div>
       </section>
 
+      {/* ── 人 vs AI：作者本人兩輪判定 ── */}
+      {human && (
+        <section className="section" aria-labelledby="human-title" style={{ marginTop: 56 }}>
+          <div className="section-head">
+            <h2 className="section-title" id="human-title">
+              人 vs AI：交給規則判，作者自己的一致率從 {pct(human.combined.own.accuracy)} 升到 {pct(human.combined.rules.accuracy)}
+            </h2>
+            <span className="section-note">作者本人依規範 v1 判定 40 張樣本兩輪，共 {human.combined.own.n} 次（真實判定，非模擬）</span>
+          </div>
+          <p style={{ maxWidth: '76ch', marginBottom: 14 }}>
+            同一份缺陷回報，作者「自己判」與「交給規則推導」對照：規則修正了 {human.combined.fixedByRules} 次「看到了、量測也接近，但套錯條文」的判定，
+            也改錯了 {human.combined.brokenByRules} 次（都是區域或量測回報有誤）。
+          </p>
+
+          <div className="overview-msa">
+            <div className="tbl-frame" style={{ overflowX: 'auto' }}>
+              <table className="tbl tbl-stack">
+                <thead>
+                  <tr>
+                    <th scope="col">評估者</th>
+                    <th scope="col" className="r">對標準答案一致率</th>
+                    <th scope="col" className="r">漏判率</th>
+                    <th scope="col" className="r">誤判率</th>
+                    <th scope="col" className="r">重複性</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div style={{ fontWeight: 600 }}>作者・自己判</div><div className="tiny dim">人看缺陷，人套條文</div></td>
+                    <td className="r mono" data-label="對標準答案一致率">{pct(human.combined.own.accuracy)}</td>
+                    <td className="r mono" data-label="漏判率">{pct(human.combined.own.missRate)}</td>
+                    <td className="r mono" data-label="誤判率">{pct(human.combined.own.falseCallRate)}</td>
+                    <td className="r mono" data-label="重複性">{pct(human.repeatability.own)}</td>
+                  </tr>
+                  <tr aria-selected="true">
+                    <td><div style={{ fontWeight: 700 }}>作者・人眼＋規則</div><div className="tiny dim">人看缺陷，規則推導判定</div></td>
+                    <td className="r mono" data-label="對標準答案一致率" style={{ fontWeight: 700 }}>{pct(human.combined.rules.accuracy)}</td>
+                    <td className="r mono" data-label="漏判率">{pct(human.combined.rules.missRate)}</td>
+                    <td className="r mono" data-label="誤判率">{pct(human.combined.rules.falseCallRate)}</td>
+                    <td className="r mono" data-label="重複性">{pct(human.repeatability.rules)}</td>
+                  </tr>
+                  <tr>
+                    <td><div style={{ fontWeight: 600 }}>AI＋規則</div><div className="tiny dim">一致性分析改善後，3 位模擬評估者</div></td>
+                    <td className="r mono" data-label="對標準答案一致率">{pct(a.accuracy)}</td>
+                    <td className="r mono" data-label="漏判率" style={{ color: 'var(--fail-ink)' }}>{pct(a.missRate)}</td>
+                    <td className="r mono" data-label="誤判率">{pct(a.falseCallRate)}</td>
+                    <td className="r mono" data-label="重複性">未量測</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div>
+              <h3 className="block-title">人和 AI 卡在同一個地方：量測與區域判讀</h3>
+              <ul className="small" style={{ margin: 0, paddingLeft: '1.2em', listStyle: 'disc', display: 'flex', flexDirection: 'column', gap: 8, color: 'var(--ink-2)' }}>
+                <li>規則判的重複性略低於自己判，原因是兩輪回報本身不同：同一道刮傷一輪標核心區、一輪標周邊區；污染一輪量 75 µm、一輪量 50 µm。</li>
+                <li>自己判「比較一致」有一部分是一致地判錯，例如 450 µm 的核心區刮傷兩輪都判 Warning，規範是 Fail。</li>
+                <li>漏判的 4 次全是同兩張、兩輪都「沒看到」：周邊區的裂紋（S16）、經過 pad 的刮傷（S39）。</li>
+                <li>這正是規範 v2「尺寸與區域交給程式換算」要解決的問題，對人和 AI 都適用。</li>
+              </ul>
+              <p className="tiny dim" style={{ marginTop: 12 }}>
+                限制：{human.note}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── 工時與產能：人工複判率換算 ── */}
       <section className="section" aria-labelledby="labor-title" style={{ marginTop: 56 }}>
         <div className="section-head">
           <h2 className="section-title" id="labor-title">工時與產能：複判工時可省 {pct(reduction, 0)}，前提是漏判先降下來</h2>
-          <span className="section-note">單顆複判時間與寬放率為假設值，以三種情境做敏感度分析</span>
+          <span className="section-note">{measuredSeconds ? `${measuredSeconds} 秒為作者實測，其餘情境與寬放率為假設值` : '單顆複判時間與寬放率為假設值，以三種情境做敏感度分析'}</span>
         </div>
         <p style={{ maxWidth: '76ch', marginBottom: 14 }}>
           人工複判率從 {pct(b.warningRate)} 降到 {pct(a.warningRate)}，每批 50 顆要送人工複判的晶粒從約 {Math.round(50 * b.warningRate)} 顆降到約 {Math.round(50 * a.warningRate)} 顆。
@@ -265,7 +337,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
             <table className="tbl tbl-stack">
               <thead>
                 <tr>
-                  <th scope="col">單顆複判時間（假設）</th>
+                  <th scope="col">單顆複判時間</th>
                   <th scope="col" className="r">每千顆複判工時</th>
                   <th scope="col" className="r">一位複判人員每班可支援</th>
                 </tr>
@@ -274,7 +346,12 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                 {labor.map(s => (
                   <tr key={s.seconds}>
                     <td>
-                      <div style={{ fontWeight: 600 }}><span className="mono">{s.seconds}</span> 秒／顆</div>
+                      <div style={{ fontWeight: 600 }}>
+                        <span className="mono">{s.seconds}</span> 秒／顆
+                        {s.seconds === measuredSeconds
+                          ? <span className="chip chip-accent" style={{ marginLeft: 8 }}>作者實測</span>
+                          : <span className="tiny dim" style={{ marginLeft: 8 }}>假設</span>}
+                      </div>
                       <div className="tiny dim">標準工時 <span className="mono">{s.standardSeconds.toFixed(1)}</span> 秒</div>
                     </td>
                     <td className="r mono" data-label="每千顆複判工時">
@@ -367,11 +444,11 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
 
         <div className="overview-next">
           <h3 className="block-title">規範 v2 提案（Act）</h3>
-          <ol className="small" style={{ margin: 0, paddingLeft: '1.4em', display: 'flex', flexDirection: 'column', gap: 6, color: 'var(--ink-2)' }}>
+          <ol className="small" style={{ margin: 0, paddingLeft: '1.4em', listStyle: 'decimal', display: 'flex', flexDirection: 'column', gap: 6, color: 'var(--ink-2)' }}>
             <li><b style={{ color: 'var(--ink)' }}>分塊放大判讀：</b>周邊區每邊切 8 段、放大 4 倍再送判，讓 2–8 px 的崩角與裂紋變得看得到。</li>
-            <li><b style={{ color: 'var(--ink)' }}>尺寸不讓 AI 估：</b>AI 只回報缺陷代碼與外框座標，尺寸由程式依 5 µm/px 換算。</li>
+            <li><b style={{ color: 'var(--ink)' }}>尺寸不讓 AI（也不讓人）估：</b>只回報缺陷代碼與外框座標，尺寸與區域由程式依 5 µm/px 換算。</li>
             <li><b style={{ color: 'var(--ink)' }}>安全偏向的路由：</b>周邊區任何異常至少 Warning；核心區線狀缺陷不分 SCR／CRK 至少 Warning。</li>
-            <li><b style={{ color: 'var(--ink)' }}>重跑一致性分析：</b>補量重複性，並完成作者本人兩輪判定作為「人 vs AI」對照。</li>
+            <li><b style={{ color: 'var(--ink)' }}>重跑一致性分析：</b>補量 AI 的重複性（作者本人兩輪的「人 vs AI」對照已完成，見上方）。</li>
           </ol>
         </div>
       </section>

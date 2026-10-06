@@ -51,3 +51,6 @@ experiment/samples/*.png
 # Python bytecode
 __pycache__/
 *.pyc
+
+# defect example images are reproducible from experiment/make_examples.py
+experiment/examples/

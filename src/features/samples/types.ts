@@ -51,6 +51,36 @@ export interface RawMsaSummary {
   }>;
 }
 
+interface HumanRates {
+  n: number;
+  accuracy: number;
+  missRate: number;
+  falseCallRate: number;
+  warningRate: number;
+}
+
+/** 作者本人兩輪判定：「自己判」vs「人眼回報缺陷＋規則推導」。 */
+export interface RawHumanSummary {
+  appraiser: string;
+  date: string;
+  note: string;
+  roundMinutes: number[];
+  /** 實測每次判定平均秒數（含找缺陷、量測、填表） */
+  secondsPerDie: number;
+  rounds: { round: number; own: HumanRates; rules: HumanRates; fixedByRules: string[]; brokenByRules: string[] }[];
+  combined: { own: HumanRates; rules: HumanRates; fixedByRules: number; brokenByRules: number };
+  repeatability: { n: number; own: number; rules: number };
+}
+
+/** 作者本人一次判定的回報（供 check:spec 比對 TS 與 Python 規則引擎）。 */
+export interface RawHumanReply {
+  sample: string;
+  round: number;
+  defects: Defect[];
+  ownVerdict: Verdict;
+  pyRuleVerdict: Verdict;
+}
+
 /** 判定與標準答案的比對結果（用詞依 CONTEXT.md：漏判＝應 Fail 卻放行；誤判＝應 Pass 卻退件）。 */
 export type Agreement = 'match' | 'miss' | 'falseCall' | 'differs';
 

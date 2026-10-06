@@ -1981,8 +1981,8 @@ export const REFERENCE_SAMPLES: RawReferenceSample[] = [
 
 export const MSA_SUMMARY: RawMsaSummary = {
  "before": {
-  "repeatability": 0.8873239436619719,
-  "repeatabilityN": 71,
+  "repeatability": 0.8583333333333333,
+  "repeatabilityN": 120,
   "betweenAppraisersPerTrial": 0.575,
   "allVsStandard": 0.425,
   "accuracy": 0.6,
@@ -1994,8 +1994,8 @@ export const MSA_SUMMARY: RawMsaSummary = {
   "judgments": 120
  },
  "after": {
-  "repeatability": null,
-  "repeatabilityN": 0,
+  "repeatability": 0.775,
+  "repeatabilityN": 120,
   "betweenAppraisersPerTrial": 0.6,
   "allVsStandard": 0.475,
   "accuracy": 0.6083333333333333,

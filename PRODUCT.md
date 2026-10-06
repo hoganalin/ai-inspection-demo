@@ -53,7 +53,7 @@ None visual. The user confirmed the entire current look (MUJI-style paper, 「�
 - `docs/spec/inspection-spec-v1.md`: 檢驗規範 v1, acceptance values marked **假設值**, not an industry standard.
 - `docs/adr/0001-*.md`, `docs/adr/0002-*.md`: verdict-from-spec decision; semi-synthetic reference samples.
 - `experiment/samples/S01–S40.png` + `reference.json`: semi-synthetic die images with reference answers.
-- `experiment/results/msa-summary.md`, `msa-metrics.json`, `msa-results.xlsx`: the MSA before/after. **The honest result:** after spec v1, 人工複判率 improved (42.5% → 23.3%), but 漏判率 worsened (14.8% → 37.0%), agreement barely moved, after-spec repeatability was not measured (credit ran out), and the recommendation is **not** to proceed to ③. This must never be presented as a win.
+- `experiment/results/msa-summary.md`, `msa-metrics.json`, `msa-results.xlsx`: the MSA before/after. **The honest result:** after spec v1, 人工複判率 improved (42.5% → 23.3%), but 漏判率 worsened (14.8% → 37.0%), agreement barely moved, after-spec repeatability got worse once measured (85.8% → 77.5%, below the 90% gate), and the recommendation is **not** to proceed to ③. This must never be presented as a win.
 - `experiment/results/p-chart.png`, `pareto.png`, `control-chart.xlsx`, `control-chart-summary.json`; `public/data/lots.json`: 25 statistically simulated lots × 50 dies, with an injected CHP drift scenario.
 - `docs/rollout/導入計畫.xlsx`: charter, phase timeline, RACI, risk list, weekly tracker.
 - Absent, and not to be fabricated: real fab data, real customers, real yield or cost savings, any production deployment, industry-standard acceptance values, a confidence score.

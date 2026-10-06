@@ -38,6 +38,12 @@ const TREND: Record<Trend, { label: string; color: string }> = {
   unmeasured: { label: '未量測', color: 'var(--ink-3)' },
 };
 
+/** 差距小於 5 個百分點視為持平；任一邊沒有兩次判定就是未量測。 */
+const repeatabilityTrend = (before: number | null, after: number | null): Trend =>
+  before === null || after === null ? 'unmeasured'
+    : Math.abs(after - before) < 0.05 ? 'flat'
+      : after > before ? 'better' : 'worse';
+
 const DocLink: React.FC<{ path: string; children: React.ReactNode }> = ({ path, children }) => (
   <a href={REPO + path} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
     {children}<Icon.External width={13} height={13} />
@@ -70,7 +76,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
     { label: '評估者間一致率', hint: '三位評估者判定相同的樣本比例', before: pct(b.betweenAppraisersPerTrial), after: pct(a.betweenAppraisersPerTrial), trend: 'flat' },
     { label: '對標準答案一致率', hint: '逐筆', before: pct(b.accuracy), after: pct(a.accuracy), trend: 'flat' },
     { label: 'Fleiss’ kappa', hint: '三人', before: b.fleissKappa.toFixed(2), after: a.fleissKappa.toFixed(2), trend: 'flat' },
-    { label: '重複性', hint: '同一評估者兩次一致', before: pct(b.repeatability), after: pct(a.repeatability), trend: 'unmeasured' },
+    { label: '重複性', hint: '同一評估者兩次一致', before: pct(b.repeatability), after: pct(a.repeatability), trend: repeatabilityTrend(b.repeatability, a.repeatability) },
   ];
 
   const recognition = (['CHP', 'CRK', 'SCR', 'CON'] as const).map(code => ({ code, ...rec[code] }));
@@ -299,7 +305,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                     <td className="r mono" data-label="對標準答案一致率">{pct(a.accuracy)}</td>
                     <td className="r mono" data-label="漏判率" style={{ color: 'var(--fail-ink)' }}>{pct(a.missRate)}</td>
                     <td className="r mono" data-label="誤判率">{pct(a.falseCallRate)}</td>
-                    <td className="r mono" data-label="重複性">未量測</td>
+                    <td className="r mono" data-label="重複性">{pct(a.repeatability)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -308,7 +314,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
             <div>
               <h3 className="block-title">人和 AI 卡在同一個地方：量測與區域判讀</h3>
               <ul className="small" style={{ margin: 0, paddingLeft: '1.2em', listStyle: 'disc', display: 'flex', flexDirection: 'column', gap: 8, color: 'var(--ink-2)' }}>
-                <li>規則判的重複性略低於自己判，原因是兩輪回報本身不同：同一道刮傷一輪標核心區、一輪標周邊區；污染一輪量 75 µm、一輪量 50 µm。</li>
+                <li>交給規則判之後，人和 AI 的重複性都下降：作者 {pct(human.repeatability.own)} → {pct(human.repeatability.rules)}，AI {pct(b.repeatability)} → {pct(a.repeatability)}（口述標準直接判 → 規範＋規則）。規則是固定的，兩次結果不同是因為回報本身不同：作者同一道刮傷一輪標核心區、一輪標周邊區；AI 兩次不一致的 27 組中，15 組是量測跨過門檻、12 組是一次看到一次沒看到。</li>
                 <li>自己判「比較一致」有一部分是一致地判錯，例如 450 µm 的核心區刮傷兩輪都判 Warning，規範是 Fail。</li>
                 <li>漏判的 4 次全是同兩張、兩輪都「沒看到」：周邊區的裂紋（S16）、經過 pad 的刮傷（S39）。</li>
                 <li>這正是規範 v2「尺寸與區域交給程式換算」要解決的問題，對人和 AI 都適用。</li>
@@ -434,7 +440,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
           </li>
           <li className="is-hold">
             <span className="phase-head"><b>③ 單線試行</b><span className="phase-state"><Icon.Alert width={14} height={14} />未達門檻</span></span>
-            <span className="small">門檻：漏判率 ≤ 5%（目前 {pct(a.missRate)}）、重複性 ≥ 90%（未量測）、人工複判率 ≤ 30%（目前 {pct(a.warningRate)}）</span>
+            <span className="small">門檻：漏判率 ≤ 5%（目前 {pct(a.missRate)}）、重複性 ≥ 90%（目前 {pct(a.repeatability)}）、人工複判率 ≤ 30%（目前 {pct(a.warningRate)}）</span>
           </li>
           <li>
             <span className="phase-head"><b>④ 擴線與 MES 介接</b><span className="phase-state">規劃</span></span>
@@ -448,7 +454,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
             <li><b style={{ color: 'var(--ink)' }}>分塊放大判讀：</b>周邊區每邊切 8 段、放大 4 倍再送判，讓 2–8 px 的崩角與裂紋變得看得到。</li>
             <li><b style={{ color: 'var(--ink)' }}>尺寸不讓 AI（也不讓人）估：</b>只回報缺陷代碼與外框座標，尺寸與區域由程式依 5 µm/px 換算。</li>
             <li><b style={{ color: 'var(--ink)' }}>安全偏向的路由：</b>周邊區任何異常至少 Warning；核心區線狀缺陷不分 SCR／CRK 至少 Warning。</li>
-            <li><b style={{ color: 'var(--ink)' }}>重跑一致性分析：</b>補量 AI 的重複性（作者本人兩輪的「人 vs AI」對照已完成，見上方）。</li>
+            <li><b style={{ color: 'var(--ink)' }}>重跑一致性分析：</b>v2 改完後重跑兩次判定，檢查漏判率與重複性是否達到門檻（v1 的 AI 重複性 {pct(a.repeatability)}、作者本人兩輪對照都已完成）。</li>
           </ol>
         </div>
       </section>

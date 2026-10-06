@@ -359,9 +359,12 @@ def main():
             "改善前：三人 system prompt 完全相同，僅口述標準不同（甲 嚴：「" + VERBAL["甲"] + "」；乙 模糊：「" + VERBAL["乙"] + "」；丙 寬鬆：「" + VERBAL["丙"] + "」），AI 直接輸出 pass/warning/fail。",
             "改善後：三人共用同一份檢驗規範 v1 全文＋幾何與比例尺，只差一行中性角色（日班／夜班／假日班）；AI 只回報缺陷清單，判定由 spec_v1.py 依允收標準推導。",
             f"一致率、漏判率、誤判率、人工複判率、kappa 以第 1～{args.trials} 次判定計算（每位評估者 × 每條件 × 每張樣本）。",
-            "原訂每組 2 次（預算 US$5 下由 3 次減為 2 次）；執行中 API 帳戶額度耗盡（HTTP 400 credit balance too low），"
-            "第 2 次只完成改善前的部分判定，改善後 0 筆 → 重複性只能就有兩次判定的配對計算（見「重複性樣本數」），改善後重複性未量測。",
-            "補齊方式：帳戶加值後執行 `run_msa.py run --trials 2 --budget 4.5`（自動從快取續跑，預估再花約 US$1.2），再以 --trials 2 重跑本分析。",
+            "重複性以同一評估者第 1、2 次判定配對計算，不受上一行的判定次數影響"
+            f"（配對數：改善前 {M['before']['repeatabilityN']}、改善後 {M['after']['repeatabilityN']}）。",
+            "原訂每組 2 次（預算 US$5 下由 3 次減為 2 次）。第一次執行到第 335 次呼叫時 API 帳戶額度耗盡（HTTP 400 credit balance too low）；"
+            + ("加值後以 `run_msa.py run --trials 2 --budget 4.5` 從快取補跑其餘 169 次，兩次判定已全部完成。"
+               if M["after"]["repeatabilityN"] == len(ids) * len(APPRAISERS) else
+               "第 2 次尚未完成 → 重複性只就已有兩次判定的配對計算；補齊方式：加值後執行 `run_msa.py run --trials 2 --budget 4.5`。"),
             f"API 總呼叫數（含前導測試）：{ncalls}；實際花費（依 usage × 牌價）US${total:.2f}。",
         ],
     }

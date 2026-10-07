@@ -57,6 +57,7 @@
 | 5 | 🟡 10 頁簡報（含 MES 資料流、均華 30 天盤點計畫），匯出 PPTX／PDF（2026-10-06 初稿完成，Claude Slides：https://claude.ai/artifact/1c8gWgajTpmQjBdeBp17Aj；10 頁已在本機以 1920×1080 渲染檢查，無溢出；待作者定稿、匯出 PDF） | Claude 起稿、作者定稿 | 2、4（數字到齊才定稿） |
 | 4b | ✅ 補跑 AI 第 2 次判定（2026-10-06，169 次、US$1.17）：改善後重複性 77.5%（改善前 85.8%），未達 ≥ 90%；網站、摘要、導入計畫 v0.3、簡報、手冊同步更新 | Claude | 4 |
 | 4c | ✅ 第二輪 PDCA：規範 v2 重跑（2026-10-07，240 次、US$9.55）：漏判 0%、重複性 92.5%，誤判 7.6%、Gate（v2）未通過；網站、摘要、導入計畫 v0.4、兩份簡報、兩份手冊同步更新 | Claude | 4b |
+| 4d | ✅ 超詳細解說版簡報 66 頁（2026-10-07，解釋 78 個術語，含 v2 結果）：https://claude.ai/artifact/LD2E2MQNbceKMTpELbVgiQ ；NotebookLM 四集中文白板教學影片（筆記本 https://notebook.google.com/notebook/7bf297ea-3c21-45b7-920d-520384e05f1d ）。決定不做 v2.1：對「智慧製造專案專員」加分有限，改為面試時說明「先凍結規則再盲測」 | Claude | 4c |
 | 6 | 🟡 更新兩份使用手冊的截圖與數字，投遞附 PDF（2026-10-06 手冊已補「人 vs AI」與工時：操作手冊 https://claude.ai/code/artifact/1b08e484-59a7-4a24-9d52-b0c131445bf5 、白話版 https://claude.ai/code/artifact/5a18e418-4f49-4d8a-8c52-f15012630a41 ；待作者定稿簡報、匯出 PDF 後投遞） | Claude／作者 | 5 |
 
 ## 職缺對照（決策後）

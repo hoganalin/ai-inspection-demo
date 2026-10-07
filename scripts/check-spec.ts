@@ -13,7 +13,8 @@ import {
   type Verdict,
 } from '../src/features/inspection/spec/inspectionSpecV1.ts';
 import { computeControlChart, type LotSummary } from '../src/features/control/spc.ts';
-import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, HUMAN_REPLIES } from '../src/features/samples/referenceData.ts';
+import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, HUMAN_REPLIES, V2_SUMMARY } from '../src/features/samples/referenceData.ts';
+import { readFileSync } from 'node:fs';
 import { laborReduction, laborScenario } from '../src/features/overview/laborModel.ts';
 
 let failed = 0;
@@ -153,6 +154,17 @@ if (HUMAN_SUMMARY) {
   check('labor: dies per 8 h shift at 30 s (before → after)', [Math.round(s30.diesPerShift.before), Math.round(s30.diesPerShift.after)], [1964, 3578]);
   check('labor: reduction is independent of seconds', r1(laborReduction(before, after) * 100), r1((1 - laborScenario(15, before, after).per1000Minutes.after / laborScenario(15, before, after).per1000Minutes.before) * 100));
   check('labor: per-lot re-judged dies (50 per lot) 21 → 12', [Math.round(50 * before), Math.round(50 * after)], [21, 12]);
+}
+
+// 第二輪（規範 v2）：網站資料與 analyze_v2.py 的輸出一致，誤判率可由第 1 次判定的誤判清單重算
+{
+  const m = JSON.parse(readFileSync(new URL('../experiment/results/v2-metrics.json', import.meta.url), 'utf8'));
+  check('v2: site summary matches v2-metrics.json (miss, false call, repeatability)',
+    [V2_SUMMARY?.trial1.missRate, V2_SUMMARY?.trial1.falseCallRate, V2_SUMMARY?.repeatability],
+    [m.trial1.missRate, m.trial1.falseCallRate, m.repeatability]);
+  const passJudgments = REFERENCE_SAMPLES.filter(x => x.referenceVerdict === 'pass').length * 3;
+  check('v2: false-call rate = listed false calls ÷ Pass judgments',
+    V2_SUMMARY?.trial1.falseCallRate, (V2_SUMMARY?.falseCallsTrial1.length ?? NaN) / passJudgments);
 }
 
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');

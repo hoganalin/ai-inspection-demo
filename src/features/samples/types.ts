@@ -72,6 +72,37 @@ export interface RawHumanSummary {
   repeatability: { n: number; own: number; rules: number };
 }
 
+interface V2Rates {
+  judgments: number;
+  accuracy: number;
+  missRate: number;
+  falseCallRate: number;
+  warningRate: number;
+}
+
+/** 第二輪一致性分析（檢驗規範 v2：分塊放大判讀＋框選換算尺寸＋安全路由），指標定義同第一輪。 */
+export interface RawV2Summary {
+  /** 第 1 次判定（3 評估者 × 40 張 = 120 筆） */
+  trial1: V2Rates & { betweenAppraisersPerTrial: number; fleissKappa: number };
+  /** 第 1、2 次判定配對 */
+  repeatability: number | null;
+  repeatabilityN: number;
+  /** 兩次合計 */
+  pooled: V2Rates | null;
+  recognition: Record<'CHP' | 'CRK' | 'SCR' | 'CON', {
+    refInstances: number;
+    tp: number;
+    recall: number | null;
+    recallRelevant: number | null;
+    measBiasUm: number | null;
+    measRelBias: number | null;
+  }>;
+  /** 第 1 次判定的誤判（樣本/評估者） */
+  falseCallsTrial1: string[];
+  spendUsd: number;
+  apiCalls: number;
+}
+
 /** 作者本人一次判定的回報（供 check:spec 比對 TS 與 Python 規則引擎）。 */
 export interface RawHumanReply {
   sample: string;

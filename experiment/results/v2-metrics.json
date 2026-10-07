@@ -1,0 +1,4085 @@
+{
+  "specVersion": "v2",
+  "trialsComplete": [
+    1,
+    2
+  ],
+  "trial1": {
+    "judgments": 120,
+    "accuracy": 0.7583333333333333,
+    "missRate": 0.0,
+    "falseCallRate": 0.07575757575757576,
+    "warningRate": 0.25833333333333336,
+    "referenceWarningRate": 0.225,
+    "betweenAppraisersPerTrial": 0.825,
+    "allVsStandard": 0.675,
+    "fleissKappa": 0.8219961856325494,
+    "confusion": {
+      "Pass": {
+        "Pass": 48,
+        "Warning": 13,
+        "Fail": 5
+      },
+      "Warning": {
+        "Pass": 1,
+        "Warning": 17,
+        "Fail": 9
+      },
+      "Fail": {
+        "Pass": 0,
+        "Warning": 1,
+        "Fail": 26
+      }
+    },
+    "unparseable": 0
+  },
+  "repeatability": 0.9249999999999999,
+  "repeatabilityN": 120,
+  "repeatabilityByAppraiser": {
+    "甲": 0.9,
+    "乙": 0.95,
+    "丙": 0.925
+  },
+  "trial2": {
+    "judgments": 120,
+    "accuracy": 0.7583333333333333,
+    "missRate": 0.0,
+    "falseCallRate": 0.09090909090909091,
+    "warningRate": 0.26666666666666666,
+    "referenceWarningRate": 0.225
+  },
+  "pooled": {
+    "judgments": 240,
+    "accuracy": 0.7583333333333333,
+    "missRate": 0.0,
+    "falseCallRate": 0.08333333333333333,
+    "warningRate": 0.2625,
+    "referenceWarningRate": 0.225,
+    "confusion": {
+      "Pass": {
+        "Pass": 97,
+        "Warning": 24,
+        "Fail": 11
+      },
+      "Warning": {
+        "Pass": 1,
+        "Warning": 35,
+        "Fail": 18
+      },
+      "Fail": {
+        "Pass": 0,
+        "Warning": 4,
+        "Fail": 50
+      }
+    }
+  },
+  "repeatabilityDisagreements": {
+    "zone": 2,
+    "detect": 6,
+    "measure": 1
+  },
+  "byAppraiser": {
+    "甲": {
+      "judgments": 40,
+      "accuracy": 0.775,
+      "missRate": 0.0,
+      "falseCallRate": 0.09090909090909091,
+      "warningRate": 0.25,
+      "referenceWarningRate": 0.225
+    },
+    "乙": {
+      "judgments": 40,
+      "accuracy": 0.725,
+      "missRate": 0.0,
+      "falseCallRate": 0.09090909090909091,
+      "warningRate": 0.25,
+      "referenceWarningRate": 0.225
+    },
+    "丙": {
+      "judgments": 40,
+      "accuracy": 0.775,
+      "missRate": 0.0,
+      "falseCallRate": 0.045454545454545456,
+      "warningRate": 0.275,
+      "referenceWarningRate": 0.225
+    }
+  },
+  "missesTrial1": [],
+  "falseCallsTrial1": [
+    "S24/乙",
+    "S24/甲",
+    "S31/丙",
+    "S31/乙",
+    "S31/甲"
+  ],
+  "defectRecognition": {
+    "CHP": {
+      "refInstances": 27,
+      "tp": 19,
+      "fn": 8,
+      "fp": 3,
+      "recall": 0.7037037037037037,
+      "recallRelevant": 0.9444444444444444,
+      "recallSubThreshold": 0.2222222222222222,
+      "precision": 0.8636363636363636,
+      "measMaeUm": 33.02105263157895,
+      "measBiasUm": 32.810526315789474,
+      "measRelBias": 1.4700751879699248,
+      "zoneAccuracy": 0.8947368421052632
+    },
+    "CRK": {
+      "refInstances": 6,
+      "tp": 6,
+      "fn": 0,
+      "fp": 0,
+      "recall": 1.0,
+      "recallRelevant": 1.0,
+      "recallSubThreshold": null,
+      "precision": 1.0,
+      "measMaeUm": 83.31666666666668,
+      "measBiasUm": 83.31666666666668,
+      "measRelBias": 0.3865044633480362,
+      "zoneAccuracy": 1.0
+    },
+    "SCR": {
+      "refInstances": 24,
+      "tp": 24,
+      "fn": 0,
+      "fp": 0,
+      "recall": 1.0,
+      "recallRelevant": 1.0,
+      "recallSubThreshold": 1.0,
+      "precision": 1.0,
+      "measMaeUm": 115.33333333333333,
+      "measBiasUm": 90.48333333333333,
+      "measRelBias": 0.3660878386895759,
+      "zoneAccuracy": 0.875
+    },
+    "CON": {
+      "refInstances": 39,
+      "tp": 36,
+      "fn": 3,
+      "fp": 5,
+      "recall": 0.9230769230769231,
+      "recallRelevant": 0.9583333333333334,
+      "recallSubThreshold": 0.8666666666666667,
+      "precision": 0.8780487804878049,
+      "measMaeUm": 12.055555555555555,
+      "measBiasUm": 7.955555555555555,
+      "measRelBias": 0.451359126984127,
+      "zoneAccuracy": 0.9166666666666666
+    },
+    "_clean": {
+      "judgments": 39,
+      "hallucinatedByCode": {}
+    }
+  },
+  "spendUsd": 9.5450703,
+  "apiCalls": 240,
+  "meanSecondsPerCall": 8.249583333333334,
+  "judgments": [
+    {
+      "appraiser": "丙",
+      "sample": "S01",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            500.0,
+            584.0,
+            527.5,
+            589.0
+          ],
+          "lengthUm": 139.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S01",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            500.0,
+            582.5,
+            527.5,
+            590.0
+          ],
+          "lengthUm": 142.5,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S02",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S02",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S03",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            2.5,
+            385.0,
+            5.5,
+            427.5
+          ],
+          "lengthUm": 213.0,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S03",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            4.5,
+            385.0,
+            7.0,
+            426.2
+          ],
+          "lengthUm": 206.6,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S04",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            241.0,
+            296.5,
+            247.0,
+            302.5
+          ],
+          "diameterUm": 30.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            365.0,
+            577.5,
+            371.0,
+            583.5
+          ],
+          "diameterUm": 30.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            667.5,
+            794.0,
+            673.5,
+            800.0
+          ],
+          "diameterUm": 30.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S04",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            365.0,
+            576.5,
+            371.0,
+            582.5
+          ],
+          "diameterUm": 30.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            667.5,
+            793.5,
+            673.5,
+            799.5
+          ],
+          "diameterUm": 30.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S05",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            232.5,
+            7.0,
+            242.5
+          ],
+          "diameterUm": 50.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S05",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            227.5,
+            12.5,
+            240.0
+          ],
+          "diameterUm": 62.5
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S06",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S06",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S07",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S07",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S08",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            674.5,
+            0.0,
+            730.0,
+            10.0
+          ],
+          "depthUm": 50.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S08",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            702.5,
+            0.0,
+            722.5,
+            8.8
+          ],
+          "depthUm": 43.8,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S09",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S09",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S10",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S10",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S11",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S11",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S12",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S12",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S13",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            15.0,
+            640.0,
+            18.8,
+            730.0
+          ],
+          "lengthUm": 450.4,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S13",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            4.5,
+            635.0,
+            14.0,
+            732.5
+          ],
+          "lengthUm": 489.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S14",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            727.5,
+            141.5,
+            740.0,
+            152.5
+          ],
+          "lengthUm": 83.3,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S14",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            731.0,
+            142.5,
+            745.0,
+            157.5
+          ],
+          "lengthUm": 102.6,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S15",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S15",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S16",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            540.0,
+            20.0,
+            597.5
+          ],
+          "lengthUm": 304.4
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S16",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            542.5,
+            17.5,
+            582.5
+          ],
+          "lengthUm": 218.3
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S17",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S17",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S18",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            965.0,
+            660.0,
+            1000,
+            770.0
+          ],
+          "depthUm": 175.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S18",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            965.0,
+            670.0,
+            1000,
+            765.0
+          ],
+          "depthUm": 175.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S19",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            576.0,
+            458.5,
+            582.5,
+            465.0
+          ],
+          "diameterUm": 32.5
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            322.5,
+            578.5,
+            329.0,
+            585.0
+          ],
+          "diameterUm": 32.5
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S19",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            575.0,
+            450.0,
+            581.0,
+            456.0
+          ],
+          "diameterUm": 30.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            321.5,
+            579.0,
+            328.0,
+            585.0
+          ],
+          "diameterUm": 32.5
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S20",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            260.0,
+            404.0,
+            274.0,
+            417.5
+          ],
+          "diameterUm": 70.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S20",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            257.5,
+            402.5,
+            275.0,
+            417.5
+          ],
+          "diameterUm": 87.5
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S21",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S21",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S22",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S22",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S23",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            978.8,
+            750.0,
+            1000,
+            835.0
+          ],
+          "depthUm": 106.2,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S23",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            978.8,
+            750.0,
+            1000,
+            830.0
+          ],
+          "depthUm": 106.2,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S24",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            785.0,
+            988.8,
+            793.8,
+            996.2
+          ],
+          "diameterUm": 43.8
+        },
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            745.0,
+            990.0,
+            760.0,
+            1000
+          ],
+          "diameterUm": 75.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S24",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            775.0,
+            988.8,
+            788.8,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S25",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            304.0,
+            309.0,
+            371.0,
+            346.0
+          ],
+          "lengthUm": 382.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S25",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            282.5,
+            297.5,
+            357.5,
+            352.5
+          ],
+          "lengthUm": 465.0,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S26",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            20.5,
+            572.0,
+            23.0,
+            593.0
+          ],
+          "lengthUm": 105.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S26",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            8.0,
+            571.2,
+            10.5,
+            607.5
+          ],
+          "lengthUm": 181.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S27",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S27",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S28",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            542.0,
+            2.0,
+            546.2
+          ],
+          "depthUm": 10.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S28",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            539.5,
+            2.0,
+            543.8
+          ],
+          "depthUm": 10.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S29",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            744.0,
+            406.0,
+            753.0,
+            415.0
+          ],
+          "diameterUm": 45.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S29",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            743.0,
+            405.0,
+            749.0,
+            411.0
+          ],
+          "diameterUm": 30.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S30",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S30",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S31",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            159.0,
+            977.0,
+            173.0,
+            985.0
+          ],
+          "diameterUm": 70.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S31",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            162.0,
+            977.0,
+            172.5,
+            986.0
+          ],
+          "diameterUm": 52.5
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S32",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            135.0,
+            330.0,
+            140.0,
+            335.0
+          ],
+          "diameterUm": 25.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            656.5,
+            866.5,
+            661.5,
+            871.5
+          ],
+          "diameterUm": 25.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S32",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            132.5,
+            327.5,
+            137.5,
+            332.5
+          ],
+          "diameterUm": 25.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            655.5,
+            866.5,
+            659.5,
+            870.5
+          ],
+          "diameterUm": 20.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S33",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            303.8,
+            988.8,
+            316.2,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S33",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            304.5,
+            983.8,
+            320.0,
+            993.8
+          ],
+          "depthUm": 81.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S34",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "core",
+          "bbox": [
+            765.0,
+            752.5,
+            837.5,
+            812.5
+          ],
+          "lengthUm": 470.5
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S34",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "core",
+          "bbox": [
+            765.0,
+            755.0,
+            832.5,
+            810.0
+          ],
+          "lengthUm": 435.4
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S35",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            889.0,
+            214.0,
+            898.0,
+            223.0
+          ],
+          "diameterUm": 45.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S35",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            889.0,
+            214.0,
+            896.0,
+            221.0
+          ],
+          "diameterUm": 35.0
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S36",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S36",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S37",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            84.0,
+            741.0,
+            331.0,
+            747.5
+          ],
+          "lengthUm": 1235.4,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S37",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            192.5,
+            740.0,
+            325.0,
+            750.0
+          ],
+          "lengthUm": 664.4,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S38",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            342.5,
+            988.8,
+            365.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            234.0,
+            975.0,
+            260.0,
+            995.0
+          ],
+          "depthUm": 125.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S38",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            345.8,
+            988.8,
+            375.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            234.0,
+            975.0,
+            260.0,
+            1000
+          ],
+          "depthUm": 125.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S39",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            467.5,
+            37.5,
+            500.0,
+            70.0
+          ],
+          "lengthUm": 229.8,
+          "crossesPad": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S39",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            467.5,
+            37.5,
+            500.0,
+            70.0
+          ],
+          "lengthUm": 229.8,
+          "crossesPad": true
+        }
+      ]
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S40",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "丙",
+      "sample": "S40",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S01",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            500.0,
+            584.0,
+            527.5,
+            589.0
+          ],
+          "lengthUm": 139.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S01",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            504.0,
+            582.5,
+            529.0,
+            587.5
+          ],
+          "lengthUm": 127.5,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S02",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S02",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S03",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            20.5,
+            386.2,
+            23.2,
+            427.5
+          ],
+          "lengthUm": 206.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S03",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            22.5,
+            387.5,
+            27.5,
+            422.5
+          ],
+          "lengthUm": 176.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S04",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            366.5,
+            575.5,
+            374.0,
+            583.0
+          ],
+          "diameterUm": 37.5
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            666.5,
+            792.5,
+            674.0,
+            800.0
+          ],
+          "diameterUm": 37.5
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S04",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            365.5,
+            577.0,
+            370.5,
+            582.0
+          ],
+          "diameterUm": 25.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            668.0,
+            794.0,
+            673.0,
+            799.0
+          ],
+          "diameterUm": 25.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S05",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            2.5,
+            226.2,
+            8.8,
+            232.5
+          ],
+          "diameterUm": 31.2
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S05",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            4.0,
+            232.5,
+            14.0,
+            251.0
+          ],
+          "diameterUm": 92.5
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S06",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S06",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S07",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S07",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S08",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            695.0,
+            0.0,
+            735.0,
+            15.0
+          ],
+          "depthUm": 75.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S08",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            695.0,
+            0.0,
+            735.0,
+            10.0
+          ],
+          "depthUm": 50.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S09",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S09",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S10",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S10",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            132.5,
+            354.0,
+            137.5,
+            359.0
+          ],
+          "diameterUm": 25.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S11",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S11",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S12",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S12",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S13",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            13.0,
+            645.0,
+            20.0,
+            722.5
+          ],
+          "lengthUm": 389.1,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S13",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            9.0,
+            635.0,
+            20.0,
+            730.0
+          ],
+          "lengthUm": 478.2,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S14",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            727.5,
+            141.0,
+            745.0,
+            155.0
+          ],
+          "lengthUm": 112.1,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S14",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            730.0,
+            142.5,
+            746.0,
+            159.0
+          ],
+          "lengthUm": 114.9,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S15",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S15",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S16",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            544.0,
+            17.5,
+            590.0
+          ],
+          "lengthUm": 246.1
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S16",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            542.5,
+            18.8,
+            590.0
+          ],
+          "lengthUm": 255.3
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S17",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S17",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S18",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            965.0,
+            670.0,
+            1000,
+            780.0
+          ],
+          "depthUm": 175.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S18",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            965.0,
+            665.0,
+            1000,
+            780.0
+          ],
+          "depthUm": 175.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S19",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            574.0,
+            461.5,
+            581.5,
+            469.0
+          ],
+          "diameterUm": 37.5
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            320.5,
+            578.0,
+            329.0,
+            586.0
+          ],
+          "diameterUm": 42.5
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S19",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S20",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            259.0,
+            404.0,
+            274.0,
+            419.0
+          ],
+          "diameterUm": 75.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S20",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            261.0,
+            404.0,
+            274.0,
+            417.0
+          ],
+          "diameterUm": 65.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S21",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S21",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S22",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S22",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S23",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            977.0,
+            760.0,
+            1000,
+            830.0
+          ],
+          "depthUm": 115.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S23",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            977.0,
+            750.0,
+            1000,
+            830.0
+          ],
+          "depthUm": 115.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S24",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            779.5,
+            988.8,
+            789.5,
+            997.0
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S24",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            779.5,
+            988.8,
+            789.5,
+            995.0
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            744.0,
+            986.0,
+            758.0,
+            997.5
+          ],
+          "diameterUm": 70.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S25",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            285.0,
+            305.0,
+            365.0,
+            350.0
+          ],
+          "lengthUm": 458.9,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S25",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            282.5,
+            305.0,
+            355.0,
+            355.0
+          ],
+          "lengthUm": 440.3,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S26",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            8.0,
+            571.2,
+            11.2,
+            606.2
+          ],
+          "lengthUm": 175.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S26",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            13.0,
+            529.5,
+            17.0,
+            578.0
+          ],
+          "lengthUm": 243.3,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S27",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S27",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S28",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S28",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            539.5,
+            2.0,
+            544.5
+          ],
+          "depthUm": 10.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S29",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            744.0,
+            407.5,
+            751.0,
+            414.5
+          ],
+          "diameterUm": 35.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            711.5,
+            434.0,
+            718.5,
+            441.0
+          ],
+          "diameterUm": 35.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S29",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            746.5,
+            407.5,
+            752.5,
+            413.5
+          ],
+          "diameterUm": 30.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S30",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S30",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S31",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            163.8,
+            977.0,
+            176.0,
+            991.0
+          ],
+          "diameterUm": 70.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S31",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            165.0,
+            977.0,
+            176.2,
+            989.0
+          ],
+          "diameterUm": 60.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S32",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            132.0,
+            330.0,
+            136.5,
+            334.5
+          ],
+          "diameterUm": 22.5
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            655.0,
+            867.0,
+            659.5,
+            871.5
+          ],
+          "diameterUm": 22.5
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S32",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            131.5,
+            327.0,
+            139.0,
+            334.0
+          ],
+          "diameterUm": 37.5
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            655.0,
+            866.5,
+            661.0,
+            872.5
+          ],
+          "diameterUm": 30.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S33",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            299.0,
+            988.8,
+            312.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S33",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            304.5,
+            986.2,
+            317.0,
+            1000
+          ],
+          "depthUm": 68.8,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S34",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "core",
+          "bbox": [
+            765.0,
+            750.0,
+            835.0,
+            815.0
+          ],
+          "lengthUm": 477.6
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S34",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "core",
+          "bbox": [
+            760.0,
+            747.5,
+            832.5,
+            812.5
+          ],
+          "lengthUm": 486.9
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S35",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            889.0,
+            213.0,
+            896.0,
+            220.0
+          ],
+          "diameterUm": 35.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S35",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            888.0,
+            213.0,
+            896.0,
+            221.0
+          ],
+          "diameterUm": 40.0
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S36",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S36",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S37",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            85.0,
+            740.0,
+            327.5,
+            748.5
+          ],
+          "lengthUm": 1213.2,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S37",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            85.0,
+            740.0,
+            330.0,
+            748.0
+          ],
+          "lengthUm": 1225.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S38",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            342.5,
+            988.8,
+            375.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            230.0,
+            975.0,
+            265.0,
+            1000
+          ],
+          "depthUm": 125.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S38",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            342.5,
+            988.8,
+            365.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            240.0,
+            977.5,
+            280.0,
+            1000
+          ],
+          "depthUm": 112.5,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S39",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            467.5,
+            35.0,
+            500.0,
+            65.0
+          ],
+          "lengthUm": 221.1,
+          "crossesPad": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S39",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            467.5,
+            37.5,
+            500.0,
+            70.0
+          ],
+          "lengthUm": 229.8,
+          "crossesPad": true
+        }
+      ]
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S40",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "乙",
+      "sample": "S40",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S01",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            500.0,
+            582.5,
+            527.5,
+            587.5
+          ],
+          "lengthUm": 139.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S01",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            502.0,
+            582.5,
+            524.0,
+            586.5
+          ],
+          "lengthUm": 111.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S02",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S02",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S03",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            22.0,
+            382.5,
+            24.0,
+            427.5
+          ],
+          "lengthUm": 225.2,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S03",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            14.0,
+            385.0,
+            18.0,
+            422.5
+          ],
+          "lengthUm": 188.6,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S04",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            241.5,
+            296.5,
+            246.5,
+            301.5
+          ],
+          "diameterUm": 25.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            366.0,
+            577.5,
+            371.0,
+            582.5
+          ],
+          "diameterUm": 25.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            667.5,
+            794.0,
+            672.5,
+            799.0
+          ],
+          "diameterUm": 25.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S04",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            365.0,
+            577.5,
+            371.0,
+            583.5
+          ],
+          "diameterUm": 30.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            666.5,
+            793.5,
+            672.5,
+            799.5
+          ],
+          "diameterUm": 30.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S05",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            228.8,
+            14.0,
+            245.0
+          ],
+          "diameterUm": 81.2
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S05",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            2.0,
+            232.5,
+            9.5,
+            240.0
+          ],
+          "diameterUm": 37.5
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S06",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S06",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S07",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S07",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S08",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            672.5,
+            0.0,
+            735.0,
+            10.0
+          ],
+          "depthUm": 50.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S08",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            680.0,
+            0.0,
+            730.0,
+            11.2
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S09",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S09",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S10",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            132.5,
+            354.0,
+            139.0,
+            360.0
+          ],
+          "diameterUm": 32.5
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S10",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S11",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S11",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S12",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S12",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S13",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            9.0,
+            635.0,
+            20.0,
+            727.5
+          ],
+          "lengthUm": 465.8,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S13",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            13.8,
+            638.8,
+            18.0,
+            730.0
+          ],
+          "lengthUm": 456.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S14",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            734.0,
+            144.0,
+            746.0,
+            159.0
+          ],
+          "lengthUm": 96.0,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S14",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            734.0,
+            144.0,
+            743.5,
+            155.0
+          ],
+          "lengthUm": 72.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S15",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S15",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S16",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            542.5,
+            17.5,
+            580.0
+          ],
+          "lengthUm": 206.9
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S16",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            544.0,
+            20.0,
+            585.0
+          ],
+          "lengthUm": 228.1
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S17",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S17",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S18",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            965.0,
+            665.0,
+            1000,
+            765.0
+          ],
+          "depthUm": 175.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S18",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "core",
+          "bbox": [
+            965.0,
+            665.0,
+            1000,
+            765.0
+          ],
+          "depthUm": 175.0,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S19",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            575.0,
+            440.0,
+            581.0,
+            446.0
+          ],
+          "diameterUm": 30.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            322.5,
+            579.0,
+            329.0,
+            585.0
+          ],
+          "diameterUm": 32.5
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S19",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            574.0,
+            427.0,
+            582.0,
+            434.0
+          ],
+          "diameterUm": 40.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            324.0,
+            576.5,
+            331.0,
+            583.5
+          ],
+          "diameterUm": 35.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S20",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            260.0,
+            404.0,
+            274.0,
+            417.5
+          ],
+          "diameterUm": 70.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S20",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            260.0,
+            404.0,
+            274.0,
+            418.0
+          ],
+          "diameterUm": 70.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S21",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S21",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S22",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S22",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S23",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            978.8,
+            750.0,
+            1000,
+            830.0
+          ],
+          "depthUm": 106.2,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S23",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            978.8,
+            750.0,
+            1000,
+            835.0
+          ],
+          "depthUm": 106.2,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S24",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            775.0,
+            988.8,
+            786.2,
+            998.8
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            975.0,
+            985.0,
+            990.0,
+            997.5
+          ],
+          "diameterUm": 75.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S24",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            782.5,
+            988.2,
+            791.2,
+            995.0
+          ],
+          "depthUm": 58.8,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S25",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            289.0,
+            300.0,
+            350.0,
+            355.0
+          ],
+          "lengthUm": 410.7,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S25",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            289.0,
+            299.0,
+            355.0,
+            359.0
+          ],
+          "lengthUm": 446.0,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S26",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            13.5,
+            571.2,
+            16.5,
+            605.0
+          ],
+          "lengthUm": 169.4,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S26",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "peripheral",
+          "bbox": [
+            13.8,
+            567.5,
+            18.8,
+            592.5
+          ],
+          "lengthUm": 127.5,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S27",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S27",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S28",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            545.0,
+            3.0,
+            552.5
+          ],
+          "depthUm": 15.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S28",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "peripheral",
+          "bbox": [
+            0.0,
+            548.8,
+            2.0,
+            552.5
+          ],
+          "diameterUm": 18.8
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S29",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            741.0,
+            406.0,
+            751.0,
+            414.0
+          ],
+          "diameterUm": 50.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            741.0,
+            419.0,
+            750.0,
+            426.0
+          ],
+          "diameterUm": 45.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S29",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            742.5,
+            402.5,
+            750.0,
+            410.0
+          ],
+          "diameterUm": 37.5
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S30",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S30",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S31",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            161.5,
+            977.0,
+            170.0,
+            990.0
+          ],
+          "diameterUm": 65.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S31",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            165.5,
+            979.5,
+            174.0,
+            992.5
+          ],
+          "diameterUm": 65.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S32",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            132.5,
+            329.0,
+            136.0,
+            332.5
+          ],
+          "diameterUm": 17.5
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            655.5,
+            867.5,
+            659.0,
+            871.0
+          ],
+          "diameterUm": 17.5
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S32",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            132.5,
+            330.0,
+            137.5,
+            335.0
+          ],
+          "diameterUm": 25.0
+        },
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            655.5,
+            867.0,
+            660.5,
+            872.0
+          ],
+          "diameterUm": 25.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S33",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            298.5,
+            988.8,
+            312.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S33",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            298.5,
+            988.8,
+            312.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S34",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "core",
+          "bbox": [
+            760.0,
+            752.5,
+            832.5,
+            812.5
+          ],
+          "lengthUm": 470.5
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S34",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CRK",
+          "zone": "core",
+          "bbox": [
+            760.0,
+            755.0,
+            835.0,
+            815.0
+          ],
+          "lengthUm": 480.2
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S35",
+      "trial": 1,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            886.0,
+            213.5,
+            896.0,
+            223.5
+          ],
+          "diameterUm": 50.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S35",
+      "trial": 2,
+      "verdict": "Warning",
+      "defects": [
+        {
+          "code": "CON",
+          "zone": "core",
+          "bbox": [
+            890.0,
+            212.5,
+            900.0,
+            222.5
+          ],
+          "diameterUm": 50.0
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S36",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S36",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S37",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            239.0,
+            739.0,
+            332.5,
+            749.0
+          ],
+          "lengthUm": 470.2,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S37",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            85.0,
+            740.0,
+            327.5,
+            747.5
+          ],
+          "lengthUm": 1213.1,
+          "crossesPad": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S38",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            342.5,
+            988.8,
+            365.0,
+            1000
+          ],
+          "depthUm": 56.2,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            245.0,
+            980.0,
+            280.0,
+            1000
+          ],
+          "depthUm": 100.0,
+          "touchesSealRing": false
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S38",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            345.8,
+            991.2,
+            375.0,
+            1000
+          ],
+          "depthUm": 43.8,
+          "touchesSealRing": false
+        },
+        {
+          "code": "CHP",
+          "zone": "peripheral",
+          "bbox": [
+            234.0,
+            977.5,
+            265.0,
+            1000
+          ],
+          "depthUm": 112.5,
+          "touchesSealRing": true
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S39",
+      "trial": 1,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            467.5,
+            37.5,
+            500.0,
+            70.0
+          ],
+          "lengthUm": 229.8,
+          "crossesPad": true
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S39",
+      "trial": 2,
+      "verdict": "Fail",
+      "defects": [
+        {
+          "code": "SCR",
+          "zone": "core",
+          "bbox": [
+            463.8,
+            37.5,
+            500.0,
+            70.0
+          ],
+          "lengthUm": 243.4,
+          "crossesPad": true
+        }
+      ]
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S40",
+      "trial": 1,
+      "verdict": "Pass",
+      "defects": []
+    },
+    {
+      "appraiser": "甲",
+      "sample": "S40",
+      "trial": 2,
+      "verdict": "Pass",
+      "defects": []
+    }
+  ]
+}

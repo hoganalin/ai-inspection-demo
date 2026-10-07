@@ -6,8 +6,8 @@ import {
   type InspectionResult,
   type Verdict,
 } from '../inspection/spec/inspectionSpecV1';
-import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY } from './referenceData';
-import type { Agreement, RawRefDefect, RawRecordedReply, ReferenceSample } from './types';
+import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, V2_SUMMARY as RAW_V2_SUMMARY } from './referenceData';
+import type { Agreement, RawRefDefect, RawRecordedReply, RawV2Summary, ReferenceSample } from './types';
 
 /** 實驗日期（experiment/raw/after.jsonl 的執行日）。 */
 const RECORDED_AT = '2026-10-05T00:00:00.000Z';
@@ -68,6 +68,13 @@ export const SAMPLES: ReferenceSample[] = REFERENCE_SAMPLES.map(s => {
 export const SAMPLE_BY_ID: Record<string, ReferenceSample> = Object.fromEntries(SAMPLES.map(s => [s.id, s]));
 
 export { MSA_SUMMARY, HUMAN_SUMMARY };
+
+function missingV2(): never {
+  throw new Error('referenceData.ts 缺少 V2_SUMMARY：先執行 experiment/analyze_v2.py，再執行 export_app_data.py');
+}
+
+/** 第二輪（檢驗規範 v2）一致性分析；資料隨 repo 提交，缺少即是匯出步驟漏做。 */
+export const V2_SUMMARY: RawV2Summary = RAW_V2_SUMMARY ?? missingV2();
 
 /** 取得一張標準樣本影像作為 File，交給與上傳相同的判定流程。 */
 export async function fetchSampleFile(sample: ReferenceSample): Promise<File> {

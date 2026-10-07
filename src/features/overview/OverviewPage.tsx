@@ -5,7 +5,7 @@ import { DiePlate } from '../inspection/components/DiePlate';
 import { LeaderLayer } from '../inspection/components/LeaderLayer';
 import { ScaleBar } from '../inspection/components/ScaleBar';
 import { DEFECT_CLASS_LABEL, VERDICT_LABEL, ZONE_LABEL, acceptanceScale, formatMeasurement } from '../inspection/spec/inspectionSpecV1';
-import { AgreementChip, HUMAN_SUMMARY, MSA_SUMMARY, SAMPLE_BY_ID } from '../samples';
+import { AgreementChip, HUMAN_SUMMARY, MSA_SUMMARY, SAMPLE_BY_ID, V2_SUMMARY } from '../samples';
 import { PChart } from '../control/components/PChart';
 import { ALLOWANCE, RECHECK_SECONDS, SHIFT_MINUTES, laborReduction, laborScenario } from './laborModel';
 
@@ -60,6 +60,8 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
   const b = MSA_SUMMARY.before;
   const a = MSA_SUMMARY.after;
   const rec = MSA_SUMMARY.recognition;
+  // 第二輪：檢驗規範 v2（分塊放大判讀＋框選換算尺寸＋安全路由），同條件重跑
+  const v2 = V2_SUMMARY;
   // 中間情境改用作者實測的每次判定時間；其餘為假設值
   const measuredSeconds = HUMAN_SUMMARY?.secondsPerDie ?? null;
   const scenarioSeconds = measuredSeconds ? [RECHECK_SECONDS[0], measuredSeconds, RECHECK_SECONDS[2]] : [...RECHECK_SECONDS];
@@ -69,17 +71,18 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
 
   const pairs = useMemo(() => [{ from: 'ov-row-0', to: 'ov-ref-1', verdict: judged.verdict }], [judged.verdict]);
 
-  const msaRows: { label: string; hint: string; before: string; after: string; trend: Trend }[] = [
-    { label: '漏判率', hint: '標準答案 Fail → 判 Pass', before: pct(b.missRate), after: pct(a.missRate), trend: 'worse' },
-    { label: '人工複判率', hint: `判 Warning 的比例；標準答案為 ${pct(a.referenceWarningRate)}`, before: pct(b.warningRate), after: pct(a.warningRate), trend: 'better' },
-    { label: '誤判率', hint: '標準答案 Pass → 判 Fail', before: pct(b.falseCallRate), after: pct(a.falseCallRate), trend: 'worse' },
-    { label: '評估者間一致率', hint: '三位評估者判定相同的樣本比例', before: pct(b.betweenAppraisersPerTrial), after: pct(a.betweenAppraisersPerTrial), trend: 'flat' },
-    { label: '對標準答案一致率', hint: '逐筆', before: pct(b.accuracy), after: pct(a.accuracy), trend: 'flat' },
-    { label: 'Fleiss’ kappa', hint: '三人', before: b.fleissKappa.toFixed(2), after: a.fleissKappa.toFixed(2), trend: 'flat' },
-    { label: '重複性', hint: '同一評估者兩次一致', before: pct(b.repeatability), after: pct(a.repeatability), trend: repeatabilityTrend(b.repeatability, a.repeatability) },
+  // trend＝規範 v2 相對 v1 的變化
+  const msaRows: { label: string; hint: string; before: string; v1: string; v2: string; trend: Trend }[] = [
+    { label: '漏判率', hint: '標準答案 Fail → 判 Pass', before: pct(b.missRate), v1: pct(a.missRate), v2: pct(v2.trial1.missRate), trend: 'better' },
+    { label: '重複性', hint: '同一評估者兩次一致', before: pct(b.repeatability), v1: pct(a.repeatability), v2: pct(v2.repeatability), trend: repeatabilityTrend(a.repeatability, v2.repeatability) },
+    { label: '人工複判率', hint: `判 Warning 的比例；標準答案為 ${pct(a.referenceWarningRate)}`, before: pct(b.warningRate), v1: pct(a.warningRate), v2: pct(v2.trial1.warningRate), trend: 'flat' },
+    { label: '誤判率', hint: '標準答案 Pass → 判 Fail', before: pct(b.falseCallRate), v1: pct(a.falseCallRate), v2: pct(v2.trial1.falseCallRate), trend: 'worse' },
+    { label: '評估者間一致率', hint: '三位評估者判定相同的樣本比例', before: pct(b.betweenAppraisersPerTrial), v1: pct(a.betweenAppraisersPerTrial), v2: pct(v2.trial1.betweenAppraisersPerTrial), trend: 'better' },
+    { label: '對標準答案一致率', hint: '逐筆', before: pct(b.accuracy), v1: pct(a.accuracy), v2: pct(v2.trial1.accuracy), trend: 'better' },
+    { label: 'Fleiss’ kappa', hint: '三人', before: b.fleissKappa.toFixed(2), v1: a.fleissKappa.toFixed(2), v2: v2.trial1.fleissKappa.toFixed(2), trend: 'better' },
   ];
 
-  const recognition = (['CHP', 'CRK', 'SCR', 'CON'] as const).map(code => ({ code, ...rec[code] }));
+  const recognition = (['CHP', 'CRK', 'SCR', 'CON'] as const).map(code => ({ code, ...rec[code], v2: v2.recognition[code] }));
 
   const firstSignal = controlView.signals.find(s => s.source === 'simulated');
 
@@ -156,25 +159,25 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
 
           <div className="headline">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-              <h3 className="block-title" style={{ margin: 0 }}>量到了什麼：改善前 → 改善後</h3>
+              <h3 className="block-title" style={{ margin: 0 }}>量到了什麼：口述標準 → 規範 v1 → 規範 v2</h3>
               <a href="#msa-title" className="small" onClick={e => { e.preventDefault(); document.getElementById('msa-title')?.scrollIntoView({ behavior: 'smooth' }); }}>完整一致性分析</a>
             </div>
             <dl className="headline-rows">
               <div>
                 <dt>漏判率<span className="tiny dim">標準答案 Fail → 判 Pass</span></dt>
-                <dd><span className="mono dim">{pct(b.missRate)} →</span> <b className="headline-num" style={{ color: 'var(--fail-ink)' }}>{pct(a.missRate)}</b> <span className="trend" style={{ color: TREND.worse.color }}>變差</span></dd>
+                <dd><span className="mono dim">{pct(b.missRate)} → {pct(a.missRate)} →</span> <b className="headline-num" style={{ color: 'var(--pass-ink)' }}>{pct(v2.trial1.missRate)}</b> <span className="trend" style={{ color: TREND.better.color }}>改善</span></dd>
               </div>
               <div>
-                <dt>人工複判率<span className="tiny dim">標準答案為 {pct(a.referenceWarningRate)}</span></dt>
-                <dd><span className="mono dim">{pct(b.warningRate)} →</span> <b className="headline-num">{pct(a.warningRate)}</b> <span className="trend" style={{ color: TREND.better.color }}>改善</span></dd>
+                <dt>重複性<span className="tiny dim">同一評估者兩次一致</span></dt>
+                <dd><span className="mono dim">{pct(b.repeatability)} → {pct(a.repeatability)} →</span> <b className="headline-num">{pct(v2.repeatability)}</b> <span className="trend" style={{ color: TREND.better.color }}>改善</span></dd>
               </div>
               <div>
                 <dt>誤判率<span className="tiny dim">標準答案 Pass → 判 Fail</span></dt>
-                <dd><span className="mono dim">{pct(b.falseCallRate)} →</span> <b className="headline-num">{pct(a.falseCallRate)}</b> <span className="trend" style={{ color: TREND.worse.color }}>變差</span></dd>
+                <dd><span className="mono dim">{pct(b.falseCallRate)} → {pct(a.falseCallRate)} →</span> <b className="headline-num" style={{ color: 'var(--fail-ink)' }}>{pct(v2.trial1.falseCallRate)}</b> <span className="trend" style={{ color: TREND.worse.color }}>變差</span></dd>
               </div>
             </dl>
             <p className="small" style={{ marginTop: 8 }}>
-              <b>不建議進入 ③ 單線試行。</b><span style={{ color: 'var(--ink-2)' }}>AI 看不到大部分崩角、認不出裂紋；規範 v2 先處理影像條件。</span>
+              <b>規範 v2：漏判、重複性、人工複判三項門檻達標，Gate 尚未通過。</b><span style={{ color: 'var(--ink-2)' }}>AI 的框選過鬆，尺寸被高估，誤判率升高；評估者間一致率 {pct(v2.trial1.betweenAppraisersPerTrial)} 未達 90%。</span>
             </p>
           </div>
         </div>
@@ -183,13 +186,13 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
       {/* ── Check：一致性分析 ── */}
       <section className="section" aria-labelledby="msa-title" style={{ marginTop: 64 }}>
         <div className="section-head">
-          <h2 className="section-title" id="msa-title">量到了什麼：一致性分析，改善前 vs 改善後</h2>
-          <span className="section-note">40 張半合成樣本 × 3 位模擬 AI 評估者，每條件 {a.judgments} 筆判定</span>
+          <h2 className="section-title" id="msa-title">量到了什麼：一致性分析，口述標準 → 規範 v1 → 規範 v2</h2>
+          <span className="section-note">40 張半合成樣本 × 3 位模擬 AI 評估者，每條件 {a.judgments} 筆判定（第 1 次）</span>
         </div>
         <p style={{ maxWidth: '72ch', marginBottom: 18 }}>
-          <b>結論先講：改善後沒有明顯優於改善前，漏判率反而變差。</b>
-          規範 v1 讓人工複判率回到合理水準，但 AI 在全幅影像上看不到大部分崩角、認不出裂紋，
-          看不到的缺陷就直接 Pass 放行。依目前的規範與影像條件，<b>不建議進入 ③ 單線試行</b>。
+          <b>結論先講：規範 v1 讓漏判率變差（{pct(b.missRate)} → {pct(a.missRate)}）；改成規範 v2 後漏判率降到 {pct(v2.trial1.missRate)}、重複性 {pct(v2.repeatability)}。</b>
+          v1 的問題是 AI 在全幅影像上看不到小缺陷、尺寸量不準；v2 改成分塊放大判讀，尺寸由程式依框選範圍換算。
+          剩下的問題是框選過鬆造成誤判率上升，評估者間一致率也還沒到 90%，所以 <b>Gate ②→③ 尚未通過</b>。
         </p>
 
         <div className="overview-msa">
@@ -198,9 +201,10 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
               <thead>
                 <tr>
                   <th scope="col">指標</th>
-                  <th scope="col" className="r">改善前<span className="dim">（口述標準）</span></th>
-                  <th scope="col" className="r">改善後<span className="dim">（規範 v1）</span></th>
-                  <th scope="col">變化</th>
+                  <th scope="col" className="r">口述標準</th>
+                  <th scope="col" className="r">規範 v1</th>
+                  <th scope="col" className="r">規範 v2</th>
+                  <th scope="col">v2 比 v1</th>
                 </tr>
               </thead>
               <tbody>
@@ -210,9 +214,10 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                       <div style={{ fontWeight: 600 }}>{r.label}</div>
                       <div className="tiny dim">{r.hint}</div>
                     </td>
-                    <td className="r mono" data-label="改善前">{r.before}</td>
-                    <td className="r mono" data-label="改善後" style={{ fontWeight: 700, color: r.trend === 'worse' ? 'var(--fail-ink)' : undefined }}>{r.after}</td>
-                    <td className="small" data-label="變化" style={{ fontWeight: 600, color: TREND[r.trend].color }}>{TREND[r.trend].label}</td>
+                    <td className="r mono" data-label="口述標準">{r.before}</td>
+                    <td className="r mono" data-label="規範 v1">{r.v1}</td>
+                    <td className="r mono" data-label="規範 v2" style={{ fontWeight: 700, color: r.trend === 'worse' ? 'var(--fail-ink)' : undefined }}>{r.v2}</td>
+                    <td className="small" data-label="v2 比 v1" style={{ fontWeight: 600, color: TREND[r.trend].color }}>{TREND[r.trend].label}</td>
                   </tr>
                 ))}
               </tbody>
@@ -220,29 +225,31 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
           </div>
 
           <div>
-            <h3 className="block-title">漏判的主因是「看不到」</h3>
+            <h3 className="block-title">規範 v2 把「看不到」補起來</h3>
             <p className="small" style={{ color: 'var(--ink-2)', marginBottom: 12 }}>
-              改善後 AI 對各缺陷分類的偵出率（偵出數／標準答案件數）。40 µm 的崩角在 1000 px 全幅影像上只有 8 px 深。
+              各缺陷分類的偵出率（偵出數／標準答案件數）。v1 在 1000 px 全幅影像上判讀，40 µm 的崩角只有 8 px 深；v2 把邊緣放大 4 倍、核心放大 2 倍再判讀。
             </p>
             <div style={{ borderTop: '1px solid var(--rule-strong)' }}>
               {recognition.map(r => (
-                <div key={r.code} style={{ display: 'grid', gridTemplateColumns: '110px minmax(0, 1fr) 92px', gap: 12, alignItems: 'center', padding: '9px 0', borderBottom: '1px solid var(--rule)' }}>
+                <div key={r.code} style={{ display: 'grid', gridTemplateColumns: '110px minmax(0, 1fr) 120px', gap: 12, alignItems: 'center', padding: '9px 0', borderBottom: '1px solid var(--rule)' }}>
                   <span><span className="mono" style={{ fontWeight: 700 }}>{r.code}</span> <span className="small">{DEFECT_CLASS_LABEL[r.code].cn}</span></span>
                   <span style={{ height: 10, background: 'var(--ground-2)', position: 'relative' }}>
-                    <span style={{ position: 'absolute', inset: 0, width: `${(r.recall ?? 0) * 100}%`, background: (r.recall ?? 0) < 0.5 ? 'var(--fail)' : 'var(--si-800)' }} />
+                    <span style={{ position: 'absolute', inset: 0, width: `${(r.v2.recall ?? 0) * 100}%`, background: 'var(--si-800)' }} />
+                    <span style={{ position: 'absolute', top: -3, bottom: -3, left: `${(r.recall ?? 0) * 100}%`, width: 2, background: 'var(--fail)' }} />
                   </span>
                   <span className="mono small r" style={{ textAlign: 'right' }}>
-                    <b>{pct(r.recall, 0)}</b> <span className="dim">{r.tp}/{r.refInstances}</span>
+                    <span className="dim">{pct(r.recall, 0)} →</span> <b>{pct(r.v2.recall, 0)}</b>
                   </span>
                 </div>
               ))}
             </div>
             <p className="tiny dim" style={{ marginTop: 10 }}>
+              深色條＝v2 偵出率，紅色刻度＝v1。框選過鬆讓 v2 的尺寸偏大（崩角平均 +{pct(v2.recognition.CHP.measRelBias, 0)}）；
               樣本少（每類 Fail 只有 2–3 張），比率的信賴區間很寬；評估者是同一模型配不同角色設定，不是真人。
               <DocLink path="experiment/results/msa-summary.md">完整摘要與限制</DocLink>
             </p>
 
-            <h3 className="block-title" style={{ marginTop: 22 }}>以 S25 為例：三位 AI 評估者的實際回報</h3>
+            <h3 className="block-title" style={{ marginTop: 22 }}>以 S25 為例：三位 AI 評估者的實際回報（規範 v1）</h3>
             <ul style={{ listStyle: 'none', margin: 0, padding: 0, borderTop: '1px solid var(--rule-strong)' }}>
               {sample.recorded.map(r => (
                 <li key={r.appraiser} className="small" style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', padding: '8px 0', borderBottom: '1px solid var(--rule)' }}>
@@ -301,11 +308,18 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                     <td className="r mono" data-label="重複性">{pct(human.repeatability.rules)}</td>
                   </tr>
                   <tr>
-                    <td><div style={{ fontWeight: 600 }}>AI＋規則</div><div className="tiny dim">一致性分析改善後，3 位模擬評估者</div></td>
+                    <td><div style={{ fontWeight: 600 }}>AI＋規則（規範 v1）</div><div className="tiny dim">一致性分析改善後，3 位模擬評估者</div></td>
                     <td className="r mono" data-label="對標準答案一致率">{pct(a.accuracy)}</td>
                     <td className="r mono" data-label="漏判率" style={{ color: 'var(--fail-ink)' }}>{pct(a.missRate)}</td>
                     <td className="r mono" data-label="誤判率">{pct(a.falseCallRate)}</td>
                     <td className="r mono" data-label="重複性">{pct(a.repeatability)}</td>
+                  </tr>
+                  <tr>
+                    <td><div style={{ fontWeight: 600 }}>AI＋規則（規範 v2）</div><div className="tiny dim">分塊放大判讀、尺寸由程式換算，3 位模擬評估者</div></td>
+                    <td className="r mono" data-label="對標準答案一致率">{pct(v2.trial1.accuracy)}</td>
+                    <td className="r mono" data-label="漏判率">{pct(v2.trial1.missRate)}</td>
+                    <td className="r mono" data-label="誤判率" style={{ color: 'var(--fail-ink)' }}>{pct(v2.trial1.falseCallRate)}</td>
+                    <td className="r mono" data-label="重複性">{pct(v2.repeatability)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -317,7 +331,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                 <li>交給規則判之後，人和 AI 的重複性都下降：作者 {pct(human.repeatability.own)} → {pct(human.repeatability.rules)}，AI {pct(b.repeatability)} → {pct(a.repeatability)}（口述標準直接判 → 規範＋規則）。規則是固定的，兩次結果不同是因為回報本身不同：作者同一道刮傷一輪標核心區、一輪標周邊區；AI 兩次不一致的 27 組中，15 組是量測跨過門檻、12 組是一次看到一次沒看到。</li>
                 <li>自己判「比較一致」有一部分是一致地判錯，例如 450 µm 的核心區刮傷兩輪都判 Warning，規範是 Fail。</li>
                 <li>漏判的 4 次全是同兩張、兩輪都「沒看到」：周邊區的裂紋（S16）、經過 pad 的刮傷（S39）。</li>
-                <li>這正是規範 v2「尺寸與區域交給程式換算」要解決的問題，對人和 AI 都適用。</li>
+                <li>規範 v2 把尺寸與區域交給程式換算、邊緣放大判讀後，AI 的漏判降到 {pct(v2.trial1.missRate)}、重複性升到 {pct(v2.repeatability)}；人工複判同樣可以這樣做。</li>
               </ul>
               <p className="tiny dim" style={{ marginTop: 12 }}>
                 限制：{human.note}
@@ -381,6 +395,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                 <b>這個數字還不能當效益。</b>改善前的人工複判率高，是因為應退件的晶粒多被送去複判；
                 改善後複判變少，有一部分是這些晶粒被直接放行（漏判率 {pct(b.missRate)} → {pct(a.missRate)}）。
                 漏判率降到 5% 以下之前，省下的工時有一部分是用漏判換來的。
+                第二輪的規範 v2 漏判率 {pct(v2.trial1.missRate)}、人工複判率 {pct(v2.trial1.warningRate)}：複判工時比改善前少約 {pct(laborReduction(b.warningRate, v2.trial1.warningRate), 0)}，這次不是靠漏判換來的，但誤判率 {pct(v2.trial1.falseCallRate)}，被誤退的好晶粒成本要一起算。
               </span>
             </div>
             <h3 className="block-title">ECRS：新的檢驗流程改了什麼</h3>
@@ -411,7 +426,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
           </figure>
           <div>
             <p style={{ marginBottom: 12 }}>
-              25 批 × 50 顆依改善後實測的判定誤差抽樣，自第 15 批起注入切割刀磨耗的 CHP 漂移。
+              25 批 × 50 顆依規範 v1 實測的判定誤差抽樣，自第 15 批起注入切割刀磨耗的 CHP 漂移。規範 v2 的判定誤差尚未重跑這組模擬。
             </p>
             <dl className="small" style={{ margin: 0, display: 'grid', gridTemplateColumns: 'auto minmax(0, 1fr)', gap: '8px 16px' }}>
               <dt className="dim">完美判定</dt><dd style={{ margin: 0 }}>L19 首次異常</dd>
@@ -436,11 +451,11 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
           </li>
           <li className="is-done">
             <span className="phase-head"><b>② PoC 驗證</b><span className="phase-state"><Icon.Check width={14} height={14} />完成</span></span>
-            <span className="small">本系統＋一致性分析＋管制圖模擬</span>
+            <span className="small">規範 v1 未通過 → 規範 v2 重跑一致性分析（2026-10-07）</span>
           </li>
           <li className="is-hold">
-            <span className="phase-head"><b>③ 單線試行</b><span className="phase-state"><Icon.Alert width={14} height={14} />未達門檻</span></span>
-            <span className="small">門檻：漏判率 ≤ 5%（目前 {pct(a.missRate)}）、重複性 ≥ 90%（目前 {pct(a.repeatability)}）、人工複判率 ≤ 30%（目前 {pct(a.warningRate)}）</span>
+            <span className="phase-head"><b>③ 單線試行</b><span className="phase-state"><Icon.Alert width={14} height={14} />Gate 未通過</span></span>
+            <span className="small">規範 v2 達標：漏判率 ≤ 5%（{pct(v2.trial1.missRate)}）、重複性 ≥ 90%（{pct(v2.repeatability)}）、人工複判率 ≤ 30%（{pct(v2.trial1.warningRate)}）。未達：評估者間一致率 ≥ 90%（{pct(v2.trial1.betweenAppraisersPerTrial)}）；誤判率 {pct(v2.trial1.falseCallRate)} 高於目標 3%；預警提早批數待以 v2 重新驗證。</span>
           </li>
           <li>
             <span className="phase-head"><b>④ 擴線與 MES 介接</b><span className="phase-state">規劃</span></span>
@@ -449,12 +464,15 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
         </ol>
 
         <div className="overview-next">
-          <h3 className="block-title">規範 v2 提案（Act）</h3>
+          <h3 className="block-title">規範 v2 已執行（Act）；下一輪 v2.1 提案</h3>
+          <p className="small" style={{ color: 'var(--ink-2)', margin: '0 0 8px' }}>
+            v2 做了三件事：邊緣每邊切 8 段放大 4 倍、核心 4 個象限放大 2 倍；AI 只框選，尺寸與區域由程式依 5 µm/px 換算；周邊區與核心區線狀缺陷改走安全路由。
+            同條件重跑 240 筆判定，花費 US${v2.spendUsd.toFixed(2)}。v2 目前只在實驗流程實作，網站上的單張判定仍用規範 v1。<DocLink path="docs/spec/inspection-spec-v2.md">檢驗規範 v2</DocLink>
+          </p>
           <ol className="small" style={{ margin: 0, paddingLeft: '1.4em', listStyle: 'decimal', display: 'flex', flexDirection: 'column', gap: 6, color: 'var(--ink-2)' }}>
-            <li><b style={{ color: 'var(--ink)' }}>分塊放大判讀：</b>周邊區每邊切 8 段、放大 4 倍再送判，讓 2–8 px 的崩角與裂紋變得看得到。</li>
-            <li><b style={{ color: 'var(--ink)' }}>尺寸不讓 AI（也不讓人）估：</b>只回報缺陷代碼與外框座標，尺寸與區域由程式依 5 µm/px 換算。</li>
-            <li><b style={{ color: 'var(--ink)' }}>安全偏向的路由：</b>周邊區任何異常至少 Warning；核心區線狀缺陷不分 SCR／CRK 至少 Warning。</li>
-            <li><b style={{ color: 'var(--ink)' }}>重跑一致性分析：</b>v2 改完後重跑兩次判定，檢查漏判率與重複性是否達到門檻（v1 的 AI 重複性 {pct(a.repeatability)}、作者本人兩輪對照都已完成）。</li>
+            <li><b style={{ color: 'var(--ink)' }}>框內找實際邊緣：</b>框選後由程式依影像對比找出缺陷邊緣再量測，處理框選過鬆造成的尺寸高估。</li>
+            <li><b style={{ color: 'var(--ink)' }}>門檻附近送人工：</b>量測值落在允收門檻 ±10% 內者判 Warning，不直接 Fail。</li>
+            <li><b style={{ color: 'var(--ink)' }}>重新驗證預警：</b>用 v2 實測的判定誤差重跑管制圖模擬，確認預警能否提早。</li>
           </ol>
         </div>
       </section>
@@ -470,10 +488,10 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
               <tr><th scope="col">階段</th><th scope="col">做了什麼</th><th scope="col">在哪裡</th></tr>
             </thead>
             <tbody>
-              <tr><td className="mono" style={{ fontWeight: 700 }}>P</td><td>痛點「判定標準不一」→ 有版本號的檢驗規範 v1</td><td><DocLink path="docs/spec/inspection-spec-v1.md">檢驗規範 v1</DocLink>・<DocLink path="CONTEXT.md">領域詞彙</DocLink></td></tr>
+              <tr><td className="mono" style={{ fontWeight: 700 }}>P</td><td>痛點「判定標準不一」→ 有版本號的檢驗規範 v1，依一致性分析修訂為 v2</td><td><DocLink path="docs/spec/inspection-spec-v1.md">規範 v1</DocLink>・<DocLink path="docs/spec/inspection-spec-v2.md">規範 v2</DocLink>・<DocLink path="CONTEXT.md">領域詞彙</DocLink></td></tr>
               <tr><td className="mono" style={{ fontWeight: 700 }}>D</td><td>AI 只辨識、規則做判定，每筆判定附條文與版本</td><td><a href="#/inspect" onClick={e => { e.preventDefault(); onNavigate('inspect'); }}>單張判定</a>・<DocLink path="docs/adr/0001-verdict-derived-from-spec-not-ai.md">ADR-0001</DocLink></td></tr>
-              <tr><td className="mono" style={{ fontWeight: 700 }}>C</td><td>一致性分析（計數值 MSA）＋ p 管制圖判異</td><td><DocLink path="experiment/results/msa-summary.md">MSA 摘要</DocLink>・<a href="#/control" onClick={e => { e.preventDefault(); onNavigate('control'); }}>管制看板</a></td></tr>
-              <tr><td className="mono" style={{ fontWeight: 700 }}>A</td><td>預警／異常 → AI 草擬、人確認的異常處置單；導入計畫與規範 v2 提案</td><td><a href="#/control" onClick={e => { e.preventDefault(); onNavigate('control'); }}>管制看板右欄</a>・<DocLink path="docs/rollout/導入計畫.xlsx">導入計畫</DocLink></td></tr>
+              <tr><td className="mono" style={{ fontWeight: 700 }}>C</td><td>一致性分析（計數值 MSA，v1 與 v2 各兩次判定）＋ p 管制圖判異</td><td><DocLink path="experiment/results/msa-summary.md">MSA 摘要</DocLink>・<a href="#/control" onClick={e => { e.preventDefault(); onNavigate('control'); }}>管制看板</a></td></tr>
+              <tr><td className="mono" style={{ fontWeight: 700 }}>A</td><td>預警／異常 → AI 草擬、人確認的異常處置單；依數據修訂規範 v2 並重跑，提出 v2.1</td><td><a href="#/control" onClick={e => { e.preventDefault(); onNavigate('control'); }}>管制看板右欄</a>・<DocLink path="docs/rollout/導入計畫.xlsx">導入計畫</DocLink></td></tr>
             </tbody>
           </table>
         </div>

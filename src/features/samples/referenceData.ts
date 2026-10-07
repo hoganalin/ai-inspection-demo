@@ -2,7 +2,8 @@
 // Sources: experiment/samples/reference.json, experiment/raw/after.jsonl (trial 1),
 //          experiment/results/msa-metrics.json, experiment/results/self-judgment-filled.xlsx (+ meta).
 // Samples are semi-synthetic and AI appraisers are simulated; the human rounds are the author's own judgments.
-import type { RawReferenceSample, RawMsaSummary, RawHumanSummary, RawHumanReply } from './types';
+// Second round (spec v2): experiment/results/v2-metrics.json (written by analyze_v2.py).
+import type { RawReferenceSample, RawMsaSummary, RawHumanSummary, RawHumanReply, RawV2Summary } from './types';
 
 export const GEOMETRY = {"diePx": 1000, "umPerPx": 5.0, "sealRingPx": [20, 24], "padSizePx": 16, "padOffsetPx": 40} as const;
 
@@ -2908,3 +2909,67 @@ export const HUMAN_REPLIES: RawHumanReply[] = [
   "pyRuleVerdict": "pass"
  }
 ];
+
+export const V2_SUMMARY: RawV2Summary | null = {
+ "trial1": {
+  "judgments": 120,
+  "accuracy": 0.7583333333333333,
+  "missRate": 0.0,
+  "falseCallRate": 0.07575757575757576,
+  "warningRate": 0.25833333333333336,
+  "betweenAppraisersPerTrial": 0.825,
+  "fleissKappa": 0.8219961856325494
+ },
+ "repeatability": 0.9249999999999999,
+ "repeatabilityN": 120,
+ "pooled": {
+  "judgments": 240,
+  "accuracy": 0.7583333333333333,
+  "missRate": 0.0,
+  "falseCallRate": 0.08333333333333333,
+  "warningRate": 0.2625
+ },
+ "recognition": {
+  "CHP": {
+   "refInstances": 27,
+   "tp": 19,
+   "recall": 0.7037037037037037,
+   "recallRelevant": 0.9444444444444444,
+   "measBiasUm": 32.810526315789474,
+   "measRelBias": 1.4700751879699248
+  },
+  "CRK": {
+   "refInstances": 6,
+   "tp": 6,
+   "recall": 1.0,
+   "recallRelevant": 1.0,
+   "measBiasUm": 83.31666666666668,
+   "measRelBias": 0.3865044633480362
+  },
+  "SCR": {
+   "refInstances": 24,
+   "tp": 24,
+   "recall": 1.0,
+   "recallRelevant": 1.0,
+   "measBiasUm": 90.48333333333333,
+   "measRelBias": 0.3660878386895759
+  },
+  "CON": {
+   "refInstances": 39,
+   "tp": 36,
+   "recall": 0.9230769230769231,
+   "recallRelevant": 0.9583333333333334,
+   "measBiasUm": 7.955555555555555,
+   "measRelBias": 0.451359126984127
+  }
+ },
+ "falseCallsTrial1": [
+  "S24/乙",
+  "S24/甲",
+  "S31/丙",
+  "S31/乙",
+  "S31/甲"
+ ],
+ "spendUsd": 9.55,
+ "apiCalls": 240
+};

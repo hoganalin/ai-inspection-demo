@@ -24,6 +24,9 @@ API 金鑰：`run_msa.py` 執行時從 repo 根目錄的 `.env.local` 讀取 `AN
 | `generate_samples.py` | Step 1：產生 `samples/S01–S40.png` 與 `samples/reference.json`（標準答案） |
 | `run_msa.py` | Step 2：呼叫 Claude 執行 Before／After 實驗，原始回覆快取於 `raw/*.jsonl`，含預算保護 |
 | `analyze_msa.py` | Step 2：計算一致性指標，輸出 `results/msa-results.xlsx`、`results/msa-metrics.json` |
+| `spec_v2.py` | 檢驗規範 v2 規則引擎：框選範圍 → 尺寸／區域／是否經過 pad，加上安全路由（`python experiment/spec_v2.py` 自我測試） |
+| `run_v2.py` | 第二輪：每顆晶粒 36 張放大圖一次判讀，原始回覆快取於 `raw/v2.jsonl`，獨立預算保護（預設 US$12） |
+| `analyze_v2.py` | 第二輪：用與第一輪相同的指標定義計算，輸出 `results/v2-metrics.json` |
 | `make_self_form.py` | 產生作者本人判定兩輪用的空白表單 `results/self-judgment-form.xlsx` |
 | `simulate_lots.py` | Step 3：25 批 × 50 顆模擬、p 管制圖、柏拉圖，輸出 `results/control-chart.xlsx`、`p-chart.png`、`pareto.png`、`../public/data/lots.json` |
 | `results/msa-summary.md` | 一致性分析結果與發現（人工撰寫，數字來自 `msa-metrics.json`） |
@@ -42,7 +45,12 @@ $PY experiment/generate_samples.py
 $PY experiment/run_msa.py run --images S38,S20 --trials 1 --budget 4.5   # 前導測試 (smoke test)
 $PY experiment/run_msa.py run --trials 2 --budget 4.5                    # 正式執行（自動從快取續跑）
 $PY experiment/run_msa.py cost                                           # 查看累計花費
-$PY experiment/analyze_msa.py --trials 1   # 第 2 次補跑完成後改用 --trials 2
+$PY experiment/analyze_msa.py --trials 1   # 主要指標用第 1 次判定；重複性自動用第 1、2 次配對
+
+# 第二輪（檢驗規範 v2）
+$PY experiment/run_v2.py run --images S25,S38,S16 --appraisers 甲 --trials 1 --show   # 前導測試
+$PY experiment/run_v2.py run --trials 2 --budget 12                                  # 正式（從快取續跑）
+$PY experiment/analyze_v2.py
 $PY experiment/make_self_form.py
 
 # Step 3 — 管制圖（讀取 results/msa-metrics.json 的改善後混淆矩陣）

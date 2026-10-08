@@ -76,7 +76,7 @@ PNG 含雜訊，40 張約 50 MB；若不想放進 git，可只保留產生腳本
 ## 一致性分析設計
 
 - 模型 `claude-sonnet-4-6`（與 app 相同），temperature 1.0（API 預設值；SDK 1.x 已移除此參數，故以 `extra_body` 傳入）。每次呼叫獨立。
-- **Before**：甲／乙／丙 三人 system prompt 完全相同，只差口述標準，AI 直接輸出 `pass|warning|fail`。
+- **Before**：甲／乙／丙 三人 system prompt 完全相同，只差口述標準，AI 直接輸出 `pass|warning|fail`。（用來看 AI 沒有規則時會怎樣，不代表產線現況；專案的主要對照是作者本人照規範判兩輪的人工組，見 `results/msa-summary.md`。）
 - **After**：三人共用同一份規範 v1 全文＋幾何與比例尺（prompt caching），只差一行中性角色（日班／夜班／假日班），AI 只回報缺陷清單，判定由 `spec_v1.py` 推導。
 - 兩個條件的輸出格式規則相同：可先用最多 100 字簡述觀察，最後一行輸出 JSON（取最後一個合法 JSON 物件解析）。
 - 最終設計：3 評估者 × 2 條件 × 40 張 × **2 次**（原規劃 3 次，因預算限制減為 2 次，見 `results/msa-summary.md`）。

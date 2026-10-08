@@ -2971,5 +2971,6 @@ export const V2_SUMMARY: RawV2Summary | null = {
   "S31/甲"
  ],
  "spendUsd": 9.55,
+ "secondsPerDie": 8.2,
  "apiCalls": 240
 };

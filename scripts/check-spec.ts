@@ -165,6 +165,15 @@ if (HUMAN_SUMMARY) {
   const passJudgments = REFERENCE_SAMPLES.filter(x => x.referenceVerdict === 'pass').length * 3;
   check('v2: false-call rate = listed false calls ÷ Pass judgments',
     V2_SUMMARY?.trial1.falseCallRate, (V2_SUMMARY?.falseCallsTrial1.length ?? NaN) / passJudgments);
+  check('v2: AI seconds per die matches v2-metrics.json', V2_SUMMARY?.secondsPerDie, Math.round(m.meanSecondsPerCall * 10) / 10);
+}
+
+// 人眼＋規範 vs AI＋規則：現況人工逐顆判（比例 1）→ AI 先判、人只複判 Warning（總覽頁、簡報與履歷共用）
+{
+  const r1 = (v: number) => Math.round(v * 10) / 10;
+  const s = laborScenario(HUMAN_SUMMARY?.secondsPerDie ?? NaN, 1, V2_SUMMARY?.trial1.warningRate ?? NaN);
+  check('labor (human vs AI-first): per-1000 minutes at 34.9 s', [r1(s.per1000Minutes.before), r1(s.per1000Minutes.after)], [668.9, 172.8]);
+  check('labor (human vs AI-first): reduction 74.2%', r1(laborReduction(1, V2_SUMMARY?.trial1.warningRate ?? NaN) * 100), 74.2);
 }
 
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');

@@ -184,6 +184,7 @@ def main() -> None:
                             for c in ("CHP", "CRK", "SCR", "CON")},
             "falseCallsTrial1": m["falseCallsTrial1"],
             "spendUsd": round(m["spendUsd"], 2),
+            "secondsPerDie": round(m["meanSecondsPerCall"], 1),
             "apiCalls": m["apiCalls"],
         }
 

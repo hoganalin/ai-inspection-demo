@@ -14,7 +14,7 @@ web
 
 ## Product Purpose
 
-A portfolio PoC of a smart-manufacturing improvement project (PDCA), built around a real pain point from the author's 人工目檢 experience at 元太科技: **判定標準不一**. The same die gets different verdicts from different people, or from the same person at different times. The verdict basis is verbal, so it can't be traced or aggregated.
+A portfolio PoC of a smart-manufacturing improvement project (PDCA), built around a real pain point from the author's past 人工目檢 experience: the line already has a written inspection spec, but **judging is done by the human eye**. Each die means finding defects, measuring and matching clauses by hand, so inspection is slow, small defects get missed, and boundary measurements vary by person. The question the project answers: with AI reporting defects and rules deriving the Verdict, can inspection be faster while accuracy and 漏判 are no worse than a human's? The comparison baseline is the author's own two rounds of judging by the spec (real data); the oral-standard condition only shows how AI behaves without rules. Public copy names no former employer for the pain point.
 
 The app turns that into a traceable flow: a versioned 檢驗規範 → AI reports defects only → rules derive the Verdict → lots roll up into a p-chart with SPC rules → 預警／異常 trigger an AI-drafted, human-confirmed 異常處置單.
 

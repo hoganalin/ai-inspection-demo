@@ -101,6 +101,8 @@ export interface RawV2Summary {
   falseCallsTrial1: string[];
   spendUsd: number;
   apiCalls: number;
+  /** AI 每顆晶粒的平均判讀秒數（API 回應時間，不含取像） */
+  secondsPerDie: number;
 }
 
 /** 作者本人一次判定的回報（供 check:spec 比對 TS 與 Python 規則引擎）。 */

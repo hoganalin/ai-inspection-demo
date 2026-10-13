@@ -508,7 +508,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
       </section>
 
       <p className="small dim" style={{ marginTop: 40, maxWidth: '76ch' }}>
-        情境與數據皆為模擬：痛點來自作者過去的目檢經驗；人工對照組為作者本人的真實判定；標準樣本為程序化底圖＋程式注入已知尺寸缺陷的半合成影像；
+        情境與數據皆為模擬：痛點來自作者過去在產線看到的狀況；人工對照組為作者本人的真實判定；標準樣本為程序化底圖＋程式注入已知尺寸缺陷的半合成影像；
         管制圖的 25 批為統計模擬；規範中的允收數值為假設值，非業界標準。
       </p>
     </div>

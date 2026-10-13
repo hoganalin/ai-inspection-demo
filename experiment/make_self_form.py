@@ -4,7 +4,8 @@
 - 重複性計算：以公式比對兩輪判定，算出本人重複性、對標準答案一致率、漏判率、誤判率。
 - 標準答案（隱藏工作表）：兩輪都填完後再取消隱藏查看。
 
-Usage: python experiment/make_self_form.py
+Usage: python experiment/make_self_form.py                                   # 開發集 S01–S40
+       python experiment/make_self_form.py --samples samples_blind            --out results/self-judgment-blind-form.xlsx                          # 盲測集 B01–B40
 """
 from __future__ import annotations
 
@@ -52,8 +53,13 @@ def round_sheet(wb, title, ids, seed):
     return ws
 
 
-def main():
-    ref = json.loads((HERE / "samples" / "reference.json").read_text(encoding="utf-8"))
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--samples", default="samples", help="sample folder under experiment/")
+    ap.add_argument("--out", default="results/self-judgment-form.xlsx", help="output path under experiment/")
+    args = ap.parse_args(argv)
+    ref = json.loads((HERE / args.samples / "reference.json").read_text(encoding="utf-8"))
     ids = [s["id"] for s in ref["samples"]]
     n = len(ids)
     wb = Workbook()
@@ -61,11 +67,13 @@ def main():
     ws.title = "說明"
     for line in [
         "作者本人判定表（一致性分析：人工評估者）",
-        "1. 依 docs/spec/inspection-spec-v1.md（檢驗規範 v1）判定 experiment/samples/ 中的 40 張樣本影像。",
+        f"1. 依 docs/spec/inspection-spec-v1.md（檢驗規範 v1）判定 experiment/{args.samples}/ 中的 {n} 張樣本影像。",
         "2. 先填「第1輪」，隔天再填「第2輪」（兩輪順序已打亂且不同），第2輪時不要回看第1輪。",
         "3. 每張樣本一列：缺陷代碼、區域、量測 (µm，5 µm/px)、判定（下拉選 Pass／Warning／Fail）。無缺陷請填「無」並判 Pass。",
         "4. 「重複性計算」工作表會自動計算本人重複性、對標準答案一致率、漏判率、誤判率、人工複判率。",
         "5. 「標準答案」工作表已隱藏；兩輪都填完後再取消隱藏（右鍵工作表標籤 → 取消隱藏）。",
+        f"6. 判讀前不要打開 experiment/{args.samples}/reference.json（裡面就是標準答案）。",
+        "7. 每輪的開始與結束時間記在「計時」工作表，用來算每顆判讀秒數。",
     ]:
         ws.append([line])
     ws.column_dimensions["A"].width = 110
@@ -117,7 +125,13 @@ def main():
         c = cs.cell(row=r + k, column=4, value=formula)
         c.number_format = fmt
     cs.column_dimensions["A"].width = 44
-    out = HERE / "results" / "self-judgment-form.xlsx"
+    ts = wb.create_sheet("計時", 3)
+    header(ts, ["輪次", "日期", "開始時間", "結束時間", "備註"], [8, 14, 12, 12, 40])
+    for k, label in enumerate(["第1輪", "第2輪"], 2):
+        ts.cell(row=k, column=1, value=label)
+        for j in range(2, 6):
+            ts.cell(row=k, column=j).fill = INPUT_FILL
+    out = HERE / args.out
     out.parent.mkdir(exist_ok=True)
     wb.save(out)
     print("wrote", out)

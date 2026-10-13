@@ -182,7 +182,8 @@ def cmd_dev(args):
 
 
 def cmd_blind_samples(args):
-    commit = args.commit or subprocess.check_output(["git", "rev-parse", "spec-v2.1-frozen"], cwd=HERE, text=True).strip()
+    commit = args.commit or subprocess.check_output(["git", "rev-parse", "spec-v2.1-frozen^{commit}"], cwd=HERE,
+                                                    text=True).strip()
     seed = int(commit[:8], 16)
     subprocess.check_call([sys.executable, str(HERE / "generate_samples.py"), "--out", str(BLIND),
                            "--seed", str(seed), "--size-jitter", "0.15", "--frozen-commit", commit], cwd=HERE)

@@ -40,6 +40,7 @@ build_error.txt
 
 # experiment samples are reproducible from experiment/generate_samples.py
 experiment/samples/*.png
+experiment/samples_blind/*.png
 
 # Impeccable: keep the design record (surfaces/, design.json); local review captures and decision-page logs stay out
 .impeccable/review/

@@ -3,7 +3,9 @@
 程序化 (procedural) 產生晶粒俯視底圖，依檢驗規範 v1 幾何注入已知尺寸的缺陷，
 輸出 40 張 PNG 與 reference.json（標準答案，判定由 spec_v1.py 推導）。
 
-Usage:  python experiment/generate_samples.py
+Usage:  python experiment/generate_samples.py                      # 開發集（S01–S40，固定種子）
+        python experiment/generate_samples.py --out experiment/samples_blind --seed N --size-jitter 0.15
+                                                                  # 盲測集（B01–B40，run_v21.py blind-samples 呼叫）
 Deterministic (fixed seeds) — rerunning reproduces identical images.
 """
 from __future__ import annotations
@@ -409,19 +411,32 @@ PLAN = (
 )
 
 
-def main():
-    OUT.mkdir(parents=True, exist_ok=True)
-    base = make_base_die()
-    order = np.random.default_rng(2026).permutation(len(PLAN))  # shuffle so file id doesn't reveal class
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--seed", type=int, default=None,
+                    help="blind set: new random draws (default: the development set's fixed seeds)")
+    ap.add_argument("--size-jitter", type=float, default=0.0, help="blind set: each defect size × U(1−j, 1+j)")
+    ap.add_argument("--frozen-commit", default=None, help="blind set: commit the rules were frozen at")
+    args = ap.parse_args(argv)
+    out_dir = Path(args.out)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    base = make_base_die()  # same product (base die) in both sets
+    blind = args.seed is not None
+    order = np.random.default_rng(args.seed if blind else 2026).permutation(len(PLAN))  # file id hides class
     records = []
     for idx, plan_i in enumerate(order):
         group, note, defs = PLAN[plan_i]
-        sid = f"S{idx + 1:02d}"
-        rng = np.random.default_rng(1000 + idx)
+        sid = f"{'B' if blind else 'S'}{idx + 1:02d}"
+        rng = np.random.default_rng([args.seed, idx]) if blind else np.random.default_rng(1000 + idx)
+        size_rng = np.random.default_rng([args.seed, idx, 7]) if blind else None
         img = base.copy()
         taken = []
         defects = []
         for code, zone, size in defs:
+            if size_rng is not None and args.size_jitter:
+                size = float(size) * float(size_rng.uniform(1 - args.size_jitter, 1 + args.size_jitter))
             if code == "CHP":
                 defects.append(place_chp(img, rng, size))
             elif code == "SCR" and zone == "peripheral":
@@ -434,10 +449,10 @@ def main():
                 defects.append(place_con(img, rng, size, zone, taken))
         img = apply_lighting(img, rng)
         fname = f"{sid}.png"
-        Image.fromarray(img.astype(np.uint8)).save(OUT / fname, optimize=True)
+        Image.fromarray(img.astype(np.uint8)).save(out_dir / fname, optimize=True)
         verdict = spec.derive_verdict(defects)
         records.append({
-            "id": sid, "file": fname, "group": group, "note": note,
+            "id": sid, "file": fname, "group": group, "note": note if not blind else f"design: {note}",
             "defects": defects, "referenceVerdict": verdict["verdict"],
             "reasons": verdict["reasons"], "specVersion": spec.SPEC_VERSION,
         })
@@ -447,7 +462,10 @@ def main():
         "geometry": {"diePx": N, "umPerPx": UM, "sealRingPx": [20, 24], "padSizePx": 16, "padOffsetPx": 40},
         "samples": records,
     }
-    (OUT / "reference.json").write_text(json.dumps(ref, ensure_ascii=False, indent=2), encoding="utf-8")
+    if blind:
+        ref.update({"set": "blind", "seed": args.seed, "sizeJitter": args.size_jitter,
+                    "frozenCommit": args.frozen_commit})
+    (out_dir / "reference.json").write_text(json.dumps(ref, ensure_ascii=False, indent=2), encoding="utf-8")
     from collections import Counter
     print(Counter(r["referenceVerdict"] for r in records), Counter(r["group"] for r in records))
     for r in records:

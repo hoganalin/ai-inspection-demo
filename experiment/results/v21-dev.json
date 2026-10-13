@@ -1,0 +1,493 @@
+{
+  "set": "development (experiment/samples, 40)",
+  "replies": 240,
+  "v21_band_off": {
+    "trialsComplete": [
+      1,
+      2
+    ],
+    "trial1": {
+      "judgments": 120,
+      "accuracy": 0.9166666666666666,
+      "missRate": 0.0,
+      "falseCallRate": 0.0,
+      "warningRate": 0.24166666666666667,
+      "referenceWarningRate": 0.225,
+      "betweenAppraisersPerTrial": 0.925,
+      "fleissKappa": 0.9168399168399167,
+      "confusion": {
+        "Pass": {
+          "Pass": 61,
+          "Warning": 5,
+          "Fail": 0
+        },
+        "Warning": {
+          "Pass": 4,
+          "Warning": 23,
+          "Fail": 0
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 1,
+          "Fail": 26
+        }
+      },
+      "unparseable": 0
+    },
+    "repeatability": 0.9500000000000001,
+    "repeatabilityByAppraiser": {
+      "甲": 0.925,
+      "乙": 0.95,
+      "丙": 0.975
+    },
+    "pooled": {
+      "judgments": 240,
+      "accuracy": 0.9166666666666666,
+      "missRate": 0.0,
+      "falseCallRate": 0.0,
+      "warningRate": 0.24166666666666667,
+      "referenceWarningRate": 0.225,
+      "confusion": {
+        "Pass": {
+          "Pass": 124,
+          "Warning": 8,
+          "Fail": 0
+        },
+        "Warning": {
+          "Pass": 8,
+          "Warning": 46,
+          "Fail": 0
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 4,
+          "Fail": 50
+        }
+      }
+    },
+    "missesTrial1": [],
+    "falseCallsTrial1": [],
+    "defectRecognition": {
+      "CHP": {
+        "refInstances": 27,
+        "tp": 19,
+        "fn": 8,
+        "fp": 3,
+        "recall": 0.7037037037037037,
+        "recallRelevant": 0.9444444444444444,
+        "recallSubThreshold": 0.2222222222222222,
+        "precision": 0.8636363636363636,
+        "measMaeUm": 17.263157894736842,
+        "measBiasUm": 7.368421052631579,
+        "measRelBias": 0.27982456140350875,
+        "zoneAccuracy": 0.7368421052631579
+      },
+      "CRK": {
+        "refInstances": 6,
+        "tp": 6,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": null,
+        "precision": 1.0,
+        "measMaeUm": 34.75,
+        "measBiasUm": -34.75,
+        "measRelBias": -0.11633427851291746,
+        "zoneAccuracy": 1.0
+      },
+      "SCR": {
+        "refInstances": 24,
+        "tp": 24,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": 1.0,
+        "precision": 1.0,
+        "measMaeUm": 6.4875,
+        "measBiasUm": -3.645833333333334,
+        "measRelBias": -0.003611346814139372,
+        "zoneAccuracy": 1.0
+      },
+      "CON": {
+        "refInstances": 39,
+        "tp": 36,
+        "fn": 3,
+        "fp": 5,
+        "recall": 0.9230769230769231,
+        "recallRelevant": 0.9583333333333334,
+        "recallSubThreshold": 0.8666666666666667,
+        "precision": 0.8780487804878049,
+        "measMaeUm": 8.277777777777779,
+        "measBiasUm": -4.888888888888889,
+        "measRelBias": -0.024768518518518516,
+        "zoneAccuracy": 1.0
+      },
+      "_clean": {
+        "judgments": 39,
+        "hallucinatedByCode": {}
+      }
+    },
+    "gate": {
+      "missRate": {
+        "value": 0.0,
+        "target": "≤ 5%",
+        "pass": true
+      },
+      "repeatability": {
+        "value": 0.9500000000000001,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "warningRate": {
+        "value": 0.24166666666666667,
+        "target": "≤ 30%",
+        "pass": true
+      },
+      "betweenAppraisersPerTrial": {
+        "value": 0.925,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "accuracy": {
+        "value": 0.9166666666666666,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "falseCallRate": {
+        "value": 0.0,
+        "target": "≤ 3%",
+        "pass": true
+      }
+    }
+  },
+  "v21_band_on": {
+    "trialsComplete": [
+      1,
+      2
+    ],
+    "trial1": {
+      "judgments": 120,
+      "accuracy": 0.9,
+      "missRate": 0.0,
+      "falseCallRate": 0.0,
+      "warningRate": 0.25833333333333336,
+      "referenceWarningRate": 0.225,
+      "betweenAppraisersPerTrial": 0.95,
+      "fleissKappa": 0.9444315813845796,
+      "confusion": {
+        "Pass": {
+          "Pass": 61,
+          "Warning": 5,
+          "Fail": 0
+        },
+        "Warning": {
+          "Pass": 4,
+          "Warning": 23,
+          "Fail": 0
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 3,
+          "Fail": 24
+        }
+      },
+      "unparseable": 0
+    },
+    "repeatability": 0.9666666666666667,
+    "repeatabilityByAppraiser": {
+      "甲": 0.95,
+      "乙": 0.95,
+      "丙": 1.0
+    },
+    "pooled": {
+      "judgments": 240,
+      "accuracy": 0.9083333333333333,
+      "missRate": 0.0,
+      "falseCallRate": 0.0,
+      "warningRate": 0.25,
+      "referenceWarningRate": 0.225,
+      "confusion": {
+        "Pass": {
+          "Pass": 124,
+          "Warning": 8,
+          "Fail": 0
+        },
+        "Warning": {
+          "Pass": 8,
+          "Warning": 46,
+          "Fail": 0
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 6,
+          "Fail": 48
+        }
+      }
+    },
+    "missesTrial1": [],
+    "falseCallsTrial1": [],
+    "defectRecognition": {
+      "CHP": {
+        "refInstances": 27,
+        "tp": 19,
+        "fn": 8,
+        "fp": 3,
+        "recall": 0.7037037037037037,
+        "recallRelevant": 0.9444444444444444,
+        "recallSubThreshold": 0.2222222222222222,
+        "precision": 0.8636363636363636,
+        "measMaeUm": 17.263157894736842,
+        "measBiasUm": 7.368421052631579,
+        "measRelBias": 0.27982456140350875,
+        "zoneAccuracy": 0.7368421052631579
+      },
+      "CRK": {
+        "refInstances": 6,
+        "tp": 6,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": null,
+        "precision": 1.0,
+        "measMaeUm": 34.75,
+        "measBiasUm": -34.75,
+        "measRelBias": -0.11633427851291746,
+        "zoneAccuracy": 1.0
+      },
+      "SCR": {
+        "refInstances": 24,
+        "tp": 24,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": 1.0,
+        "precision": 1.0,
+        "measMaeUm": 6.4875,
+        "measBiasUm": -3.645833333333334,
+        "measRelBias": -0.003611346814139372,
+        "zoneAccuracy": 1.0
+      },
+      "CON": {
+        "refInstances": 39,
+        "tp": 36,
+        "fn": 3,
+        "fp": 5,
+        "recall": 0.9230769230769231,
+        "recallRelevant": 0.9583333333333334,
+        "recallSubThreshold": 0.8666666666666667,
+        "precision": 0.8780487804878049,
+        "measMaeUm": 8.277777777777779,
+        "measBiasUm": -4.888888888888889,
+        "measRelBias": -0.024768518518518516,
+        "zoneAccuracy": 1.0
+      },
+      "_clean": {
+        "judgments": 39,
+        "hallucinatedByCode": {}
+      }
+    },
+    "gate": {
+      "missRate": {
+        "value": 0.0,
+        "target": "≤ 5%",
+        "pass": true
+      },
+      "repeatability": {
+        "value": 0.9666666666666667,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "warningRate": {
+        "value": 0.25833333333333336,
+        "target": "≤ 30%",
+        "pass": true
+      },
+      "betweenAppraisersPerTrial": {
+        "value": 0.95,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "accuracy": {
+        "value": 0.9,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "falseCallRate": {
+        "value": 0.0,
+        "target": "≤ 3%",
+        "pass": true
+      }
+    }
+  },
+  "v2": {
+    "trialsComplete": [
+      1,
+      2
+    ],
+    "trial1": {
+      "judgments": 120,
+      "accuracy": 0.7583333333333333,
+      "missRate": 0.0,
+      "falseCallRate": 0.07575757575757576,
+      "warningRate": 0.25833333333333336,
+      "referenceWarningRate": 0.225,
+      "betweenAppraisersPerTrial": 0.825,
+      "fleissKappa": 0.8219961856325494,
+      "confusion": {
+        "Pass": {
+          "Pass": 48,
+          "Warning": 13,
+          "Fail": 5
+        },
+        "Warning": {
+          "Pass": 1,
+          "Warning": 17,
+          "Fail": 9
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 1,
+          "Fail": 26
+        }
+      },
+      "unparseable": 0
+    },
+    "repeatability": 0.9249999999999999,
+    "repeatabilityByAppraiser": {
+      "甲": 0.9,
+      "乙": 0.95,
+      "丙": 0.925
+    },
+    "pooled": {
+      "judgments": 240,
+      "accuracy": 0.7583333333333333,
+      "missRate": 0.0,
+      "falseCallRate": 0.08333333333333333,
+      "warningRate": 0.2625,
+      "referenceWarningRate": 0.225,
+      "confusion": {
+        "Pass": {
+          "Pass": 97,
+          "Warning": 24,
+          "Fail": 11
+        },
+        "Warning": {
+          "Pass": 1,
+          "Warning": 35,
+          "Fail": 18
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 4,
+          "Fail": 50
+        }
+      }
+    },
+    "missesTrial1": [],
+    "falseCallsTrial1": [
+      "S24/乙",
+      "S24/甲",
+      "S31/丙",
+      "S31/乙",
+      "S31/甲"
+    ],
+    "defectRecognition": {
+      "CHP": {
+        "refInstances": 27,
+        "tp": 19,
+        "fn": 8,
+        "fp": 3,
+        "recall": 0.7037037037037037,
+        "recallRelevant": 0.9444444444444444,
+        "recallSubThreshold": 0.2222222222222222,
+        "precision": 0.8636363636363636,
+        "measMaeUm": 33.02105263157895,
+        "measBiasUm": 32.810526315789474,
+        "measRelBias": 1.4700751879699248,
+        "zoneAccuracy": 0.8947368421052632
+      },
+      "CRK": {
+        "refInstances": 6,
+        "tp": 6,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": null,
+        "precision": 1.0,
+        "measMaeUm": 83.31666666666668,
+        "measBiasUm": 83.31666666666668,
+        "measRelBias": 0.3865044633480362,
+        "zoneAccuracy": 1.0
+      },
+      "SCR": {
+        "refInstances": 24,
+        "tp": 24,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": 1.0,
+        "precision": 1.0,
+        "measMaeUm": 115.33333333333333,
+        "measBiasUm": 90.48333333333333,
+        "measRelBias": 0.3660878386895759,
+        "zoneAccuracy": 0.875
+      },
+      "CON": {
+        "refInstances": 39,
+        "tp": 36,
+        "fn": 3,
+        "fp": 5,
+        "recall": 0.9230769230769231,
+        "recallRelevant": 0.9583333333333334,
+        "recallSubThreshold": 0.8666666666666667,
+        "precision": 0.8780487804878049,
+        "measMaeUm": 12.055555555555555,
+        "measBiasUm": 7.955555555555555,
+        "measRelBias": 0.451359126984127,
+        "zoneAccuracy": 0.9166666666666666
+      },
+      "_clean": {
+        "judgments": 39,
+        "hallucinatedByCode": {}
+      }
+    },
+    "gate": {
+      "missRate": {
+        "value": 0.0,
+        "target": "≤ 5%",
+        "pass": true
+      },
+      "repeatability": {
+        "value": 0.9249999999999999,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "warningRate": {
+        "value": 0.25833333333333336,
+        "target": "≤ 30%",
+        "pass": true
+      },
+      "betweenAppraisersPerTrial": {
+        "value": 0.825,
+        "target": "≥ 90%",
+        "pass": false
+      },
+      "accuracy": {
+        "value": 0.7583333333333333,
+        "target": "≥ 90%",
+        "pass": false
+      },
+      "falseCallRate": {
+        "value": 0.07575757575757576,
+        "target": "≤ 3%",
+        "pass": false
+      }
+    }
+  }
+}

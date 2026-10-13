@@ -1,0 +1,13 @@
+{
+  "model": "claude-sonnet-4-6",
+  "priceUsdPerMTok": {
+    "input": 3.0,
+    "output": 15.0,
+    "cache_write": 3.75,
+    "cache_read": 0.3
+  },
+  "budgetUsd": 15.0,
+  "totalUsd": 9.529,
+  "calls": 240,
+  "updatedAt": "2026-10-13T06:48:50.619086+00:00"
+}

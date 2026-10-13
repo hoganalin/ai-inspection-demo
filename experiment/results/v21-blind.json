@@ -1,0 +1,336 @@
+{
+  "set": "blind (experiment/samples_blind, generated after the freeze)",
+  "frozenCommit": "1173b47238577fc63808464ddbab63cf469c5c41",
+  "v21": {
+    "trialsComplete": [
+      1,
+      2
+    ],
+    "trial1": {
+      "judgments": 120,
+      "accuracy": 0.925,
+      "missRate": 0.0,
+      "falseCallRate": 0.0,
+      "warningRate": 0.26666666666666666,
+      "referenceWarningRate": 0.225,
+      "betweenAppraisersPerTrial": 0.875,
+      "fleissKappa": 0.8594189315838799,
+      "confusion": {
+        "Pass": {
+          "Pass": 64,
+          "Warning": 2,
+          "Fail": 0
+        },
+        "Warning": {
+          "Pass": 2,
+          "Warning": 25,
+          "Fail": 0
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 5,
+          "Fail": 22
+        }
+      },
+      "unparseable": 0
+    },
+    "repeatability": 0.9333333333333332,
+    "repeatabilityByAppraiser": {
+      "甲": 0.925,
+      "乙": 0.925,
+      "丙": 0.95
+    },
+    "pooled": {
+      "judgments": 240,
+      "accuracy": 0.9083333333333333,
+      "missRate": 0.0,
+      "falseCallRate": 0.0,
+      "warningRate": 0.2916666666666667,
+      "referenceWarningRate": 0.225,
+      "confusion": {
+        "Pass": {
+          "Pass": 123,
+          "Warning": 9,
+          "Fail": 0
+        },
+        "Warning": {
+          "Pass": 3,
+          "Warning": 51,
+          "Fail": 0
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 10,
+          "Fail": 44
+        }
+      }
+    },
+    "missesTrial1": [],
+    "falseCallsTrial1": [],
+    "defectRecognition": {
+      "CHP": {
+        "refInstances": 27,
+        "tp": 15,
+        "fn": 12,
+        "fp": 1,
+        "recall": 0.5555555555555556,
+        "recallRelevant": 0.7777777777777778,
+        "recallSubThreshold": 0.1111111111111111,
+        "precision": 0.9375,
+        "measMaeUm": 14.620000000000003,
+        "measBiasUm": 1.1399999999999968,
+        "measRelBias": 0.3593158090708253,
+        "zoneAccuracy": 0.8
+      },
+      "CRK": {
+        "refInstances": 6,
+        "tp": 6,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": null,
+        "precision": 1.0,
+        "measMaeUm": 12.300000000000011,
+        "measBiasUm": -12.300000000000011,
+        "measRelBias": -0.044214524916279356,
+        "zoneAccuracy": 1.0
+      },
+      "SCR": {
+        "refInstances": 24,
+        "tp": 24,
+        "fn": 0,
+        "fp": 4,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": 1.0,
+        "precision": 0.8571428571428571,
+        "measMaeUm": 8.633333333333331,
+        "measBiasUm": -5.866666666666663,
+        "measRelBias": -0.037413948157555214,
+        "zoneAccuracy": 1.0
+      },
+      "CON": {
+        "refInstances": 39,
+        "tp": 33,
+        "fn": 6,
+        "fp": 8,
+        "recall": 0.8461538461538461,
+        "recallRelevant": 0.875,
+        "recallSubThreshold": 0.8,
+        "precision": 0.8048780487804879,
+        "measMaeUm": 5.154545454545454,
+        "measBiasUm": -5.0272727272727264,
+        "measRelBias": -0.16428181292332739,
+        "zoneAccuracy": 1.0
+      },
+      "_clean": {
+        "judgments": 39,
+        "hallucinatedByCode": {}
+      }
+    },
+    "gate": {
+      "missRate": {
+        "value": 0.0,
+        "target": "≤ 5%",
+        "pass": true
+      },
+      "repeatability": {
+        "value": 0.9333333333333332,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "warningRate": {
+        "value": 0.26666666666666666,
+        "target": "≤ 30%",
+        "pass": true
+      },
+      "betweenAppraisersPerTrial": {
+        "value": 0.875,
+        "target": "≥ 90%",
+        "pass": false
+      },
+      "accuracy": {
+        "value": 0.925,
+        "target": "≥ 90%",
+        "pass": true
+      },
+      "falseCallRate": {
+        "value": 0.0,
+        "target": "≤ 3%",
+        "pass": true
+      }
+    }
+  },
+  "v2": {
+    "trialsComplete": [
+      1,
+      2
+    ],
+    "trial1": {
+      "judgments": 120,
+      "accuracy": 0.7416666666666667,
+      "missRate": 0.0,
+      "falseCallRate": 0.015151515151515152,
+      "warningRate": 0.30833333333333335,
+      "referenceWarningRate": 0.225,
+      "betweenAppraisersPerTrial": 0.85,
+      "fleissKappa": 0.8484529572721534,
+      "confusion": {
+        "Pass": {
+          "Pass": 47,
+          "Warning": 18,
+          "Fail": 1
+        },
+        "Warning": {
+          "Pass": 1,
+          "Warning": 17,
+          "Fail": 9
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 2,
+          "Fail": 25
+        }
+      },
+      "unparseable": 0
+    },
+    "repeatability": 0.8583333333333334,
+    "repeatabilityByAppraiser": {
+      "甲": 0.925,
+      "乙": 0.825,
+      "丙": 0.825
+    },
+    "pooled": {
+      "judgments": 240,
+      "accuracy": 0.7208333333333333,
+      "missRate": 0.0,
+      "falseCallRate": 0.030303030303030304,
+      "warningRate": 0.30416666666666664,
+      "referenceWarningRate": 0.225,
+      "confusion": {
+        "Pass": {
+          "Pass": 92,
+          "Warning": 36,
+          "Fail": 4
+        },
+        "Warning": {
+          "Pass": 2,
+          "Warning": 32,
+          "Fail": 20
+        },
+        "Fail": {
+          "Pass": 0,
+          "Warning": 5,
+          "Fail": 49
+        }
+      }
+    },
+    "missesTrial1": [],
+    "falseCallsTrial1": [
+      "B40/丙"
+    ],
+    "defectRecognition": {
+      "CHP": {
+        "refInstances": 27,
+        "tp": 15,
+        "fn": 12,
+        "fp": 1,
+        "recall": 0.5555555555555556,
+        "recallRelevant": 0.7777777777777778,
+        "recallSubThreshold": 0.1111111111111111,
+        "precision": 0.9375,
+        "measMaeUm": 36.38666666666666,
+        "measBiasUm": 35.21333333333333,
+        "measRelBias": 1.6855645085636255,
+        "zoneAccuracy": 1.0
+      },
+      "CRK": {
+        "refInstances": 6,
+        "tp": 6,
+        "fn": 0,
+        "fp": 0,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": null,
+        "precision": 1.0,
+        "measMaeUm": 58.54999999999999,
+        "measBiasUm": 56.616666666666674,
+        "measRelBias": 0.36806950900518154,
+        "zoneAccuracy": 1.0
+      },
+      "SCR": {
+        "refInstances": 24,
+        "tp": 24,
+        "fn": 0,
+        "fp": 4,
+        "recall": 1.0,
+        "recallRelevant": 1.0,
+        "recallSubThreshold": 1.0,
+        "precision": 0.8571428571428571,
+        "measMaeUm": 128.57916666666665,
+        "measBiasUm": 128.57916666666665,
+        "measRelBias": 0.5714971232682198,
+        "zoneAccuracy": 1.0
+      },
+      "CON": {
+        "refInstances": 39,
+        "tp": 33,
+        "fn": 6,
+        "fp": 8,
+        "recall": 0.8461538461538461,
+        "recallRelevant": 0.875,
+        "recallSubThreshold": 0.8,
+        "precision": 0.8048780487804879,
+        "measMaeUm": 11.336363636363636,
+        "measBiasUm": 3.4575757575757584,
+        "measRelBias": 0.3437352463405704,
+        "zoneAccuracy": 1.0
+      },
+      "_clean": {
+        "judgments": 39,
+        "hallucinatedByCode": {}
+      }
+    },
+    "gate": {
+      "missRate": {
+        "value": 0.0,
+        "target": "≤ 5%",
+        "pass": true
+      },
+      "repeatability": {
+        "value": 0.8583333333333334,
+        "target": "≥ 90%",
+        "pass": false
+      },
+      "warningRate": {
+        "value": 0.30833333333333335,
+        "target": "≤ 30%",
+        "pass": false
+      },
+      "betweenAppraisersPerTrial": {
+        "value": 0.85,
+        "target": "≥ 90%",
+        "pass": false
+      },
+      "accuracy": {
+        "value": 0.7416666666666667,
+        "target": "≥ 90%",
+        "pass": false
+      },
+      "falseCallRate": {
+        "value": 0.015151515151515152,
+        "target": "≤ 3%",
+        "pass": true
+      }
+    }
+  },
+  "spendUsd": 9.5289903,
+  "apiCalls": 240,
+  "meanSecondsPerCall": 8.935,
+  "referenceVerdicts": {
+    "Warning": 9,
+    "Fail": 9,
+    "Pass": 22
+  }
+}

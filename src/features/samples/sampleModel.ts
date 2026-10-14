@@ -6,8 +6,8 @@ import {
   type InspectionResult,
   type Verdict,
 } from '../inspection/spec/inspectionSpecV1';
-import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, V2_SUMMARY as RAW_V2_SUMMARY } from './referenceData';
-import type { Agreement, RawRefDefect, RawRecordedReply, RawV2Summary, ReferenceSample } from './types';
+import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, V2_SUMMARY as RAW_V2_SUMMARY, BLIND_SUMMARY as RAW_BLIND_SUMMARY } from './referenceData';
+import type { Agreement, RawRefDefect, RawRecordedReply, RawV2Summary, RawBlindSummary, ReferenceSample } from './types';
 
 /** 實驗日期（experiment/raw/after.jsonl 的執行日）。 */
 const RECORDED_AT = '2026-10-05T00:00:00.000Z';
@@ -75,6 +75,13 @@ function missingV2(): never {
 
 /** 第二輪（檢驗規範 v2）一致性分析；資料隨 repo 提交，缺少即是匯出步驟漏做。 */
 export const V2_SUMMARY: RawV2Summary = RAW_V2_SUMMARY ?? missingV2();
+
+function missingBlind(): never {
+  throw new Error('referenceData.ts 缺少 BLIND_SUMMARY：先執行 experiment/run_v21.py analyze 與作者盲測表單，再執行 export_app_data.py');
+}
+
+/** 第三輪（檢驗規範 v2.1 凍結後的盲測集：AI 與作者本人）；資料隨 repo 提交。 */
+export const BLIND_SUMMARY: RawBlindSummary = RAW_BLIND_SUMMARY ?? missingBlind();
 
 /** 取得一張標準樣本影像作為 File，交給與上傳相同的判定流程。 */
 export async function fetchSampleFile(sample: ReferenceSample): Promise<File> {

@@ -105,6 +105,43 @@ export interface RawV2Summary {
   secondsPerDie: number;
 }
 
+/** [分子, 分母]，例：漏判 [0, 27] */
+export type Count = [number, number];
+
+/**
+ * 第三輪：檢驗規範 v2.1 凍結後，在盲測集（凍結後才產生的 40 張新樣本）上的結果。
+ * AI 用第 1 次判定（3 評估者 × 40 張）；作者本人兩輪分在不同天，合計計算。
+ */
+export interface RawBlindSummary {
+  frozenTag: string;
+  frozenCommit: string;
+  /** 標準答案的分布（pass / warning / fail 各幾張） */
+  referenceVerdicts: Record<'pass' | 'warning' | 'fail', number>;
+  ai: {
+    trial1: V2Rates & { betweenAppraisersPerTrial: number; fleissKappa: number };
+    repeatability: number;
+    counts: { miss: Count; falseCall: Count; warningToPass: Count; betweenAgree: Count; repeat: Count };
+    /** AI 每顆晶粒的平均判讀秒數（API 回應時間，不含取像） */
+    secondsPerDie: number;
+    spendUsd: number;
+    apiCalls: number;
+  };
+  /** 同一批 AI 回覆改用 v2 的框選量測：看進步是不是來自量測修正 */
+  aiWithV2Measure: { accuracy: number; warningRate: number; falseCallRate: number; repeatability: number };
+  /** v2.1 在開發集（設計時用過的舊 40 張）上的結果：只供參考，不算成效 */
+  devSet: { accuracy: number; missRate: number; falseCallRate: number; warningRate: number; betweenAppraisersPerTrial: number; repeatability: number };
+  human: {
+    dates: string;
+    note: string;
+    roundMinutes: number[];
+    secondsPerDie: number;
+    own: { n: number; accuracy: number; missRate: number; falseCallRate: number; warningRate: number };
+    /** 隔天重判的一致比例 */
+    repeatability: number;
+    counts: { miss: Count; falseCall: Count; warningToPass: Count; repeat: Count };
+  };
+}
+
 /** 作者本人一次判定的回報（供 check:spec 比對 TS 與 Python 規則引擎）。 */
 export interface RawHumanReply {
   sample: string;

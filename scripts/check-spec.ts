@@ -13,7 +13,7 @@ import {
   type Verdict,
 } from '../src/features/inspection/spec/inspectionSpecV1.ts';
 import { computeControlChart, type LotSummary } from '../src/features/control/spc.ts';
-import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, HUMAN_REPLIES, V2_SUMMARY } from '../src/features/samples/referenceData.ts';
+import { REFERENCE_SAMPLES, MSA_SUMMARY, HUMAN_SUMMARY, HUMAN_REPLIES, V2_SUMMARY, BLIND_SUMMARY } from '../src/features/samples/referenceData.ts';
 import { readFileSync } from 'node:fs';
 import { laborReduction, laborScenario } from '../src/features/overview/laborModel.ts';
 
@@ -174,6 +174,28 @@ if (HUMAN_SUMMARY) {
   const s = laborScenario(HUMAN_SUMMARY?.secondsPerDie ?? NaN, 1, V2_SUMMARY?.trial1.warningRate ?? NaN);
   check('labor (human vs AI-first): per-1000 minutes at 34.9 s', [r1(s.per1000Minutes.before), r1(s.per1000Minutes.after)], [668.9, 172.8]);
   check('labor (human vs AI-first): reduction 74.2%', r1(laborReduction(1, V2_SUMMARY?.trial1.warningRate ?? NaN) * 100), 74.2);
+}
+
+// 第三輪（規範 v2.1 凍結後的盲測集）：網站資料與 run_v21.py analyze 的輸出一致，比例可由計數重算，工時改用盲測數字
+{
+  const r1 = (v: number) => Math.round(v * 10) / 10;
+  const m = JSON.parse(readFileSync(new URL('../experiment/results/v21-blind.json', import.meta.url), 'utf8'));
+  const ai = BLIND_SUMMARY?.ai;
+  check('blind: AI summary matches v21-blind.json (accuracy, miss, false call, warning, between, repeatability)',
+    [ai?.trial1.accuracy, ai?.trial1.missRate, ai?.trial1.falseCallRate, ai?.trial1.warningRate, ai?.trial1.betweenAppraisersPerTrial, ai?.repeatability],
+    [m.v21.trial1.accuracy, m.v21.trial1.missRate, m.v21.trial1.falseCallRate, m.v21.trial1.warningRate, m.v21.trial1.betweenAppraisersPerTrial, m.v21.repeatability]);
+  const ratio = (c?: [number, number]) => (c ? c[0] / c[1] : NaN);
+  check('blind: AI rates = counts (miss, false call, between, repeatability)',
+    [ratio(ai?.counts.miss), ratio(ai?.counts.falseCall), ratio(ai?.counts.betweenAgree), r1(ratio(ai?.counts.repeat) * 1000)],
+    [ai?.trial1.missRate, ai?.trial1.falseCallRate, ai?.trial1.betweenAppraisersPerTrial, r1((ai?.repeatability ?? NaN) * 1000)]);
+  check('blind: frozen commit is the tag the seed came from', BLIND_SUMMARY?.frozenCommit.slice(0, 7), '1173b47');
+  const h = BLIND_SUMMARY?.human;
+  check('blind: human seconds per die = total minutes ÷ judgments', r1((h?.roundMinutes.reduce((a, b) => a + b, 0) ?? NaN) * 60 / (h?.own.n ?? NaN)), h?.secondsPerDie);
+  check('blind: human rates = counts (miss, false call, repeatability)',
+    [ratio(h?.counts.miss), ratio(h?.counts.falseCall), ratio(h?.counts.repeat)], [h?.own.missRate, h?.own.falseCallRate, h?.repeatability]);
+  const s = laborScenario(h?.secondsPerDie ?? NaN, 1, ai?.trial1.warningRate ?? NaN);
+  check('labor (blind: human vs AI-first): per-1000 minutes at 46.7 s', [r1(s.per1000Minutes.before), r1(s.per1000Minutes.after)], [895.1, 238.7]);
+  check('labor (blind): reduction 73.3%', r1(laborReduction(1, ai?.trial1.warningRate ?? NaN) * 100), 73.3);
 }
 
 console.log(failed ? `\n${failed} check(s) failed` : '\nall checks passed');

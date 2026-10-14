@@ -3,7 +3,9 @@
 //          experiment/results/msa-metrics.json, experiment/results/self-judgment-filled.xlsx (+ meta).
 // Samples are semi-synthetic and AI appraisers are simulated; the human rounds are the author's own judgments.
 // Second round (spec v2): experiment/results/v2-metrics.json (written by analyze_v2.py).
-import type { RawReferenceSample, RawMsaSummary, RawHumanSummary, RawHumanReply, RawV2Summary } from './types';
+// Third round (spec v2.1, blind set): experiment/results/v21-blind.json (run_v21.py analyze) +
+//          experiment/results/self-judgment-blind-filled.xlsx (+ meta).
+import type { RawReferenceSample, RawMsaSummary, RawHumanSummary, RawHumanReply, RawV2Summary, RawBlindSummary } from './types';
 
 export const GEOMETRY = {"diePx": 1000, "umPerPx": 5.0, "sealRingPx": [20, 24], "padSizePx": 16, "padOffsetPx": 40} as const;
 
@@ -2973,4 +2975,100 @@ export const V2_SUMMARY: RawV2Summary | null = {
  "spendUsd": 9.55,
  "secondsPerDie": 8.2,
  "apiCalls": 240
+};
+
+export const BLIND_SUMMARY: RawBlindSummary | null = {
+ "frozenTag": "spec-v2.1-frozen",
+ "frozenCommit": "1173b47238577fc63808464ddbab63cf469c5c41",
+ "referenceVerdicts": {
+  "warning": 9,
+  "fail": 9,
+  "pass": 22
+ },
+ "ai": {
+  "trial1": {
+   "judgments": 120,
+   "accuracy": 0.925,
+   "missRate": 0.0,
+   "falseCallRate": 0.0,
+   "warningRate": 0.26666666666666666,
+   "betweenAppraisersPerTrial": 0.875,
+   "fleissKappa": 0.8594189315838799
+  },
+  "repeatability": 0.9333333333333332,
+  "counts": {
+   "miss": [
+    0,
+    27
+   ],
+   "falseCall": [
+    0,
+    66
+   ],
+   "warningToPass": [
+    2,
+    27
+   ],
+   "betweenAgree": [
+    35,
+    40
+   ],
+   "repeat": [
+    112,
+    120
+   ]
+  },
+  "secondsPerDie": 8.9,
+  "spendUsd": 9.53,
+  "apiCalls": 240
+ },
+ "aiWithV2Measure": {
+  "accuracy": 0.7416666666666667,
+  "warningRate": 0.30833333333333335,
+  "falseCallRate": 0.015151515151515152,
+  "repeatability": 0.8583333333333334
+ },
+ "devSet": {
+  "accuracy": 0.9,
+  "missRate": 0.0,
+  "falseCallRate": 0.0,
+  "warningRate": 0.25833333333333336,
+  "betweenAppraisersPerTrial": 0.95,
+  "repeatability": 0.9666666666666667
+ },
+ "human": {
+  "dates": "2026-10-13／2026-10-14",
+  "note": "盲測集；兩輪分在不同天（10/13、10/14），順序不同。作者同時是檢驗規範的撰寫者，且看過開發集。計時為作者自行記錄（34 分 38 秒、27 分 40 秒），含找缺陷、量測與填表。",
+  "roundMinutes": [
+   34.63,
+   27.67
+  ],
+  "secondsPerDie": 46.7,
+  "own": {
+   "n": 80,
+   "accuracy": 0.775,
+   "missRate": 0.2222222222222222,
+   "falseCallRate": 0.022727272727272728,
+   "warningRate": 0.1875
+  },
+  "repeatability": 0.675,
+  "counts": {
+   "miss": [
+    4,
+    18
+   ],
+   "falseCall": [
+    1,
+    44
+   ],
+   "warningToPass": [
+    5,
+    18
+   ],
+   "repeat": [
+    27,
+    40
+   ]
+  }
+ }
 };

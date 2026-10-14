@@ -39,12 +39,18 @@ MEAS_KEY = {"CHP": "depthUm", "SCR": "lengthUm", "CON": "diameterUm"}
 
 
 def _split(v) -> list[str]:
-    return [x.strip() for x in str(v).replace("；", ";").split(";")] if v not in (None, "") else []
+    """Cell → items; accepts ; ； , ， 、 as separators (the form asks for ;, people also type commas)."""
+    if v in (None, ""):
+        return []
+    s = str(v)
+    for sep in ("；", ",", "，", "、"):
+        s = s.replace(sep, ";")
+    return [x.strip() for x in s.split(";")]
 
 
 def human_defects(row) -> list[dict]:
     """表單一列（缺陷代碼、區域、量測）→ 缺陷清單；多個缺陷以 ; 對應。"""
-    codes = [c for c in _split(row[2]) if c and c != "無"]
+    codes = [c.upper() for c in _split(row[2]) if c and c != "無"]
     zones, meas = _split(row[3]), _split(row[4])
     out = []
     for i, code in enumerate(codes):
@@ -70,18 +76,18 @@ def rates(pairs: list[tuple[str, str]]) -> dict:
     }
 
 
-def human_summary(ref_by_id: dict) -> tuple[dict | None, list]:
+def human_summary(ref_by_id: dict, form: Path = HUMAN_FORM, meta_file: Path = HUMAN_META) -> tuple[dict | None, list]:
     """作者本人兩輪判定：自己判 vs 人眼回報＋規則推導。表單不存在時回傳 (None, [])。"""
-    if not HUMAN_FORM.exists():
+    if not form.exists():
         return None, []
     from openpyxl import load_workbook  # 只有匯出人工結果時需要
-    wb = load_workbook(HUMAN_FORM, data_only=True)
-    meta = json.loads(HUMAN_META.read_text(encoding="utf-8"))
+    wb = load_workbook(form, data_only=True)
+    meta = json.loads(meta_file.read_text(encoding="utf-8"))
     replies, per_round = [], []
     for k, sheet in enumerate(("第1輪", "第2輪"), 1):
         own, rule = {}, {}
         for row in wb[sheet].iter_rows(min_row=2, max_row=41, values_only=True):
-            verdict = str(row[5] or "").strip()
+            verdict = str(row[5] or "").strip().capitalize()  # "PASS" / "pass" → "Pass"
             if verdict not in ("Pass", "Warning", "Fail"):
                 continue
             defects = human_defects(row)

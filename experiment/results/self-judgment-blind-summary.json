@@ -1,0 +1,84 @@
+{
+  "set": "blind",
+  "appraiser": "作者本人",
+  "date": "2026-10-13／2026-10-14",
+  "note": "盲測集；兩輪分在不同天（10/13、10/14），順序不同。作者同時是檢驗規範的撰寫者，且看過開發集。計時為作者自行記錄（34 分 38 秒、27 分 40 秒），含找缺陷、量測與填表。",
+  "roundMinutes": [
+    34.63,
+    27.67
+  ],
+  "secondsPerDie": 46.7,
+  "rounds": [
+    {
+      "round": 1,
+      "own": {
+        "n": 40,
+        "accuracy": 0.725,
+        "missRate": 0.3333333333333333,
+        "falseCallRate": 0.0,
+        "warningRate": 0.125
+      },
+      "rules": {
+        "n": 40,
+        "accuracy": 0.75,
+        "missRate": 0.4444444444444444,
+        "falseCallRate": 0.0,
+        "warningRate": 0.125
+      },
+      "fixedByRules": [
+        "B05",
+        "B33"
+      ],
+      "brokenByRules": [
+        "B16"
+      ]
+    },
+    {
+      "round": 2,
+      "own": {
+        "n": 40,
+        "accuracy": 0.825,
+        "missRate": 0.1111111111111111,
+        "falseCallRate": 0.045454545454545456,
+        "warningRate": 0.25
+      },
+      "rules": {
+        "n": 40,
+        "accuracy": 0.8,
+        "missRate": 0.2222222222222222,
+        "falseCallRate": 0.045454545454545456,
+        "warningRate": 0.25
+      },
+      "fixedByRules": [
+        "B27"
+      ],
+      "brokenByRules": [
+        "B16",
+        "B17"
+      ]
+    }
+  ],
+  "combined": {
+    "own": {
+      "n": 80,
+      "accuracy": 0.775,
+      "missRate": 0.2222222222222222,
+      "falseCallRate": 0.022727272727272728,
+      "warningRate": 0.1875
+    },
+    "rules": {
+      "n": 80,
+      "accuracy": 0.775,
+      "missRate": 0.3333333333333333,
+      "falseCallRate": 0.022727272727272728,
+      "warningRate": 0.1875
+    },
+    "fixedByRules": 3,
+    "brokenByRules": 3
+  },
+  "repeatability": {
+    "n": 40,
+    "own": 0.675,
+    "rules": 0.775
+  }
+}

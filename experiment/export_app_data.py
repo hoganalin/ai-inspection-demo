@@ -229,7 +229,13 @@ def main() -> None:
             code: {k: v.get(k) for k in ("refInstances", "tp", "fn", "recall", "measBiasUm")}
             for code, v in metrics["defectRecognition"].items() if code in ("CHP", "CRK", "SCR", "CON")
         },
+        "afterTiming": None,
     }
+    timing_path = HERE / "results" / "v1-timing.json"
+    if timing_path.exists():  # 第一輪當時沒有計時；time_v1.py 以相同設定補量
+        t = json.loads(timing_path.read_text(encoding="utf-8"))
+        msa["afterTiming"] = {"secondsPerDie": round(t["meanSecondsPerCall"], 1), "calls": t["calls"],
+                              "measuredAt": t["measuredAt"][:10]}
 
     human, human_replies = human_summary({s["id"]: s for s in ref["samples"]})
 

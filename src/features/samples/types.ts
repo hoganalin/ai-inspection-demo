@@ -49,6 +49,8 @@ export interface RawMsaSummary {
     recall: number | null;
     measBiasUm: number | null;
   }>;
+  /** 第一輪（改善後）AI 每顆回應時間：當時未記錄，事後以相同設定補量（experiment/time_v1.py → results/v1-timing.json） */
+  afterTiming: { secondsPerDie: number; calls: number; measuredAt: string } | null;
 }
 
 interface HumanRates {

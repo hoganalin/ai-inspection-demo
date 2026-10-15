@@ -166,6 +166,10 @@ if (HUMAN_SUMMARY) {
   check('v2: false-call rate = listed false calls ÷ Pass judgments',
     V2_SUMMARY?.trial1.falseCallRate, (V2_SUMMARY?.falseCallsTrial1.length ?? NaN) / passJudgments);
   check('v2: AI seconds per die matches v2-metrics.json', V2_SUMMARY?.secondsPerDie, Math.round(m.meanSecondsPerCall * 10) / 10);
+  // 第一輪當時沒有計時；time_v1.py 以相同設定補量，網站顯示的秒數要和補量結果一致
+  const t = JSON.parse(readFileSync(new URL('../experiment/results/v1-timing.json', import.meta.url), 'utf8'));
+  check('v1: AI seconds per die (measured afterwards) matches v1-timing.json',
+    MSA_SUMMARY.afterTiming?.secondsPerDie, Math.round(t.meanSecondsPerCall * 10) / 10);
 }
 
 // 人眼＋規範 vs AI＋規則：現況人工逐顆判（比例 1）→ AI 先判、人只複判 Warning（總覽頁、簡報與履歷共用）

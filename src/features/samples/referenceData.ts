@@ -2038,6 +2038,11 @@ export const MSA_SUMMARY: RawMsaSummary = {
    "recall": 0.5897435897435898,
    "measBiasUm": -23.695652173913043
   }
+ },
+ "afterTiming": {
+  "secondsPerDie": 6.0,
+  "calls": 40,
+  "measuredAt": "2026-10-15"
  }
 };
 

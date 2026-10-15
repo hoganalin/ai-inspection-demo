@@ -266,7 +266,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
                 <tr>
                   <td><div style={{ fontWeight: 600 }}>AI＋規則 v1</div><div className="tiny dim">第一輪：全幅影像判讀</div></td>
                   <td className="r mono" data-label="每顆判讀" style={{ whiteSpace: 'nowrap' }}>
-                    {MSA_SUMMARY.afterTiming ? <>{MSA_SUMMARY.afterTiming.secondsPerDie} 秒<div className="tiny dim">事後補量</div></> : '—'}
+                    {MSA_SUMMARY.afterTiming ? <>{MSA_SUMMARY.afterTiming.secondsPerDie.toFixed(1)} 秒<div className="tiny dim">事後補量</div></> : '—'}
                   </td>
                   <td className="r mono" data-label="對標準答案一致率">{pct(a.accuracy)}</td>
                   <td className="r mono" data-label="漏判率" style={{ color: 'var(--fail-ink)' }}>{pct(a.missRate)}</td>

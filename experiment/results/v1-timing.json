@@ -1,0 +1,13 @@
+{
+  "what": "規範 v1（改善後條件）AI 每次呼叫的回應時間，事後補量",
+  "measuredAt": "2026-10-15T13:27:31.564620+00:00",
+  "model": "claude-sonnet-4-6",
+  "method": "與 run_v2.py 相同：time.time() 包住 messages.create（含重試），4 個請求同時跑；開發集 40 張各 1 次，三個角色輪流",
+  "calls": 40,
+  "meanSecondsPerCall": 5.98,
+  "medianSecondsPerCall": 5.55,
+  "minSeconds": 4.3,
+  "maxSeconds": 9.9,
+  "spendUsd": 0.2994,
+  "note": "第一輪原始實驗（2026-10-05）未記錄秒數；此為 2026-10-15 以相同設定補量，只量時間，不影響一致性分析指標。"
+}

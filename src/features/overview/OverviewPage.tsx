@@ -455,7 +455,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
       {/* ── Check：管制圖 ── */}
       <section className="section" aria-labelledby="spc-title" style={{ marginTop: 56 }}>
         <div className="section-head">
-          <h2 className="section-title" id="spc-title">管制圖：漏判讓預警晚了 5 批</h2>
+          <h2 className="section-title" id="spc-title">管制圖：判得準，異常提早 5 批</h2>
           <button className="btn btn-sm" onClick={() => onNavigate('control')}>開啟管制看板<Icon.Arrow width={14} height={14} /></button>
         </div>
         <div className="overview-spc">
@@ -467,14 +467,15 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
           </figure>
           <div>
             <p style={{ marginBottom: 12 }}>
-              25 批 × 50 顆依規範 v1 實測的判定誤差抽樣，自第 15 批起注入切割刀磨耗的 CHP 漂移。v2、v2.1 的判定誤差尚未重跑這組模擬；不過即使判定完美，也要到 L19 才首次異常，要提早預警得改管制圖規則或抽樣，不是改判定。
+              25 批 × 50 顆依規範 v2.1 盲測量到的判定誤差抽樣，自第 15 批起注入切割刀磨耗的 CHP 漂移。同一批晶粒用第一輪 v1 的判定誤差（漏判 37%）要到 L24 才響；v2.1 在 L19 首次異常，和完美判定一樣。剩下的延遲來自管制圖本身（每批 50 顆、畫全部不良），要再提早得改管制圖看法或抽樣，不是改判定。
             </p>
             <dl className="small" style={{ margin: 0, display: 'grid', gridTemplateColumns: 'auto minmax(0, 1fr)', gap: '8px 16px' }}>
               <dt className="dim">完美判定</dt><dd style={{ margin: 0 }}>L19 首次異常</dd>
-              <dt className="dim">AI＋規則＋人工複判</dt><dd style={{ margin: 0 }}><b>L24</b> 首次預警與異常——晚 5 批</dd>
-              <dt className="dim">AI＋規則，無人工複判</dt><dd style={{ margin: 0 }}>漂移完全被 CHP 漏判藏住，沒有訊號</dd>
+              <dt className="dim">AI v2.1＋規則＋人工複判</dt><dd style={{ margin: 0 }}><b>L19</b> 首次異常（L20 預警）——和完美判定相同</dd>
+              <dt className="dim">AI v1＋規則＋人工複判</dt><dd style={{ margin: 0 }}>L24 首次預警與異常——漏判讓它晚 5 批</dd>
+              <dt className="dim">AI v2.1＋規則，無人工複判</dt><dd style={{ margin: 0 }}>L22 首次異常——判 Warning 的 Fail 沒算進去，晚 3 批</dd>
             </dl>
-            <p className="small dim" style={{ marginTop: 12 }}>固定亂數種子的結果照實報告：預警沒有比異常提早。</p>
+            <p className="small dim" style={{ marginTop: 12 }}>固定亂數種子的結果照實報告：預警仍沒有比異常提早；基準期的 L10 是一次誤警報。</p>
           </div>
         </div>
       </section>
@@ -496,7 +497,7 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
           </li>
           <li className="is-hold">
             <span className="phase-head"><b>③ 單線試行</b><span className="phase-state"><Icon.Alert width={14} height={14} />Gate 差一項</span></span>
-            <span className="small">v2.1 盲測達標：漏判率 ≤ 5%（{pct(ai.trial1.missRate)}）、誤判率 ≤ 3%（{pct(ai.trial1.falseCallRate)}）、對標準答案一致率 ≥ 90%（{pct(ai.trial1.accuracy)}）、重複性 ≥ 90%（{pct(ai.repeatability)}）、人工複判率 ≤ 30%（{pct(ai.trial1.warningRate)}）。未達：評估者間一致率 ≥ 90%（{pct(ai.trial1.betweenAppraisersPerTrial)}）；預警提早批數待重新驗證。</span>
+            <span className="small">v2.1 盲測達標：漏判率 ≤ 5%（{pct(ai.trial1.missRate)}）、誤判率 ≤ 3%（{pct(ai.trial1.falseCallRate)}）、對標準答案一致率 ≥ 90%（{pct(ai.trial1.accuracy)}）、重複性 ≥ 90%（{pct(ai.repeatability)}）、人工複判率 ≤ 30%（{pct(ai.trial1.warningRate)}）。未達：評估者間一致率 ≥ 90%（{pct(ai.trial1.betweenAppraisersPerTrial)}）；管制圖以 v2.1 判定重跑後 L19 首次異常，預警仍未比異常提早。</span>
           </li>
           <li>
             <span className="phase-head"><b>④ 擴線與 MES 介接</b><span className="phase-state">規劃</span></span>
@@ -511,8 +512,8 @@ export const OverviewPage: React.FC<Props> = ({ controlView, onNavigate, onTrySa
             在開發集調整後凍結，再在盲測集重跑 {ai.apiCalls} 筆判定，花費 US${ai.spendUsd.toFixed(2)}。v2、v2.1 只在實驗流程實作，網站上的單張判定仍用規範 v1。<DocLink path="docs/spec/inspection-spec-v2.1.md">檢驗規範 v2.1</DocLink>
           </p>
           <ol className="small" style={{ margin: 0, paddingLeft: '1.4em', listStyle: 'decimal', display: 'flex', flexDirection: 'column', gap: 6, color: 'var(--ink-2)' }}>
-            <li><b style={{ color: 'var(--ink)' }}>補「看得到」：</b>三位評估者不一致的多是有人看到、有人沒看到；改善偵出後要用另一組新的盲測集再驗，不能回頭用這 40 張。</li>
-            <li><b style={{ color: 'var(--ink)' }}>重新驗證預警：</b>改管制圖規則或抽樣，確認預警能否比異常提早。</li>
+            <li><b style={{ color: 'var(--ink)' }}>讓「找」穩定：</b>三位評估者不一致的 5 題都出在 AI 找的那一步（沒看到、數不齊、框不完整、認錯種類）；下一版改成程式整顆和標準晶粒比對找差異、AI 只認種類，改完要用另一組新的盲測集再驗，不能回頭用這 40 張。</li>
+            <li><b style={{ color: 'var(--ink)' }}>提早預警：</b>試算只看崩角可從 L19 提早到 L17、前 16 批無誤報；這是看過資料後的試算，要用新資料驗證，並評估接機台刀具壽命資料。</li>
             <li><b style={{ color: 'var(--ink)' }}>真實檢驗員：</b>3 位檢驗員 × 2 輪（隔天）重做人工基準，取代作者一人的對照。</li>
           </ol>
         </div>

@@ -1,7 +1,14 @@
-"""Step 3 — 管制圖：模擬 25 批 × 50 顆晶粒，注入漂移情境，套用改善後 (After) 實測判定誤差。
+"""Step 3 — 管制圖：模擬 25 批 × 50 顆晶粒，注入漂移情境，套用實測判定誤差。
 
-真實缺陷 → 真實判定（依檢驗規範 v1 的嚴重度分級）→ 依一致性分析量到的
-P(觀測判定 | 真實判定) 抽樣得到「系統觀測判定」→ p 管制圖（批不良率 = Fail 比例）。
+真實缺陷 → 真實判定（依檢驗規範 v1 的嚴重度分級）→ 依實測的 P(觀測判定 | 真實判定)
+抽樣得到「系統觀測判定」→ p 管制圖（批不良率 = Fail 比例）。
+
+判定誤差（ERROR_MODEL）：
+  "v21"（預設）＝第三輪規範 v2.1 盲測第 1 次判定的混淆矩陣（results/v21-blind.json，40 張 × 3 位，
+               不分缺陷分類）；
+  "v1"        ＝第一輪規範 v1 一致性分析「改善後」、按缺陷分類的混淆矩陣（results/msa-metrics.json），
+               保留作對照（漏判 37% 讓漂移晚了 5 批）。
+真實缺陷流程用同一個亂數種子，兩種判定誤差看到的是同一批晶粒。
 
 Outputs
   results/control-chart.xlsx   資料、原生 Excel 折線圖、柏拉圖、參數
@@ -54,7 +61,30 @@ def chp_params(lot):
     return p, (sub, 1 - sub - fail, fail)
 
 
-def load_error_model():
+ERROR_MODEL = "v21"
+
+
+def load_error_model(model=None):
+    return load_error_model_v21() if (model or ERROR_MODEL) == "v21" else load_error_model_v1()
+
+
+def load_error_model_v21():
+    """P(observed verdict | true verdict) from the spec v2.1 blind run, trial 1 (120 judgments), pooled over
+    defect classes (the blind set is too small for per-class rows). Unparsable replies were already routed
+    to Warning by the rule engine."""
+    m = json.loads((RES / "v21-blind.json").read_text(encoding="utf-8"))["v21"]
+    conf = m["trial1"]["confusion"]
+    raw = {}
+    for t in LABELS:
+        v = np.array([conf[t]["Pass"], conf[t]["Warning"], conf[t]["Fail"]], dtype=float)
+        for c in CODES + [None]:
+            raw[(t, c)] = v / v.sum()
+    fp = np.array([m["defectRecognition"][c]["fp"] for c in CODES], dtype=float) + 0.5
+    rates = {"miss": m["trial1"]["missRate"] or 0.0, "falseCall": m["trial1"]["falseCallRate"] or 0.0}
+    return raw, fp / fp.sum(), rates, conf
+
+
+def load_error_model_v1():
     """P(observed verdict | true verdict, class of the verdict-determining defect), measured in the
     After condition (analyze_msa.py → msa-metrics.json). Rows with no measured samples fall back to the
     pooled row for that true verdict. Unparsable AI output (Invalid) is routed to 人工複判 = Warning."""
@@ -96,8 +126,8 @@ def apply_mode(raw, mode):
     return out
 
 
-def simulate(mode="rejudge"):
-    raw, fp_mix, rates, conf = load_error_model()
+def simulate(mode="rejudge", model=None):
+    raw, fp_mix, rates, conf = load_error_model(model)
     P = apply_mode(raw, mode)
     rng = np.random.default_rng(SEED)          # true defect process (identical across modes)
     rng_obs = np.random.default_rng(SEED + 1)  # judgement layer
@@ -315,13 +345,16 @@ def excel(lots, p, pbar, sigma, ucl, lcl, sig, rates, raw, first_warn, first_ooc
         "真實缺陷：每顆晶粒每類缺陷獨立以機率 p 出現，嚴重度依 (門檻以下, Warning 級, Fail 級) 比例抽樣；晶粒真實判定取最嚴重者。",
     ] + [f"  {c}: p = {BASE[c]['p']:.3f}，嚴重度比例 {BASE[c]['sev']}" for c in CODES] + [
         f"漂移情境：{SCENARIO}；自 L{DRIFT_START} 起 CHP 出現機率每批 +{CHP_P_STEP:.3f}，CHP 中 Fail 級比例由 0.30 線性升至 {CHP_FAIL_SHARE_END:.2f}（L{N_LOTS}）。",
-        "判定層（主圖假設＝建議導入設計）：AI＋規則的判定依一致性分析「改善後」實測、按缺陷分類分開的混淆矩陣",
+        ("判定層（主圖假設＝建議導入設計）：AI＋規則的判定依規範 v2.1 盲測第 1 次判定的混淆矩陣（不分缺陷分類）"
+         if ERROR_MODEL == "v21" else
+         "判定層（主圖假設＝建議導入設計）：AI＋規則的判定依一致性分析「改善後」實測、按缺陷分類分開的混淆矩陣"),
         "  P(AI 判定 | 真實判定, 決定判定的缺陷分類) 抽樣；AI 判 Warning 的晶粒一律送人工複判，假設人工複判得到真實判定。",
-        "  AI 判 Pass（含漏判）直接放行、AI 判 Fail（含誤判）直接退件，不經人工 → 漏判率、誤判率維持改善後實測值。",
+        "  AI 判 Pass（含漏判）直接放行、AI 判 Fail（含誤判）直接退件，不經人工 → 漏判率、誤判率維持實測值。",
+        "對照：第一輪規範 v1 的判定誤差（漏判 37%）跑同一批真實晶粒，結果見 control-chart-summary.json 的 v1Comparison。",
         "敏感度分析（另一工作表）：同一真實缺陷流程，但不做人工複判、AI＋規則判定即最終判定。",
     ] + [f"  真實 {t}／{c or '—'} → AI 判定 Pass/Warning/Fail = {', '.join(f'{v:.3f}' for v in raw[(t, c)])}"
          for t in LABELS for c in (CODES if t != "Pass" else [None])] + [
-        f"漏判率 = {rates['miss']:.3f}；誤判率 = {rates['falseCall']:.3f}（改善後實測，lots.json judgementErrorRates）",
+        f"漏判率 = {rates['miss']:.3f}；誤判率 = {rates['falseCall']:.3f}（實測，lots.json judgementErrorRates）",
         "判異規則：點超出 UCL → 異常；連續 7 點上升、或 3 點中 2 點超過 +2σ（同側）→ 預警。",
         "柏拉圖：只計系統判定非 Pass 的晶粒上之 Warning／Fail 級缺陷；誤判晶粒依 AI 多報缺陷分類比例標記代碼。",
     ]
@@ -343,8 +376,8 @@ def excel(lots, p, pbar, sigma, ucl, lcl, sig, rates, raw, first_warn, first_ooc
 def main():
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
-    def run(mode):
-        lots, rates, raw, conf = simulate(mode)
+    def run(mode, model=None):
+        lots, rates, raw, conf = simulate(mode, model)
         pbar, sigma = control_limits(lots)
         p, ucl, lcl, sig = signals(lots, pbar, sigma)
         # 提早 N 批 is measured in Phase II (monitoring, lots after the Phase I baseline); Phase I signals are reported separately
@@ -362,11 +395,15 @@ def main():
     perfect = {"pbar": pf_pbar, "ucl": pf_ucl, "firstWarningLot": pf_fw, "firstOutOfControlLot": pf_fo,
                "leadLots": (pf_fo - pf_fw) if (pf_fw and pf_fo) else None}
     print(f"[reference: perfect judgement] p̄={pf_pbar:.4f} UCL={pf_ucl:.4f} first 預警={pf_fw} first 異常={pf_fo}")
+    (_, v1_rates, _, v1_pbar, _, v1_p, v1_ucl, _, v1_sig, v1_fw, v1_fo) = run("rejudge", "v1")
+    v1cmp = {"pbar": v1_pbar, "ucl": v1_ucl, "p": v1_p, "signals": v1_sig, "firstWarningLot": v1_fw,
+             "firstOutOfControlLot": v1_fo, "judgementErrorRates": v1_rates}
+    print(f"[comparison: v1 error model] p̄={v1_pbar:.4f} UCL={v1_ucl:.4f} first 預警={v1_fw} first 異常={v1_fo}")
     lots, rates, raw, pbar, sigma, p, ucl, lcl, sig, first_warn, first_ooc = run("rejudge")
     plots(lots, p, pbar, sigma, ucl, sig, first_warn, first_ooc)
     excel(lots, p, pbar, sigma, ucl, lcl, sig, rates, raw, first_warn, first_ooc, sens)
     out = {
-        "specVersion": "v1",
+        "specVersion": "v2.1" if ERROR_MODEL == "v21" else "v1",
         "scenario": SCENARIO,
         "simulated": True,
         "judgementErrorRates": {"miss": round(rates["miss"], 4), "falseCall": round(rates["falseCall"], 4)},
@@ -383,7 +420,11 @@ def main():
     print(f"first 預警 = {first_warn}, first 異常 = {first_ooc}, lead = {lead}")
     summary = {"pbar": pbar, "sigma": sigma, "ucl": ucl, "firstWarningLot": first_warn,
                "firstOutOfControlLot": first_ooc, "leadLots": lead, "signals": sig, "seed": SEED,
-               "judgementLayer": "measured After per-class errors + 人工複判 of AI-Warning dies (assumed correct)",
+               "errorModel": ERROR_MODEL,
+               "judgementLayer": ("spec v2.1 blind trial-1 errors (pooled) + 人工複判 of AI-Warning dies (assumed correct)"
+                                  if ERROR_MODEL == "v21" else
+                                  "measured After per-class errors + 人工複判 of AI-Warning dies (assumed correct)"),
+               "v1Comparison": v1cmp,
                "sensitivityNoRejudge": {k: v for k, v in sens.items() if k != "lots"},
                "referencePerfectJudgement": perfect,
                "phaseISignals": {f"L{i + 1:02d}": s_ for i, s_ in enumerate(sig[:PHASE1_LOTS]) if s_},

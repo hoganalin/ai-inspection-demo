@@ -47,7 +47,7 @@ export const ControlDashboard: React.FC<Props> = ({ view, dataset, source, selec
         <span>
           <b>數據為模擬。</b>
           {source === 'file' ? `${dataset.lots.length} 個統計模擬批（public/data/lots.json）` : '內建備援資料集（lots.json 尚未產生）'}
-          ，依一致性分析量到的判定誤差抽樣（漏判率 {pct(dataset.judgementErrorRates.miss)}、誤判率 {pct(dataset.judgementErrorRates.falseCall)}）
+          ，依{source === 'file' ? `規範 ${dataset.specVersion} 實測` : '假設'}的判定誤差抽樣（漏判率 {pct(dataset.judgementErrorRates.miss)}、誤判率 {pct(dataset.judgementErrorRates.falseCall)}，判 Warning 的送人工複判）
           {dataset.scenario ? `，並注入漂移情境：${dataset.scenario}` : ''}。
           {liveCount > 0 && ` 另接 ${liveCount} 個實測批（方點）。`}
         </span>

@@ -55,3 +55,6 @@ __pycache__/
 
 # defect example images are reproducible from experiment/make_examples.py
 experiment/examples/
+
+# personal job-application plans (kept local only)
+docs/plan/

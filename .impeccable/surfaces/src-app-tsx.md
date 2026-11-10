@@ -9,7 +9,7 @@ related_targets: ["src/index.css","src/components"]
 
 **Scope:** the entire SPA (app shell plus 總覽, 單張判定, 批檢驗, 批紀錄, 管制看板, and the 異常處置單 panel). Visitor mode: **Operate**. The working tool is what is being judged.
 
-**Audience and job:** a 均華 hiring manager opening the link alone on a desktop, and the author demoing live on a projector. They should understand what was built, see the mechanism working on a real sample, and believe four things: rigor, project drive, floor sense, and honesty.
+**Audience and job:** a manufacturing hiring manager opening the link alone on a desktop, and the author demoing live on a projector. They should understand what was built, see the mechanism working on a real sample, and believe four things: rigor, project drive, floor sense, and honesty.
 
 **Confirmed scope additions:**
 - (1) A new 專案總覽 page, which is the first screen and the demo opener. It covers the PDCA story, the MSA before/after numbers including the worse 漏判率, and 導入階段 ①② done, ③ not recommended, ④ planned.

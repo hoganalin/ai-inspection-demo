@@ -8,7 +8,7 @@ web
 
 ## Users
 
-- **Primary: the hiring side at 均華, reading the deployed link on their own.** An interviewer or hiring manager for the 「智慧製造專案專員」 role opens the link from the résumé on a desktop browser, with no one explaining it. The app has to make its own case: what problem it solves, how, and what was actually measured.
+- **Primary: the hiring side at a manufacturing company, reading the deployed link on their own.** An interviewer or hiring manager for a smart-manufacturing or process-improvement role opens the link from the résumé on a desktop browser, with no one explaining it. The app has to make its own case: what problem it solves, how, and what was actually measured.
 - **Primary: the author demoing it live in the interview**, on a projector or screen share, narrating as they click. The UI has to stay legible at a distance and support a spoken walkthrough (upload → verdict detail → lot → p-chart signal → action plan).
 - **Simulated in-product persona:** a packaging-line quality/process engineer doing 晶粒外觀檢查 after Die Sorter AOI. The app is built as their working tool, and evaluators judge whether it feels like something a factory would really use.
 
@@ -24,7 +24,7 @@ Success means an evaluator leaves believing all four of these: the author is **m
 
 The AI does not judge. It only reports defect class, zone, and measurements, and the Verdict is derived by versioned rules (ADR-0001). That swaps human inconsistency for a traceable rule, not for AI inconsistency. Every Verdict cites its triggering clause and spec version. The project measures itself with attribute agreement analysis and publishes the result even though it was unflattering. A neighboring "AI defect detection" demo that lets the model output pass/fail plus a confidence score cannot truthfully claim any of this.
 
-**Framing for 均華（decided 2026-10-06）**: 均華 builds semiconductor packaging equipment (Chip Sorter, Die Bonder, laser marking, molding, precision molds); the role improves 均華's *own* manufacturing. Lead with the **transferable improvement method** (pain point → versioned spec → data validation → early warning → action plan → rollout plan), add one mapping to 均華's own factory scenarios (framed as hypotheses to verify on site, not facts), and treat knowledge of the Chip Sorter customer-side process as a bonus, not the main pitch.
+**Framing**: the site is reused across applications, so it names no target company. Lead with the **transferable improvement method** (pain point → versioned spec → data validation → early warning → action plan → rollout plan); any mapping to a specific employer's factory is said in the interview, framed as a hypothesis to verify on site, not written into the site.
 
 ## Operating Context
 
